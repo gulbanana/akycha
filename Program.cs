@@ -24,8 +24,6 @@ else
     app.UseMigrationsEndPoint();
 }
 
-app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 app.UseAntiforgery();
 
