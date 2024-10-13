@@ -1,0 +1,33 @@
+﻿@page "/"
+@using Akycha.Model
+@using Microsoft.EntityFrameworkCore
+
+@inject FactoryContext db
+@code {
+    private string path = "";
+
+    protected override void OnInitialized()
+    {
+        path = db.Database.GetConnectionString();
+    }
+
+    private int GetParts()
+    {
+        return db.Parts.Count();
+    }
+
+    private async Task AddPartAsync() 
+    {
+        db.Add(new Part());
+        await db.SaveChangesAsync();
+    }
+}
+
+<PageTitle>Akycha</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<p>Database initialised at @path - @GetParts() parts.</p>
+
+<button @onclick="AddPartAsync">Add part</button>
+
