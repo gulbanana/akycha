@@ -1,0 +1,18 @@
+﻿@page "/parts"
+@page "/"
+@using Microsoft.EntityFrameworkCore
+
+@inject FactoryContext db
+@code {
+    private async Task AddPartAsync() 
+    {
+        db.Add(new Part { Name = "New Part" });
+        await db.SaveChangesAsync();
+    }
+}
+
+<PageTitle>Akycha - Parts</PageTitle>
+
+<ListBox Header="@($"{db.Parts.Count()} Parts")" Models="@db.Parts.ToList()" AddCommand="AddPartAsync">
+    <PartSummary Model="context" />
+</ListBox>

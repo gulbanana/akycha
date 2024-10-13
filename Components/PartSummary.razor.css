@@ -1,0 +1,30 @@
+.layout {
+    min-height: 128px;
+    display: grid;
+    grid-template-columns: 128px 1fr;
+}
+
+figure {
+    margin: 0;
+}
+
+img {
+    display: block;
+    width: 128px;
+    height: 128px;
+}
+
+.data {
+    padding: 8px;
+}
+
+input {
+    background: var(--c-content-background);
+    color: var(--c-text-light);
+    border: 1px solid var(--c-ficsit-primary);
+    outline: none;
+}
+
+input:hover, input:focus {
+    border-color: var(--c-ficsit-secondary);
+}

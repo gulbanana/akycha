@@ -1,0 +1,13 @@
+.list {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: var(--c-ficsit-primary);
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px;
+    font-size: 20px;
+}

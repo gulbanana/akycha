@@ -1,0 +1,42 @@
+header {
+    background-color: var(--c-ficsit-primary);
+    color: var(--c-text-dark);
+
+    height: 32px;
+    font-size: 20px;
+    user-select: none;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.title {
+    padding: 0 8px;
+}
+
+.command {
+    height: 32px;
+    padding: 0 8px;
+
+    border: none;
+    background: var(--c-page-background);
+    color: var(--c-ficsit-secondary);
+}
+
+.command:hover {
+    background: var(--c-foundation-primary);
+    color: var(--c-text-light);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    background: var(--c-sidebar-background);
+    /* border-left: 1px solid var(--c-ficsit-primary); */
+    /* border-right: 1px solid var(--c-ficsit-primary); */
+}
+
+.list> ::deep * {
+    border-bottom: 2px solid var(--c-ficsit-primary);
+}

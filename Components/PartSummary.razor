@@ -1,0 +1,27 @@
+@code {
+    [Parameter] public required Part Model { get; set; }
+    private string src = "";
+
+    protected override void OnParametersSet()
+    {
+        if (Model.Icon is null)
+        {
+            src = "Icon_Cross.webp";
+        }
+        else
+        {
+            var data = Convert.ToBase64String(Model.Icon);
+            src = $"data:image/png;base64,{data}";
+        }
+    }
+}
+
+<div class="layout">
+    <figure class="icon">
+        <img src="@src" />
+    </figure> 
+    <div class="data">
+        Name: <input type="text" value="@Model.Name">
+        @* <span>@Model.Name</span> *@
+    </div>    
+</div>

@@ -1,0 +1,22 @@
+@typeparam T
+@code {
+    [Parameter] public string Header { get; set; }= "";
+    [Parameter] public RenderFragment<T>? ChildContent { get; set; }
+    [Parameter] public IReadOnlyList<T> Models { get; set; } = [];
+    [Parameter] public EventCallback AddCommand { get; set; }
+}
+
+<header>
+    <span class="title">@Header</span>
+    @if (AddCommand.HasDelegate)
+    {
+        <button class="command" @onclick="AddCommand">Add</button>
+    }
+</header>
+
+<div class="list">
+    @foreach (var model in Models)
+    {
+        @ChildContent?.Invoke(model)
+    }
+</div>
