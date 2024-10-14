@@ -1,6 +1,19 @@
 @code {
+    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Part Model { get; set; }
     private string src = "";
+
+    private string partName
+    {
+        get => Model.Name;
+        set { Model.Name = value; UOW.NotifyChanged(); }
+    }
+
+    private void DeletePart()
+    {
+        UOW.DB.Remove(Model);
+        UOW.NotifyChanged();
+    }
 
     protected override void OnParametersSet()
     {
@@ -19,9 +32,10 @@
 <div class="layout">
     <figure class="icon">
         <img src="@src" />
-    </figure> 
+    </figure>
     <div class="data">
-        Name: <input type="text" value="@Model.Name">
+        Name: <input type="text" @bind="partName">
         @* <span>@Model.Name</span> *@
-    </div>    
+    </div>
+    <CommandButton @onclick="DeletePart">Delete</CommandButton>
 </div>

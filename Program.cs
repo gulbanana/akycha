@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddDbContext<FactoryContext>(options => 
+builder.Services.AddDbContextFactory<FactoryContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString(nameof(FactoryContext))));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

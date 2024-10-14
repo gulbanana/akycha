@@ -2,17 +2,19 @@
 @page "/"
 @using Microsoft.EntityFrameworkCore
 
-@inject FactoryContext db
+@inherits DbPage
 @code {
-    private async Task AddPartAsync() 
+    private void AddPart()
     {
-        db.Add(new Part { Name = "New Part" });
-        await db.SaveChangesAsync();
+        DB.Add(new Part { Name = "New Part" });
+        NotifyChanged();
     }
 }
 
 <PageTitle>Akycha - Parts</PageTitle>
 
-<ListBox Header="@($"{db.Parts.Count()} Parts")" Models="@db.Parts.ToList()" AddCommand="AddPartAsync">
-    <PartSummary Model="context" />
-</ListBox>
+<CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
+    <ListBox Header="@($"{DB.Parts.Count()} Parts")" Models="@DB.Parts.ToList()" AddCommand="AddPart">
+        <PartSummary Model="context" />
+    </ListBox>
+</CascadingValue>

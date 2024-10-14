@@ -15,20 +15,6 @@ header {
     padding: 0 8px;
 }
 
-.command {
-    height: 32px;
-    padding: 0 8px;
-
-    border: none;
-    background: var(--c-page-background);
-    color: var(--c-ficsit-secondary);
-}
-
-.command:hover {
-    background: var(--c-foundation-primary);
-    color: var(--c-text-light);
-}
-
 .list {
     display: flex;
     flex-direction: column;

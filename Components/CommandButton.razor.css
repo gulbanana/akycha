@@ -1,0 +1,15 @@
+button {
+    height: 32px;
+    padding: 0 8px;
+
+    border: none;
+    background: var(--c-page-background);
+    color: var(--c-ficsit-secondary);
+    outline: none;
+}
+
+button:hover,
+button:focus {
+    background: var(--c-foundation-primary);
+    color: var(--c-text-light);
+}

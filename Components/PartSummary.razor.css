@@ -1,10 +1,15 @@
 .layout {
     min-height: 128px;
     display: grid;
-    grid-template-columns: 128px 1fr;
+    grid-template-columns: 128px 1fr auto;
+    grid-template-rows: 1fr 24px;
+    grid-template-areas:
+        'icon data data'
+        'icon data data';
 }
 
 figure {
+    grid-area: icon;
     margin: 0;
 }
 
@@ -15,6 +20,7 @@ img {
 }
 
 .data {
+    grid-area: data;
     padding: 8px;
 }
 
@@ -25,6 +31,14 @@ input {
     outline: none;
 }
 
-input:hover, input:focus {
+input:hover,
+input:focus {
     border-color: var(--c-ficsit-secondary);
+}
+
+.layout ::deep button {
+    grid-column: 3/4;
+    grid-row: 2/3;
+    height: 24px;
+    padding: 0 4px;
 }

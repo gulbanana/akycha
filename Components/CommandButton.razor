@@ -1,0 +1,8 @@
+﻿@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
+}
+
+<button @attributes="Splat">
+    @ChildContent
+</button>
