@@ -8,6 +8,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
 {
     [Inject] public required IDbContextFactory<FactoryContext> Factory { get; set; }
     public FactoryContext DB { get; private set; } = default!;
+    public bool HasChanges { get; set; }
     private Timer timer = default!;
     private bool disposed;
 
@@ -26,7 +27,11 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
 
     public void NotifyChanged()
     {
-        timer.Change(TimeSpan.FromMilliseconds(400), Timeout.InfiniteTimeSpan);
+        InvokeAsync(() =>
+        {
+            HasChanges = true;
+            timer.Change(TimeSpan.FromMilliseconds(400), Timeout.InfiniteTimeSpan);
+        });
     }
 
     private async void OnTimeout(object? _)
@@ -36,6 +41,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
             if (!disposed)
             {
                 DB.SaveChanges();
+                HasChanges = false;
                 StateHasChanged();
             }
         });

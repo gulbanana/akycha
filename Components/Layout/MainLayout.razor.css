@@ -5,20 +5,28 @@
 
 nav {
     height: 40px;
-    margin-bottom: 40px;
     font-size: 24px;
     display: flex;
-    gap: 1em;
     align-items: center;
 }
 
-nav ::deep > a {
+nav ::deep>a {
+    height: 40px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+
     color: var(--c-ficsit-secondary);
     text-decoration: none;
+}
 
-    &.active {
-        text-decoration: underline;
-    }
+nav ::deep>a.active {
+    background: var(--c-content-background);
+}
+
+nav ::deep>a:hover {
+    background: var(--c-sidebar-background);
+    color: var(--c-text-light);
 }
 
 main {
