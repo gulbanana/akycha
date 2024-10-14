@@ -33,10 +33,19 @@ nav ::deep>a:focus-visible {
     color: var(--c-ficsit-secondary);
 }
 
-nav ::deep img {
+.tab-icon {
     width: 32px;
     height: 32px;
-    margin-right: 2px;
+
+    & + * {
+        margin-left: 2px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .tab-title {
+        display: none;
+    }
 }
 
 main {
