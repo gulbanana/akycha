@@ -4,12 +4,16 @@ button {
 
     border: none;
     background: var(--c-page-background);
-    color: var(--c-ficsit-secondary);
+    color: var(--c-text-light);
     outline: none;
+
+    cursor: pointer;
 }
 
-button:hover,
-button:focus {
+button:hover {
     background: var(--c-foundation-primary);
-    color: var(--c-text-light);
+}
+
+button:focus-visible {
+    color: var(--c-ficsit-secondary);
 }

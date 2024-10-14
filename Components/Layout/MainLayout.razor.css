@@ -16,8 +16,9 @@ nav ::deep>a {
     display: flex;
     align-items: center;
 
-    color: var(--c-ficsit-secondary);
+    color: var(--c-text-light);
     text-decoration: none;
+    outline: none;
 }
 
 nav ::deep>a.active {
@@ -26,7 +27,16 @@ nav ::deep>a.active {
 
 nav ::deep>a:hover {
     background: var(--c-sidebar-background);
-    color: var(--c-text-light);
+}
+
+nav ::deep>a:focus-visible {
+    color: var(--c-ficsit-secondary);
+}
+
+nav ::deep img {
+    width: 32px;
+    height: 32px;
+    margin-right: 2px;
 }
 
 main {

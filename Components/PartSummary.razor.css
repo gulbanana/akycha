@@ -32,7 +32,7 @@ input {
 }
 
 input:hover,
-input:focus {
+input:focus-visible {
     border-color: var(--c-ficsit-secondary);
 }
 
