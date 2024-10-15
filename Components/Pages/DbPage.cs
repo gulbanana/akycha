@@ -30,6 +30,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
         InvokeAsync(() =>
         {
             HasChanges = true;
+            StateHasChanged();
             timer.Change(TimeSpan.FromMilliseconds(400), Timeout.InfiniteTimeSpan);
         });
     }
@@ -41,7 +42,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
             if (!disposed)
             {
                 DB.SaveChanges();
-                HasChanges = false;
+                HasChanges = false;       
                 StateHasChanged();
             }
         });

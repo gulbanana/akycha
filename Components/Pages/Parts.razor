@@ -3,9 +3,14 @@
 
 @inherits DbPage
 @code {
+    private Part? selectedPart;
+
+    private bool hasPart => selectedPart is not null && DB.Parts.Local.Contains(selectedPart);
+
     private void AddPart()
     {
-        DB.Add(new Part { Name = "New Part" });
+        selectedPart = new Part { Name = "New Part" };
+        DB.Parts.Add(selectedPart);
         NotifyChanged();
     }
 }
@@ -13,7 +18,13 @@
 <PageTitle>Akycha - Parts</PageTitle>
 
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
-    <ListBox Header="@($"{DB.Parts.Count()} Parts")" Models="@DB.Parts.ToList()" AddCommand="AddPart">
-        <PartSummary Model="context" />
-    </ListBox>
+    <div class="@(hasPart ? "master-detail master-detail--has-detail" : "master-detail")">
+        <ListBox Header="@($"{DB.Parts.Count()} Parts")" Models="@DB.Parts.ToList()" AddCommand="AddPart" @bind-Selection="selectedPart">
+            <PartSummary Model="context" />
+        </ListBox>
+        @if (hasPart)
+        {
+            <PartDetail Model="selectedPart" />
+        }
+    </div>
 </CascadingValue>

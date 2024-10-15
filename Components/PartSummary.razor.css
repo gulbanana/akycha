@@ -1,11 +1,9 @@
 .layout {
-    min-height: 128px;
+    height: 64px;
     display: grid;
-    grid-template-columns: 128px 1fr auto;
+    grid-template-columns: 64px 1fr;
     grid-template-rows: 1fr 24px;
-    grid-template-areas:
-        'icon data data'
-        'icon data data';
+    grid-template-areas: 'icon data';
 }
 
 figure {
@@ -15,30 +13,12 @@ figure {
 
 img {
     display: block;
-    width: 128px;
-    height: 128px;
+    width: 64px;
+    height: 64px;
 }
 
 .data {
     grid-area: data;
     padding: 8px;
-}
-
-input {
-    background: var(--c-content-background);
-    color: var(--c-text-light);
-    border: 1px solid var(--c-ficsit-primary);
-    outline: none;
-}
-
-input:hover,
-input:focus-visible {
-    border-color: var(--c-ficsit-secondary);
-}
-
-.layout ::deep button {
-    grid-column: 3/4;
-    grid-row: 2/3;
-    height: 24px;
-    padding: 0 4px;
+    display: flex;
 }

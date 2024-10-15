@@ -1,0 +1,54 @@
+.layout {
+    min-height: 128px;
+    display: grid;
+    grid-template-columns: 128px 1fr auto;
+    grid-template-rows: 1fr 24px;
+    grid-template-areas:
+        'icon data data'
+        'icon data data';
+}
+
+figure {
+    grid-area: icon;
+    width: 130px;
+    height: 130px;
+    margin: 0;
+    border: 1px solid var(--c-ficsit-primary);
+}
+
+img {
+    display: block;
+    width: 128px;
+    height: 128px;
+}
+
+.data {
+    grid-area: data;
+    width: 100%;
+    padding: 0 0 0 8px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-auto-rows: 32px;
+    gap: 4px;
+}
+
+.data > label {
+    align-self: center;
+}
+
+.data > input {
+    background: var(--c-content-background);
+    color: var(--c-text-light);
+    border: 1px solid var(--c-ficsit-primary);
+    outline: none;
+}
+
+input:hover,
+input:focus-visible {
+    border-color: var(--c-ficsit-secondary);
+}
+
+.layout ::deep button {
+    grid-column: 3/4;
+    grid-row: 2/3;
+}

@@ -17,12 +17,18 @@ header {
 
 .list {
     display: flex;
-    flex-direction: column;
-    background: var(--c-sidebar-background);
-    /* border-left: 1px solid var(--c-ficsit-primary); */
-    /* border-right: 1px solid var(--c-ficsit-primary); */
+    flex-direction: column;    
+    border-left: 2px solid var(--c-ficsit-primary);
+    border-right: 2px solid var(--c-ficsit-primary);
 }
 
-.list> ::deep * {
+.item {
+    background: none;
+    border: none;
+    color: inherit;
     border-bottom: 2px solid var(--c-ficsit-primary);
+}
+
+.item--selected {
+    background: var(--c-sidebar-background);
 }

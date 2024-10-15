@@ -3,6 +3,18 @@
     [Parameter] public required Part Model { get; set; }
     private string src = "";
 
+    private string partName
+    {
+        get => Model.Name;
+        set { Model.Name = value; UOW.NotifyChanged(); }
+    }
+
+    private void DeletePart()
+    {
+        UOW.DB.Parts.Remove(Model);
+        UOW.NotifyChanged();
+    }
+
     protected override void OnParametersSet()
     {
         if (Model.Icon is null)
@@ -15,6 +27,7 @@
             src = $"data:image/png;base64,{data}";
         }
     }
+
 }
 
 <div class="layout">
@@ -22,6 +35,8 @@
         <img src="@src" />
     </figure>
     <div class="data">
-        <span>@Model.Name</span>
+        <label>Name:</label><input type="text" @bind="partName">
+        <label>Also Name:</label><input type="text" @bind="partName">
     </div>
+    <CommandButton @onclick="DeletePart">Delete</CommandButton>
 </div>

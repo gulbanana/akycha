@@ -1,13 +1,20 @@
-.list {
-    display: flex;
-    flex-direction: column;
+.master-detail {
+    display: grid;
+    grid-template-columns: 1fr;
 }
 
-header {
-    background-color: var(--c-ficsit-primary);
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 8px;
-    font-size: 20px;
+.master-detail--has-detail {
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .master-detail--has-detail {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+        gap: 16px;
+        & > :first-child {
+            order: 1
+        }
+    }
 }
