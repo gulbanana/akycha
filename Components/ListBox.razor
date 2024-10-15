@@ -4,7 +4,7 @@
     [Parameter] public RenderFragment<T>? ChildContent { get; set; }
     [Parameter] public IReadOnlyList<T> Models { get; set; } = [];
     [Parameter] public EventCallback AddCommand { get; set; }
-    [Parameter] public T Selection { get; set; }
+    [Parameter] public T? Selection { get; set; }
     [Parameter] public EventCallback<T> SelectionChanged { get; set; }
 
     private void Select(T model)

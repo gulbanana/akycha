@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-public class Part
+namespace Akycha.Model;
+
+public class Part : INamed
 {
     [Key] public int Id { get; set; }
     public required string Name { get; set; }
