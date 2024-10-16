@@ -42,6 +42,14 @@ a:last-child {
     flex: 1;
 }
 
+button.loginout {
+    border: none;
+    background: none;
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
+}
+
 main {
     background: var(--c-content-background);
     padding: 16px;

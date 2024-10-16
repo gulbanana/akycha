@@ -1,7 +1,5 @@
-﻿@inherits LayoutComponentBase
-@code {
-    private string password { get; set; } = "";
-}
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
 
 <div class="shell">
     <nav>
@@ -9,9 +7,22 @@
         <Tab Category="Recipes" />
         <Tab Category="Parts" Href="/" />
         <Tab Category="Machines" />
-        <div class="spacer"></div>
-        <TextBox @bind-Value="password" size="10" type="password" />
-        <a><img src="/MAM_Research_Key.png" width="24" height="24"></a>
+        <div class="spacer"></div>    
+        <AuthorizeView>
+            <Authorized>
+                <form method="post" action="/Account/Logout">
+                    <AntiforgeryToken />
+                    <button type="submit" class="loginout"><img src="/MAM_Research_Lock.png" width="24" height="24"></button>
+                </form>
+            </Authorized>
+            <NotAuthorized>
+                <form method="post" action="/Account/Login">
+                    <AntiforgeryToken />
+                    <TextBox size="10" name="password" type="password" />
+                    <button type="submit" class="loginout"><img src="/MAM_Research_Key.png" width="24" height="24"></button>
+                </form>
+            </NotAuthorized>
+        </AuthorizeView>
     </nav>
 
     <main>
