@@ -1,0 +1,17 @@
+@code {
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
+
+    private string value
+    {
+        get => Value;
+        set 
+        {
+            Value = value;
+            ValueChanged.InvokeAsync(Value);
+        }
+    }
+}
+
+<input class="box" type="text" @bind="value" @attributes="Splat">

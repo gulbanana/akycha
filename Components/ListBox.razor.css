@@ -25,10 +25,15 @@ header {
 .item {
     background: none;
     border: none;
+    outline: none;
     color: inherit;
     border-bottom: 2px solid var(--c-ficsit-primary);
 }
 
 .item--selected {
     background: var(--c-sidebar-background);
+}
+
+.item:focus-visible {
+    color: var(--c-ficsit-secondary);
 }

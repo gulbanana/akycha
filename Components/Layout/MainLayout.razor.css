@@ -21,11 +21,11 @@ nav ::deep>a {
     outline: none;
 }
 
-nav ::deep>a.active {
+nav ::deep>a.active, nav ::deep>a:hover {
     background: var(--c-content-background);
 }
 
-nav ::deep>a:hover {
+nav ::deep>a:active {
     background: var(--c-sidebar-background);
 }
 
@@ -33,19 +33,12 @@ nav ::deep>a:focus-visible {
     color: var(--c-ficsit-secondary);
 }
 
-.tab-icon {
-    width: 32px;
-    height: 32px;
-
-    & + * {
-        margin-left: 2px;
-    }
+a:last-child {
+    padding: 8px;
 }
 
-@media (max-width: 768px) {
-    .tab-title {
-        display: none;
-    }
+.spacer {
+    flex: 1;
 }
 
 main {

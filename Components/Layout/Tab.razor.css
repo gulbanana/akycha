@@ -1,0 +1,14 @@
+.tab-icon {
+    width: 32px;
+    height: 32px;
+
+    & + * {
+        margin-left: 2px;
+    }
+}
+
+@media (max-width: 768px) {
+    .tab-title {
+        display: none;
+    }
+}

@@ -35,8 +35,8 @@
         <img src="@src" />
     </figure>
     <div class="data">
-        <label>Name:</label><input type="text" @bind="partName">
-        <label>Also Name:</label><input type="text" @bind="partName">
+        <label>Name:</label><TextBox @bind-Value="partName" />
+        <label>Also Name:</label><TextBox @bind-Value="partName" />
     </div>
     <CommandButton @onclick="DeletePart">Delete</CommandButton>
 </div>

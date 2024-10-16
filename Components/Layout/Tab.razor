@@ -1,0 +1,9 @@
+@code {
+    [Parameter, EditorRequired] public required string Category { get; set; }
+    [Parameter] public string? Href { get; set; }
+}
+
+<NavLink href="@(Href ?? ("/" + Category))" Match="NavLinkMatch.All">
+    <img class="tab-icon" src="@("/" + Category + ".png")">
+    <span class="tab-title">@Category</span>
+</NavLink>

@@ -1,0 +1,13 @@
+.box {
+    height: 32px;
+    background: var(--c-content-background); 
+    color: var(--c-text-light);
+    border: 1px solid var(--c-ficsit-primary);
+    outline: none;
+    font-size: 16px;
+}
+
+.box:hover,
+.box:focus-visible {
+    border-color: var(--c-ficsit-secondary);
+}

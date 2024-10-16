@@ -36,18 +36,6 @@ img {
     align-self: center;
 }
 
-.data > input {
-    background: var(--c-content-background);
-    color: var(--c-text-light);
-    border: 1px solid var(--c-ficsit-primary);
-    outline: none;
-}
-
-input:hover,
-input:focus-visible {
-    border-color: var(--c-ficsit-secondary);
-}
-
 .layout ::deep button {
     grid-column: 3/4;
     grid-row: 2/3;

@@ -1,26 +1,17 @@
 ﻿@inherits LayoutComponentBase
+@code {
+    private string password { get; set; } = "";
+}
 
 <div class="shell">
     <nav>
-        <NavLink href="/facilities">
-            <img class="tab-icon" src="/ResIcon_Production.png">
-            <span class="tab-title">Facilities</span>
-        </NavLink>
-
-        <NavLink href="/recipes">
-            <img class="tab-icon" src="/ResIcon_Organisation.png">
-            <span class="tab-title">Recipes</span>
-        </NavLink>
-
-        <NavLink href="/" Match="NavLinkMatch.All">
-            <img class="tab-icon" src="/ResIcon_Walls.png">
-            <span class="tab-title">Parts</span>
-        </NavLink>
-
-        <NavLink href="/machines">
-            <img class="tab-icon" src="/ResIcon_Logistics.png">
-            <span class="tab-title">Machines</span>
-        </NavLink>
+        <Tab Category="Facilities" />
+        <Tab Category="Recipes" />
+        <Tab Category="Parts" Href="/" />
+        <Tab Category="Machines" />
+        <div class="spacer"></div>
+        <TextBox @bind-Value="password" size="10" type="password" />
+        <a><img src="/MAM_Research_Key.png" width="24" height="24"></a>
     </nav>
 
     <main>

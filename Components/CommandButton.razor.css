@@ -2,7 +2,7 @@ button {
     height: 32px;
     padding: 0 8px;
 
-    border: none;
+    border: 1px solid var(--c-ficsit-primary);
     background: var(--c-page-background);
     color: var(--c-text-light);
     outline: none;
@@ -12,9 +12,13 @@ button {
 }
 
 button:hover {
-    background: var(--c-foundation-primary);
+    background: var(--c-content-background);
 }
 
 button:focus-visible {
     color: var(--c-ficsit-secondary);
+}
+
+button:active {
+    background: var(--c-sidebar-background);
 }
