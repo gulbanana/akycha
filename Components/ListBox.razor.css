@@ -28,6 +28,7 @@ header {
     outline: none;
     color: inherit;
     border-bottom: 2px solid var(--c-ficsit-primary);
+    cursor: pointer;
 }
 
 .item--selected {
