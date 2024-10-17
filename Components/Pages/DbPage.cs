@@ -11,6 +11,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
     public bool HasChanges { get; set; }
     private Timer timer = default!;
     private bool disposed;
+    public event Action? OnChanged;
 
     protected override void OnInitialized()
     {
@@ -43,17 +44,13 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
             {
                 DB.SaveChanges();
                 HasChanges = false;
-                OnChanged();
+                StateHasChanged();
+                OnChanged?.Invoke();
             }
         });
     }
 
-    protected virtual void OnChanged()
-    {
-        StateHasChanged();
-    }
-
-    protected List<T> All<T, U>() where T : class, IOrdered<T, U>
+    protected List<T> All<T>() where T : class, IOrdered<T>
     {
         var set = DB.Set<T>();
         set.Load();

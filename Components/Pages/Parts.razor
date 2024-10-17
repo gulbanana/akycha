@@ -2,77 +2,19 @@
 @using Microsoft.EntityFrameworkCore
 
 @inherits DbPage
-@inject NavigationManager Nav
 @code {
     [Parameter] public int? Id { get; set; }
-
-    private Part? selectedPart;
-    private Part? SelectedPart
-    {
-        get
-        {
-            if (selectedPart is null || DB.Parts.Local.Contains(selectedPart))
-            {
-                return selectedPart;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        set
-        {
-            if (value is null)
-            {
-                Nav.NavigateTo("/Parts");
-            }   
-            else if (value.Id != 0) 
-            {
-                Nav.NavigateTo("/Parts/" + value.Id);
-            }
-            else
-            {
-                selectedPart = value;
-            }
-        }
-    }
-
-    protected override void OnParametersSet()
-    {
-        selectedPart = DB.Parts.Find(Id);
-    }
-
-    protected override void OnChanged()
-    {
-        if (SelectedPart is null)
-        {
-            Nav.NavigateTo("/Parts");
-        }
-        else if (SelectedPart.Id != 0)
-        {
-            Nav.NavigateTo("/Parts/" + SelectedPart.Id);
-        }
-    }
-
-    private void AddPart()
-    {
-        var newPart = new Part { Name = "New Part" };
-        DB.Parts.Add(newPart);
-        SelectedPart = newPart;
-        NotifyChanged();
-    }
 }
 
 <PageTitle>Akycha - Parts</PageTitle>
 
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
-    <div class="@(SelectedPart is not null ? "master-detail master-detail--has-detail" : "master-detail")">
-        <ListBox Header="@($"{DB.Parts.Count()} Parts")" Models="All<Part, string>()" AddCommand="AddPart" @bind-Selection="SelectedPart">
+    <RoutedList Prefix="Parts" Set="DB.Parts" Id="Id">
+        <Master>
             <PartSummary Model="context" />
-        </ListBox>
-        @if (SelectedPart is not null)
-        {
-            <PartDetail Model="SelectedPart" />
-        }
-    </div>
+        </Master>
+        <Detail>
+            <PartEditor Model="context" />
+        </Detail>
+    </RoutedList>
 </CascadingValue>

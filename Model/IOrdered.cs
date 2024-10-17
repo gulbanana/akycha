@@ -1,6 +1,7 @@
 namespace Akycha.Model;
 
-public interface IOrdered<T, U>
+public interface IOrdered<T>
 {
-    static abstract U GetKey(T t);
+    int Id { get; set; }
+    static abstract string GetKey(T t);
 }

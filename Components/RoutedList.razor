@@ -1,0 +1,95 @@
+@using Microsoft.EntityFrameworkCore
+
+@typeparam T where T : class, IOrdered<T>, new()
+@implements IDisposable
+@inject NavigationManager Nav
+@code {
+    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
+    [Parameter] public RenderFragment<T>? Master { get; set; }
+    [Parameter] public RenderFragment<T>? Detail { get; set; }
+    [Parameter, EditorRequired] public required string Prefix { get; set; }
+    [Parameter, EditorRequired] public required DbSet<T> Set { get; set; }
+    [Parameter] public int? Id { get; set; }
+
+    private T? selection;
+
+    protected override void OnInitialized()
+    {
+        UOW.OnChanged += UOWChanged;
+    }
+
+    protected override void OnParametersSet()
+    {
+        selection = Set.Find(Id);
+    }
+    
+    public void Dispose()
+    {
+        UOW.OnChanged -= UOWChanged;
+    }
+
+    private T? Selection
+    {
+        get
+        {
+            if (selection is null || Set.Local.Contains(selection))
+            {
+                return selection;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        set
+        {
+            if (value is null)
+            {
+                Nav.NavigateTo($"/{Prefix}");
+            }   
+            else if (value.Id != 0) 
+            {
+                Nav.NavigateTo($"/{Prefix}/{value.Id}");
+            }
+            else
+            {
+                selection = value;
+            }
+        }
+    }
+    private void UOWChanged()
+    {
+        if (Selection is null)
+        {
+            Nav.NavigateTo($"/{Prefix}");
+        }
+        else if (Selection.Id != 0)
+        {
+            Nav.NavigateTo($"/{Prefix}/{Selection.Id}");
+        }
+    }
+
+    private List<T> GetItems()
+    {
+        Set.Load();
+        return Set.Local.OrderBy(T.GetKey).ToList();
+    }
+
+    private void AddItem()
+    {
+        var entity = new T();
+        Set.Add(entity);
+        Selection = entity;
+        UOW.NotifyChanged();
+    }
+}
+
+<div class="@(Selection is not null ? "master-detail master-detail--has-detail" : "master-detail")">
+    <ListBox Header="@($"{Set.Count()} {Prefix}")" Models="GetItems()" AddCommand="AddItem" @bind-Selection="Selection">
+        @Master?.Invoke(context)
+    </ListBox>
+    @if (Selection is not null)
+    {
+        @Detail?.Invoke(Selection)
+    }
+</div>

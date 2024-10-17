@@ -1,6 +1,20 @@
-﻿@page "/Recipes"
+﻿@page "/Recipes/{id:int?}"
 @using Microsoft.EntityFrameworkCore
 
 @inherits DbPage
+@code {
+    [Parameter] public int? Id { get; set; }
+}
 
 <PageTitle>Akycha - Recipes</PageTitle>
+
+<CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
+    <RoutedList Prefix="Recipes" Set="DB.Recipes" Id="Id">
+        <Master>
+            Recipe: @context.Name
+        </Master>
+        <Detail>
+            Recipe: @context.Name
+        </Detail>
+    </RoutedList>
+</CascadingValue>

@@ -6,4 +6,5 @@ public interface IUnitOfWork
 {
     FactoryContext DB { get; }
     void NotifyChanged();
+    event Action OnChanged;
 }
