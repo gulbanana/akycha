@@ -1,0 +1,9 @@
+figure {
+    margin: 0;
+}
+
+img {
+    display: block;
+    width: var(--side-length);
+    height: var(--side-length);
+}

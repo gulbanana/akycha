@@ -1,0 +1,22 @@
+@code {
+    [Parameter] public byte[]? Value { get; set; }
+    [Parameter] public int SideLength { get; set; } = 64;
+    private string src = "";
+
+    protected override void OnParametersSet()
+    {
+        if (Value is null)
+        {
+            src = "Icon_Cross.png";
+        }
+        else
+        {
+            var data = Convert.ToBase64String(Value);
+            src = $"data:image/png;base64,{data}";
+        }
+    }
+}    
+    
+<figure class="icon">
+    <img src="@src" style="@($"--side-length: {SideLength}px")">
+</figure>

@@ -5,6 +5,7 @@
     border: 1px solid var(--c-ficsit-primary);
     outline: none;
     font-size: 16px;
+    padding-left: 8px;
 }
 
 .box:hover,

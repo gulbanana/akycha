@@ -2,24 +2,14 @@
     min-height: 128px;
     display: grid;
     grid-template-columns: 128px 1fr auto;
-    grid-template-rows: 1fr 24px;
+    grid-template-rows: 1fr 32px;
     grid-template-areas:
         'icon data data'
         'icon data data';
 }
 
-figure {
+.layout > ::deep *:first-child {
     grid-area: icon;
-    width: 130px;
-    height: 130px;
-    margin: 0;
-    border: 1px solid var(--c-ficsit-primary);
-}
-
-img {
-    display: block;
-    width: 128px;
-    height: 128px;
 }
 
 .data {

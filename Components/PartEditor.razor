@@ -9,6 +9,12 @@
         set { Model.Name = value; UOW.NotifyChanged(); }
     }
 
+    private byte[]? partIcon
+    {
+        get => Model.Icon;
+        set { Model.Icon = value; UOW.NotifyChanged(); }
+    }
+
     private void DeletePart()
     {
         UOW.DB.Parts.Remove(Model);
@@ -31,9 +37,7 @@
 }
 
 <div class="layout">
-    <figure class="icon">
-        <img src="@src" />
-    </figure>
+    <ImageField Lens="new(() => partIcon, value => partIcon = value)" />
     <div class="data">
         <label>Name:</label><TextField Lens="new(() => partName, value => partName = value)" />
     </div>

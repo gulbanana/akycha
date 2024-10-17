@@ -6,17 +6,6 @@
     grid-template-areas: 'icon data';
 }
 
-figure {
-    grid-area: icon;
-    margin: 0;
-}
-
-img {
-    display: block;
-    width: 64px;
-    height: 64px;
-}
-
 .data {
     grid-area: data;
     padding: 8px;
