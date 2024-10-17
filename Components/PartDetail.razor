@@ -35,8 +35,7 @@
         <img src="@src" />
     </figure>
     <div class="data">
-        <label>Name:</label><TextBox @bind-Value="partName" />
-        <label>Also Name:</label><TextBox @bind-Value="partName" />
+        <label>Name:</label><TextField Lens="new(() => partName, value => partName = value)" />
     </div>
     <CommandButton @onclick="DeletePart">Delete</CommandButton>
 </div>

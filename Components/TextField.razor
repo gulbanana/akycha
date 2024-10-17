@@ -1,0 +1,13 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@code {
+    [Parameter, EditorRequired] public required Lens<string> Lens { get; set; }
+}
+
+<AuthorizeView>
+    <Authorized>
+        <TextBox @bind-Value="Lens.Value" />
+    </Authorized>
+    <NotAuthorized>
+        <div class="readonly">@Lens.Value</div>
+    </NotAuthorized>
+</AuthorizeView>
