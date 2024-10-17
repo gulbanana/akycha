@@ -11,6 +11,10 @@ header {
     align-items: baseline;
 }
 
+header > ::deep *:last-child {
+    margin-right: 1px;
+}
+
 .title {
     padding: 0 8px;
 }
