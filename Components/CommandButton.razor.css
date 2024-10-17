@@ -9,16 +9,16 @@ button {
 
     cursor: pointer;
     font-size: 20px;
-}
 
-button:hover {
-    background: var(--c-content-background);
-}
-
-button:focus-visible {
-    color: var(--c-ficsit-secondary);
-}
-
-button:active {
-    background: var(--c-sidebar-background);
+    &:hover {
+        background: var(--c-content-background);
+    }
+    
+    &:focus-visible {
+        color: var(--c-ficsit-secondary);
+    }
+    
+    &:active {
+        background: var(--c-sidebar-background);
+    }
 }
