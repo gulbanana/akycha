@@ -48,10 +48,10 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
         });
     }
 
-    protected List<T> All<T>() where T : class, INamed
+    protected List<T> All<T, U>() where T : class, IOrdered<T, U>
     {
         var set = DB.Set<T>();
         set.Load();
-        return DB.Set<T>().Local.OrderBy(t => t.Name).ToList();
+        return DB.Set<T>().Local.OrderBy(T.GetKey).ToList();
     }
 }
