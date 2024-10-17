@@ -1,13 +1,29 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @code {
-    [Parameter, EditorRequired] public required Lens<string> Lens { get; set; }
+    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private string value
+    {
+        get => Value;
+        set
+        {
+            Value = value;
+            InvokeAsync(async () =>
+            {            
+                await ValueChanged.InvokeAsync(Value);
+                UOW.NotifyChanged();
+            });
+        }
+    }
 }
 
 <AuthorizeView>
     <Authorized>
-        <TextBox @bind-Value="Lens.Value" />
+        <TextBox @bind-Value="value" />
     </Authorized>
     <NotAuthorized>
-        <div class="readonly">@Lens.Value</div>
+        <div class="readonly">@value</div>
     </NotAuthorized>
 </AuthorizeView>
