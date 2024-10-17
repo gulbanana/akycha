@@ -1,11 +1,8 @@
-using System.Security.Claims;
+using Akycha;
 using Akycha.Components;
 using Akycha.Model;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,28 +36,14 @@ else
 }
 
 app.UseStaticFiles();
+app.UseAuthentication();
 app.UseAntiforgery();
 
-app.UseAuthentication();
-app.MapPost("/Account/Login", async (HttpContext context, IOptions<AkychaOptions> options, [FromForm] LoginModel model) => { 
-    if (options.Value.Password is not null && model.Password == options.Value.Password)
-    {
-        await context.SignInAsync(new ClaimsPrincipal(new ClaimsIdentity([new Claim(ClaimTypes.Name, "username")], "password")), new()
-        {
-            IsPersistent = true,
-        });
-    }
-    return Results.Redirect("/");
-});
-app.MapPost("/Account/Logout", async (HttpContext context) => {
-    await context.SignOutAsync();
-    return Results.Redirect("/");
-});
+app.MapPost("/Account/Login", AccountEndpoints.LoginAsync);
+app.MapPost("/Account/Logout", (Delegate)AccountEndpoints.LogoutAsync);
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 app.MapGet("/", () => Results.Redirect("/Parts"));
 
 app.Run();
-
-record LoginModel(string Password);
