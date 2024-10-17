@@ -42,10 +42,15 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
             if (!disposed)
             {
                 DB.SaveChanges();
-                HasChanges = false;       
-                StateHasChanged();
+                HasChanges = false;
+                OnChanged();
             }
         });
+    }
+
+    protected virtual void OnChanged()
+    {
+        StateHasChanged();
     }
 
     protected List<T> All<T, U>() where T : class, IOrdered<T, U>

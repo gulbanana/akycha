@@ -1,16 +1,64 @@
-﻿@page "/"
+﻿@page "/Parts/{id:int?}"
 @using Microsoft.EntityFrameworkCore
 
 @inherits DbPage
+@inject NavigationManager Nav
 @code {
-    private Part? selectedPart;
+    [Parameter] public int? Id { get; set; }
 
-    private bool hasPart => selectedPart is not null && DB.Parts.Local.Contains(selectedPart);
+    private Part? selectedPart;
+    private Part? SelectedPart
+    {
+        get
+        {
+            if (selectedPart is null || DB.Parts.Local.Contains(selectedPart))
+            {
+                return selectedPart;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        set
+        {
+            if (value is null)
+            {
+                Nav.NavigateTo("/Parts");
+            }   
+            else if (value.Id != 0) 
+            {
+                Nav.NavigateTo("/Parts/" + value.Id);
+            }
+            else
+            {
+                selectedPart = value;
+            }
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        selectedPart = DB.Parts.Find(Id);
+    }
+
+    protected override void OnChanged()
+    {
+        if (SelectedPart is null)
+        {
+            Nav.NavigateTo("/Parts");
+        }
+        else if (SelectedPart.Id != 0)
+        {
+            Nav.NavigateTo("/Parts/" + SelectedPart.Id);
+        }
+    }
 
     private void AddPart()
     {
-        selectedPart = new Part { Name = "New Part" };
-        DB.Parts.Add(selectedPart);
+        var newPart = new Part { Name = "New Part" };
+        DB.Parts.Add(newPart);
+        SelectedPart = newPart;
         NotifyChanged();
     }
 }
@@ -18,13 +66,13 @@
 <PageTitle>Akycha - Parts</PageTitle>
 
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
-    <div class="@(hasPart ? "master-detail master-detail--has-detail" : "master-detail")">
-        <ListBox Header="@($"{DB.Parts.Count()} Parts")" Models="All<Part, string>()" AddCommand="AddPart" @bind-Selection="selectedPart">
+    <div class="@(SelectedPart is not null ? "master-detail master-detail--has-detail" : "master-detail")">
+        <ListBox Header="@($"{DB.Parts.Count()} Parts")" Models="All<Part, string>()" AddCommand="AddPart" @bind-Selection="SelectedPart">
             <PartSummary Model="context" />
         </ListBox>
-        @if (hasPart)
+        @if (SelectedPart is not null)
         {
-            <PartDetail Model="selectedPart" />
+            <PartDetail Model="SelectedPart" />
         }
     </div>
 </CascadingValue>

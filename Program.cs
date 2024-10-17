@@ -59,6 +59,7 @@ app.MapPost("/Account/Logout", async (HttpContext context) => {
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+app.MapGet("/", () => Results.Redirect("/Parts"));
 
 app.Run();
 
