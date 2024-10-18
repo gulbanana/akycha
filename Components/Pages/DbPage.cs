@@ -7,6 +7,8 @@ namespace Akycha.Components.Pages;
 public class DbPage : ComponentBase, IDisposable, IUnitOfWork
 {
     [Inject] public required IDbContextFactory<FactoryContext> Factory { get; set; }
+    [Inject] public required ILogger<DbPage> Logger { get; set; }
+
     public FactoryContext DB { get; private set; } = default!;
     public bool HasChanges { get; set; }
     private Timer timer = default!;
@@ -42,10 +44,17 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
         {
             if (!disposed)
             {
-                await DB.SaveChangesAsync();
-                HasChanges = false;
-                StateHasChanged();
-                OnChanged?.Invoke();
+                try
+                {
+                    await DB.SaveChangesAsync();
+                    HasChanges = false;
+                    StateHasChanged();
+                    OnChanged?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex, "Save failed.");
+                }
             }
         });
     }

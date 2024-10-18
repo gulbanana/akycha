@@ -1,0 +1,22 @@
+label {
+    height: 24px;
+    margin-bottom: 4px;
+    padding-left: 13px; /* 8 + 4 + 1 */
+
+    display: flex;
+    align-items: center;
+    
+    user-select: none;
+    background-color: var(--c-ficsit-primary);
+    color: var(--c-text-dark);
+        
+    &:hover,
+    &:has(+input:hover),
+    &:has(+input:focus-visible) {
+        background-color: var(--c-ficsit-secondary);
+    }
+}
+
+.block > ::deep *:nth-child(n + 2) {
+    margin-left: 4px;
+}

@@ -11,10 +11,10 @@
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
     <RoutedList Prefix="Recipes" Set="DB.Recipes" Id="Id">
         <Master>
-            Recipe: @context.Name
+            <RecipeSummary Model="context" />
         </Master>
         <Detail>
-            Recipe: @context.Name
+            <RecipeEditor Model="context" />
         </Detail>
     </RoutedList>
 </CascadingValue>

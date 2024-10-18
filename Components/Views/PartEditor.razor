@@ -1,34 +1,24 @@
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Part Model { get; set; }
-    private string src = "";
 
     private void DeletePart()
     {
         UOW.DB.Parts.Remove(Model);
         UOW.NotifyChanged();
     }
-
-    protected override void OnParametersSet()
-    {
-        if (Model.Icon is null)
-        {
-            src = "Icon_Cross.png";
-        }
-        else
-        {
-            var data = Convert.ToBase64String(Model.Icon);
-            src = $"data:image/png;base64,{data}";
-        }
-    }
-
 }
 
 <div class="layout">
     <ImageField @bind-Value="Model.Icon" />
     <div class="data-primary">
-        <label for="name">Name</label>
-        <TextField id="name" @bind-Value="Model.Name" />
+        <Block Label="Name">
+            <TextField id="@context" @bind-Value="Model.Name" />
+        </Block>
+
+        <Block Label="Category">
+            <TextField id="@context" @bind-Value="Model.Category" />
+        </Block>
     </div>
     <CommandButton @onclick="DeletePart">Delete</CommandButton>
 </div>

@@ -1,0 +1,15 @@
+@code {
+    [Parameter] public RenderFragment<string>? ChildContent { get; set; }
+    [Parameter] public string Label { get; set; } = "Field Header";
+    private string ident = "field-header";
+
+    protected override void OnParametersSet()
+    {
+        ident = Label.ToLowerInvariant().Replace(" ", "-");
+    }
+}
+
+<div class="block">
+    <label for="@ident">@Label</label>
+    @ChildContent?.Invoke(ident)
+</div>

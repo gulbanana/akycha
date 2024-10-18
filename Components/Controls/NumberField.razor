@@ -1,0 +1,33 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@code {
+    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
+    [Parameter] public float Value { get; set; }
+    [Parameter] public EventCallback<float> ValueChanged { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
+
+    private string value
+    {
+        get => Value.ToString();
+        set
+        {
+            if (float.TryParse(value, out var parsed))
+            {
+                Value = parsed;
+                InvokeAsync(async () =>
+                {            
+                    await ValueChanged.InvokeAsync(Value);
+                    UOW.NotifyChanged();
+                });
+            }
+        }
+    }
+}
+
+<AuthorizeView>
+    <Authorized>
+        <TextBox @bind-Value="value" @attributes="Splat" />
+    </Authorized>
+    <NotAuthorized>
+        <ReadonlyBox>@value</ReadonlyBox>
+    </NotAuthorized>
+</AuthorizeView>
