@@ -85,7 +85,7 @@
 }
 
 <div class="@(Selection is not null ? "master-detail master-detail--has-detail" : "master-detail")">
-    <ListBox Header="@($"{Set.Count()} {Prefix}")" Models="GetItems()" AddCommand="AddItem" @bind-Selection="Selection">
+    <ListBox T=T Header="@($"{Set.Count()} {Prefix}")" Models="GetItems()" AddCommand="AddItem" @bind-Selection="Selection">
         @Master?.Invoke(context)
     </ListBox>
     @if (Selection is not null)
