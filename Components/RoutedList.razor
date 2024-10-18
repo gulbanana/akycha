@@ -10,6 +10,7 @@
     [Parameter, EditorRequired] public required string Prefix { get; set; }
     [Parameter, EditorRequired] public required DbSet<T> Set { get; set; }
     [Parameter] public int? Id { get; set; }
+    [Parameter] public EventCallback<int?> IdChanged { get; set; }
 
     private T? selection;
 
@@ -20,9 +21,12 @@
 
     protected override void OnParametersSet()
     {
-        selection = Set.Find(Id);
+        if (!Nullable.Equals(Id, selection?.Id) && Id != 0)
+        {
+            selection = Set.Find(Id);
+        }        
     }
-    
+
     public void Dispose()
     {
         UOW.OnChanged -= UOWChanged;
@@ -43,17 +47,14 @@
         }
         set
         {
-            if (value is null)
+            selection = value;
+            if (selection is null)
             {
                 Nav.NavigateTo($"/{Prefix}");
             }   
-            else if (value.Id != 0) 
+            else if (selection.Id != 0)
             {
-                Nav.NavigateTo($"/{Prefix}/{value.Id}");
-            }
-            else
-            {
-                selection = value;
+                Nav.NavigateTo($"/{Prefix}/{selection.Id}");
             }
         }
     }
@@ -75,10 +76,11 @@
         return Set.Local.OrderBy(T.GetKey).ToList();
     }
 
-    private void AddItem()
+    private async Task AddItem()
     {
         var entity = new T();
         Set.Add(entity);
+        await IdChanged.InvokeAsync(entity?.Id);
         Selection = entity;
         UOW.NotifyChanged();
     }
