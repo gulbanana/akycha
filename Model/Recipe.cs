@@ -8,5 +8,7 @@ public class Recipe : IOrdered<Recipe>
     public string Name { get; set; } = "New Recipe";
     public byte[]? Icon { get; set; }
 
+    public ICollection<Ingredient> Ingredients { get; } = [];
+
     public static string GetKey(Recipe t) => t.Name;
 }

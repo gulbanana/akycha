@@ -1,0 +1,13 @@
+.layout {
+    height: 64px;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    grid-template-rows: 1fr 24px;
+    grid-template-areas: 'icon data';
+}
+
+.data {
+    grid-area: data;
+    padding: 8px;
+    display: flex;
+}
