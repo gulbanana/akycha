@@ -21,4 +21,9 @@ button {
     &:active {
         background: var(--c-sidebar-background);
     }
+
+    &[disabled] {
+        background: none;
+        color: var(--c-foundation-primary);
+    }
 }

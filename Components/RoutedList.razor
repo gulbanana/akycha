@@ -19,11 +19,11 @@
         UOW.OnChanged += UOWChanged;
     }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         if (!Nullable.Equals(Id, selection?.Id) && Id != 0)
         {
-            selection = Set.Find(Id);
+            selection = await Set.FindAsync(Id);
         }        
     }
 
@@ -70,9 +70,9 @@
         }
     }
 
-    private List<T> GetItems()
+    private async Task<IReadOnlyList<T>> GetItems()
     {
-        Set.Load();
+        await Set.LoadAsync();
         return Set.Local.OrderBy(T.GetKey).ToList();
     }
 
@@ -87,7 +87,7 @@
 }
 
 <div class="@(Selection is not null ? "master-detail master-detail--has-detail" : "master-detail")">
-    <ListBox T=T Header="@($"{Set.Count()} {Prefix}")" Models="GetItems()" AddCommand="AddItem" @bind-Selection="Selection">
+    <ListBox T=T Header="@($"{Prefix}")" GetModels="GetItems" AddCommand="AddItem" @bind-Selection="Selection">
         @Master?.Invoke(context)
     </ListBox>
     @if (Selection is not null)

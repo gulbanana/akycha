@@ -38,22 +38,15 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
 
     private async void OnTimeout(object? _)
     {
-        await InvokeAsync(() =>
+        await InvokeAsync(async () =>
         {
             if (!disposed)
             {
-                DB.SaveChanges();
+                await DB.SaveChangesAsync();
                 HasChanges = false;
                 StateHasChanged();
                 OnChanged?.Invoke();
             }
         });
-    }
-
-    protected List<T> All<T>() where T : class, IOrdered<T>
-    {
-        var set = DB.Set<T>();
-        set.Load();
-        return DB.Set<T>().Local.OrderBy(T.GetKey).ToList();
     }
 }

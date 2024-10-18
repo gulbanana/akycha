@@ -2,10 +2,18 @@
 @code {
     [Parameter] public string Header { get; set; } = "";
     [Parameter] public RenderFragment<T>? ChildContent { get; set; }
-    [Parameter] public IReadOnlyList<T> Models { get; set; } = [];
+    [Parameter, EditorRequired] public required Func<Task<IReadOnlyList<T>>> GetModels { get; set; }
     [Parameter] public EventCallback AddCommand { get; set; }
     [Parameter] public T? Selection { get; set; }
     [Parameter] public EventCallback<T> SelectionChanged { get; set; }
+    private bool loaded;
+    private IReadOnlyList<T> models = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        models = await GetModels();
+        loaded = true;
+    }
 
     private void Select(T model)
     {
@@ -19,12 +27,12 @@
         <span class="title">@Header</span>
         @if (AddCommand.HasDelegate)
         {
-            <CommandButton @onclick="AddCommand">Add</CommandButton>
+            <CommandButton @onclick="AddCommand" disabled="@(!loaded)">Add</CommandButton>
         }
     </header>
 
     <div class="list">
-        @foreach (var model in Models)
+        @foreach (var model in models)
         {
             <button class="@(model == Selection ? "item item--selected" : "item")" @onclick="() => Select(model)">
                 @ChildContent?.Invoke(model)
