@@ -26,8 +26,9 @@
 
 <div class="layout">
     <ImageField @bind-Value="Model.Icon" />
-    <div class="data">
-        <label>Name:</label><TextField @bind-Value="Model.Name" />
+    <div class="data-primary">
+        <label for="name">Name</label>
+        <TextField id="name" @bind-Value="Model.Name" />
     </div>
     <CommandButton @onclick="DeletePart">Delete</CommandButton>
 </div>

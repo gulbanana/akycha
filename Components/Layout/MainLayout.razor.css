@@ -42,11 +42,15 @@ form {
     display: flex;
 }
 
+form.login {
+    min-width: 96px;
+}
+
 button.loginout {
     margin: 0;
     padding: 0;
     height: 32px;
-    width: 32px;
+    min-width: 32px;
     vertical-align: middle;
 
     border: none;

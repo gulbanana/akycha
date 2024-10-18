@@ -5,7 +5,12 @@
 }
 
 <AuthorizeView>
-    <button @attributes="Splat">
+    <Authorized>
+    <button class="command" @attributes="Splat">
         @ChildContent
     </button>
+    </Authorized>
+    <NotAuthorized>
+        <div class="placeholder command">&nbsp;</div>
+    </NotAuthorized>
 </AuthorizeView>

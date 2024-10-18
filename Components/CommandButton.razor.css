@@ -1,14 +1,10 @@
 button {
-    height: 32px;
-    padding: 0 8px;
-
     border: 1px solid var(--c-ficsit-primary);
     background: var(--c-page-background);
     color: var(--c-text-light);
     outline: none;
-
     cursor: pointer;
-    font-size: 20px;
+    padding: 0 8px;
 
     &:hover {
         background: var(--c-content-background);
@@ -26,4 +22,14 @@ button {
         background: none;
         color: var(--c-foundation-primary);
     }
+}
+
+button, .placeholder {
+    height: 32px;
+    font-size: 20px;
+}
+
+.placeholder {
+    display: flex;
+    align-items: center;
 }

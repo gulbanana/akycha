@@ -12,21 +12,34 @@
     grid-area: icon;
 }
 
-.data {
+.data-primary {
     grid-area: data;
     width: 100%;
-    padding: 0 0 0 8px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-auto-rows: 32px;
+    display: flex;
+    flex-direction: column;
     gap: 4px;
 }
 
-.data > label {
-    align-self: center;
+.data-primary > ::deep :not(label) {
+    margin-left: 4px;
 }
 
-.layout ::deep button {
+label {
+    height: 24px;
+    align-self: stretch;
+    justify-self: center;
+    background-color: var(--c-ficsit-primary);
+    color: var(--c-text-dark);
+    display: flex;
+    align-items: center;
+    padding-left: 13px; /* 8 + 4 + 1 */
+
+    &:hover, &:has(+input:hover), &:has(+input:focus-visible) {
+        background-color: var(--c-ficsit-secondary);
+    }
+}
+
+.layout ::deep .command {
     grid-column: 3/4;
     grid-row: 2/3;
 }

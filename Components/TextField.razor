@@ -3,6 +3,7 @@
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public string Value { get; set; } = "";
     [Parameter] public EventCallback<string> ValueChanged { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
 
     private string value
     {
@@ -21,7 +22,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <TextBox @bind-Value="value" />
+        <TextBox @bind-Value="value" @attributes="Splat" />
     </Authorized>
     <NotAuthorized>
         <div class="readonly">@value</div>

@@ -25,9 +25,9 @@
                 </form>
             </Authorized>
             <NotAuthorized>
-                <form method="post" action="/Account/Login">
+                <form class="login" method="post" action="/Account/Login">
                     <AntiforgeryToken />
-                    <TextBox size="10" name="password" type="password" />
+                    <TextBox name="password" type="password" style="min-width: 60px; max-width: 120px" />
                     <button type="submit" class="loginout" tabindex="-1"><img src="/MAM_Research_Key.png"></button>
                 </form>
             </NotAuthorized>
