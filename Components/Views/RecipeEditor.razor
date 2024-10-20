@@ -33,39 +33,17 @@
         <TextField id="@context" @bind-Value="Model.Name" />
     </Block>
 
-    <div class="part-table">
-        <div>Ingredient</div>
-        <div>Quantity</div>
-        <div class="table-commands">
-            <CommandButton Small @onclick="AddIngredient">+</CommandButton>
-        </div>
+    <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Ingredient)"
+        Labels="@(["Ingredient", "Quantity"])" OnAdd="AddIngredient" OnRemove="RemovePart">
+        <NullableIdField @bind-Value="context.PartId" />
+        <NumberField @bind-Value="context.Quantity" />
+    </Grid>
 
-        @foreach (var part in Model.Parts.Where(p => p.Role == RecipePartRole.Ingredient))
-        {
-            <NullableIdField @bind-Value="part.PartId" />
-            <NumberField @bind-Value="part.Quantity" />
-            <div class="table-commands">
-                <CommandButton Small @onclick="() => RemovePart(part)">-</CommandButton>
-            </div>
-        }
-    </div>
-
-    <div class="part-table">
-        <div>Product</div>
-        <div>Quantity</div>
-        <div class="table-commands">
-            <CommandButton Small @onclick="AddProduct">+</CommandButton>
-        </div>
-
-        @foreach (var part in Model.Parts.Where(p => p.Role == RecipePartRole.Product))
-        {
-            <NullableIdField @bind-Value="part.PartId" />
-            <NumberField @bind-Value="part.Quantity" />
-            <div class="table-commands">
-                <CommandButton Small @onclick="() => RemovePart(part)">-</CommandButton>
-            </div>
-        }
-    </div>
+    <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Product)"
+        Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemovePart">
+        <NullableIdField @bind-Value="context.PartId" />
+        <NumberField @bind-Value="context.Quantity" />
+    </Grid>
 
     <CommandButton @onclick="DeleteRecipe">Delete</CommandButton>
 </div>

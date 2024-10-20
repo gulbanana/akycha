@@ -1,0 +1,33 @@
+.grid {
+    display: grid;
+    grid-template-columns: minmax(200px, auto) auto 1fr;
+    align-items: stretch;
+    row-gap: 4px;
+    --c-header: var(--c-ficsit-primary);
+
+    &:hover, &:has(:hover), &:has(:focus-visible), &:has(.active) {
+        --c-header: var(--c-ficsit-secondary);
+    }
+
+    & > .grid-header ::deep .command {
+        border-color: var(--c-header);
+    }
+}
+
+.grid > ::deep * {
+    display: flex;
+    align-items: center;
+    margin-left: 4px;
+}
+
+.grid-header {
+    background: var(--c-header);
+    color: var(--c-text-dark);
+    user-select: none;
+    margin: 0;
+    padding-left: 13px;
+}
+
+.grid-commands {
+    justify-content: end;
+}
