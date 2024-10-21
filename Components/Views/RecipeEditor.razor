@@ -1,10 +1,17 @@
+@using Microsoft.EntityFrameworkCore
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Recipe Model { get; set; }
+    private List<Part>? parts;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        parts = await UOW.Load(db => db.Parts.ToListAsync());
+    }
 
     private void DeleteRecipe()
     {
-        UOW.DB.Recipes.Remove(Model);
+        UOW.GetLoaded<Recipe>().Remove(Model);
         UOW.NotifyChanged();
     }
 
@@ -23,33 +30,36 @@
     private void RemovePart(RecipePart part)
     {
         Model.Parts.Remove(part);
-        UOW.DB.Remove(part);
+        UOW.GetLoaded<RecipePart>().Remove(part);
         UOW.NotifyChanged();
     }
 }
 
-<div class="layout">
-    <Block Label="Name">
-        <TextField id="@context" @bind-Value="Model.Name" />
-    </Block>
+@if (parts is not null)
+{
+    <div class="layout">
+        <Block Label="Name">
+            <TextField id="@context" @bind-Value="Model.Name" />
+        </Block>
 
-    <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Ingredient)"
-        Labels="@(["Ingredient", "Quantity"])" OnAdd="AddIngredient" OnRemove="RemovePart">
-        <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="UOW.DB.Parts">
-            <ImageBox Value="selection!.Icon" SideLength="32" />
-            <span>@selection.Name</span>
-        </ComboField>
-        <NumberField @bind-Value="context.Quantity" />
-    </Grid>
+        <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Ingredient)"
+            Labels="@(["Ingredient", "Quantity"])" OnAdd="AddIngredient" OnRemove="RemovePart">
+            <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="parts">
+                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <span>@selection.Name</span>
+            </ComboField>
+            <NumberField @bind-Value="context.Quantity" />
+        </Grid>
 
-    <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Product)"
-        Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemovePart">
-        <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="UOW.DB.Parts">
-            <ImageBox Value="selection!.Icon" SideLength="32" />
-            <span>@selection.Name</span>
-        </ComboField>
-        <NumberField @bind-Value="context.Quantity" />
-    </Grid>
+        <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Product)"
+            Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemovePart">
+            <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="parts">
+                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <span>@selection.Name</span>
+            </ComboField>
+            <NumberField @bind-Value="context.Quantity" />
+        </Grid>
 
-    <CommandButton @onclick="DeleteRecipe">Delete</CommandButton>
-</div>
+        <CommandButton @onclick="DeleteRecipe">Delete</CommandButton>
+    </div>
+}

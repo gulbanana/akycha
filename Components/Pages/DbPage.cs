@@ -1,6 +1,7 @@
 using Akycha.Model;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Akycha.Components.Pages;
 
@@ -9,7 +10,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
     [Inject] public required IDbContextFactory<FactoryContext> Factory { get; set; }
     [Inject] public required ILogger<DbPage> Logger { get; set; }
 
-    public FactoryContext DB { get; private set; } = default!;
+    private FactoryContext db = default!;
     public bool HasChanges { get; set; }
     private Timer timer = default!;
     private bool disposed;
@@ -17,7 +18,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
 
     protected override void OnInitialized()
     {
-        DB = Factory.CreateDbContext();
+        db = Factory.CreateDbContext();
         timer = new(OnTimeout);
     }
 
@@ -25,7 +26,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
     {
         disposed = true;
         timer.Dispose();
-        DB.Dispose();
+        db.Dispose();
     }
 
     public void NotifyChanged()
@@ -44,9 +45,10 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
         {
             if (!disposed)
             {
+                await dbLock.WaitAsync();
                 try
                 {
-                    await DB.SaveChangesAsync();
+                    await db.SaveChangesAsync();
                     HasChanges = false;
                     StateHasChanged();
                     OnChanged?.Invoke();
@@ -55,7 +57,30 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
                 {
                     Logger.LogError(ex, "Save failed.");
                 }
+                finally
+                {
+                    dbLock.Release();
+                }
             }
         });
+    }
+
+    private readonly SemaphoreSlim dbLock = new(1, 1);
+    public async Task<T> Load<T>(Func<FactoryContext, Task<T>> f)
+    {
+        await dbLock.WaitAsync();
+        try
+        {
+            return await f(db);
+        }
+        finally
+        {
+            dbLock.Release();
+        }
+    }
+
+    public LocalView<T> GetLoaded<T>() where T : class
+    {
+        return db.Set<T>().Local;
     }
 }

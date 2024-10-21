@@ -8,7 +8,7 @@
     [Parameter] public RenderFragment<T>? Master { get; set; }
     [Parameter] public RenderFragment<T>? Detail { get; set; }
     [Parameter, EditorRequired] public required string Prefix { get; set; }
-    [Parameter, EditorRequired] public required DbSet<T> Set { get; set; }
+    [Parameter, EditorRequired] public required Func<FactoryContext, DbSet<T>> Lens { get; set; }
     [Parameter] public int? Id { get; set; }
     [Parameter] public EventCallback<int?> IdChanged { get; set; }
 
@@ -23,7 +23,7 @@
     {
         if (!Nullable.Equals(Id, selection?.Id) && Id != 0)
         {
-            selection = await Set.FindAsync(Id);
+            selection = await UOW.Load(async db => await Lens(db).FindAsync(Id));
         }        
     }
 
@@ -36,7 +36,7 @@
     {
         get
         {
-            if (selection is null || Set.Local.Contains(selection))
+            if (selection is null || UOW.GetLoaded<T>().Contains(selection))
             {
                 return selection;
             }
@@ -70,16 +70,16 @@
         }
     }
 
-    private async Task<IReadOnlyList<T>> GetItems()
+    private Task<IReadOnlyList<T>> GetItems() => UOW.Load<IReadOnlyList<T>>(async db =>
     {
-        await Set.LoadAsync();
-        return Set.Local.OrderBy(T.GetKey).ToList();
-    }
+        await db.Set<T>().LoadAsync();
+        return db.Set<T>().Local.OrderBy(T.GetKey).ToList();
+    });
 
     private async Task AddItem()
     {
         var entity = new T();
-        Set.Add(entity);
+        UOW.GetLoaded<T>().Add(entity);
         await IdChanged.InvokeAsync(entity?.Id);
         Selection = entity;
         UOW.NotifyChanged();

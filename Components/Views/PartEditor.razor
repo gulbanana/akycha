@@ -4,7 +4,7 @@
 
     private void DeletePart()
     {
-        UOW.DB.Parts.Remove(Model);
+        UOW.GetLoaded<Part>().Remove(Model);
         UOW.NotifyChanged();
     }
 }
