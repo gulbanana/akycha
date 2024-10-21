@@ -29,7 +29,7 @@ button {
     font-size: 20px;
 }
 
-.command--small {
+.command.small {
     height: 24px;
     /* font-size: 16px; */
     font-family: monospace;

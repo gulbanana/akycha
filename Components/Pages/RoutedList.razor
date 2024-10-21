@@ -86,7 +86,7 @@
     }
 }
 
-<div class="@(Selection is not null ? "master-detail master-detail--has-detail" : "master-detail")">
+<div class="@BEM.Class("master-detail", (Selection is not null, "has-detail"))">
     <ListBox T=T Header="@($"{Prefix}")" GetModels="GetItems" AddCommand="AddItem" @bind-Selection="Selection">
         @Master?.Invoke(context)
     </ListBox>

@@ -7,11 +7,11 @@
 
 <AuthorizeView>
     <Authorized>
-    <button class="@(Small ? "command command--small" : "command")" @attributes="Splat">
+    <button class="@BEM.Class("command", (Small, "small"))" @attributes="Splat">
         @ChildContent
     </button>
     </Authorized>
     <NotAuthorized>
-        <div class="placeholder command">&nbsp;</div>
+        <div class="@BEM.Class("placeholder command", (Small, "small"))">&nbsp;</div>
     </NotAuthorized>
 </AuthorizeView>

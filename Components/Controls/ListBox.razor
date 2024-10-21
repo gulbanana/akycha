@@ -34,7 +34,7 @@
     <div class="list">
         @foreach (var model in models)
         {
-            <button class="@(model == Selection ? "item item--selected" : "item")" @onclick="() => Select(model)">
+            <button class="@BEM.Class("item", (model == Selection, "selected"))" @onclick="() => Select(model)">
                 @ChildContent?.Invoke(model)
             </button>
         }
