@@ -14,10 +14,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddDbContextFactory<FactoryContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString(nameof(FactoryContext))?.Replace(
-        "|LOCALAPPDATA|",
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
-    )));
+    options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(FactoryContext))));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

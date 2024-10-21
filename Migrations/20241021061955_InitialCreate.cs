@@ -14,11 +14,11 @@ namespace Akycha.Migrations
                 name: "Parts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Category = table.Column<string>(type: "TEXT", nullable: false),
-                    Icon = table.Column<byte[]>(type: "BLOB", nullable: true)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Icon = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,9 +29,9 @@ namespace Akycha.Migrations
                 name: "Recipes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,12 +42,12 @@ namespace Akycha.Migrations
                 name: "RecipeParts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RecipeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PartId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Role = table.Column<int>(type: "INTEGER", nullable: false),
-                    Quantity = table.Column<float>(type: "REAL", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RecipeId = table.Column<int>(type: "int", nullable: false),
+                    PartId = table.Column<int>(type: "int", nullable: true),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
