@@ -1,0 +1,51 @@
+@typeparam T
+@inject IJSRuntime JS
+@code {
+    [Parameter] public RenderFragment<T>? ChildContent { get; set; }
+    [Parameter] public T? Selection { get; set; }
+    [Parameter] public EventCallback<T?> SelectionChanged { get; set; }
+    [Parameter] public IEnumerable<T> Options { get; set; } = [];
+
+    private IJSObjectReference module = default!;
+    private ElementReference? box;
+    private ElementReference? popup;
+    private bool isOpen;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "./Components/Controls/ComboBox.razor.js");
+            await module.InvokeVoidAsync("bind", box, popup);
+        }
+    }
+
+    private void OpenPopup()
+    {
+        isOpen = !isOpen;
+    }
+
+    private async Task SelectOption(T option)
+    {
+        Selection = option;
+        await SelectionChanged.InvokeAsync(option);
+    }
+}
+
+<div @ref="box" class="@BEM.Class("box", (isOpen, "active"))" @onclick="OpenPopup">
+    @if (Selection is not null)
+    {
+        @ChildContent?.Invoke(Selection)
+    }
+    <div class="spacer"></div>
+    <span>▼</span>
+
+    <div @ref="popup" class="@BEM.Class("popup", (isOpen, "open"))">
+        @foreach (var option in Options)
+        {
+            <div class="option" @onclick="() => SelectOption(option)">
+                @ChildContent?.Invoke(option)
+            </div>
+        }
+    </div>
+</div>

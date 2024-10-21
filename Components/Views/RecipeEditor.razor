@@ -35,13 +35,19 @@
 
     <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Ingredient)"
         Labels="@(["Ingredient", "Quantity"])" OnAdd="AddIngredient" OnRemove="RemovePart">
-        <NullableIdField @bind-Value="context.PartId" />
+        <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="UOW.DB.Parts">
+            <ImageBox Value="selection!.Icon" SideLength="32" />
+            <span>@selection.Name</span>
+        </ComboField>
         <NumberField @bind-Value="context.Quantity" />
     </Grid>
 
     <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Product)"
         Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemovePart">
-        <NullableIdField @bind-Value="context.PartId" />
+        <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="UOW.DB.Parts">
+            <ImageBox Value="selection!.Icon" SideLength="32" />
+            <span>@selection.Name</span>
+        </ComboField>
         <NumberField @bind-Value="context.Quantity" />
     </Grid>
 

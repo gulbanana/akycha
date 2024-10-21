@@ -1,0 +1,51 @@
+.box {
+    height: 32px;
+    border: 1px solid var(--c-ficsit-primary);
+    padding: 0 8px;
+    
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    cursor: pointer;
+    user-select: none;
+
+    &:hover, &.active {
+        border-color: var(--c-ficsit-secondary);
+    }
+
+    &.active {
+        border-bottom-color: transparent;
+    }
+}
+
+.popup {
+    /* width: 100%; */
+
+    display: none;    
+    flex-direction: column;
+    
+    border: solid var(--c-ficsit-secondary);
+    border-width: 0 1px 1px 1px;
+    background: var(--c-content-background);
+
+    &.open {
+        display: flex;
+    }
+}
+
+.option {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px;
+
+    &:hover {
+        background: var(--c-foundation-primary);
+    }
+}
+
+.spacer {
+    flex: 1;
+}

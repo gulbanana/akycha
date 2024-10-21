@@ -1,0 +1,38 @@
+@using Microsoft.AspNetCore.Components.Authorization
+
+@typeparam T
+@code {
+    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
+    [Parameter] public RenderFragment<T>? ChildContent { get; set; }
+    [Parameter] public T? Value { get; set; }
+    [Parameter] public EventCallback<T?> ValueChanged { get; set; }
+    [Parameter] public IEnumerable<T> Options { get; set; } = [];
+
+    private T? value
+    {
+        get => Value;
+        set
+        {
+            Value = value;
+            InvokeAsync(async () =>
+            {            
+                await ValueChanged.InvokeAsync(Value);
+                UOW.NotifyChanged();
+            });
+        }
+    }
+}
+
+<AuthorizeView>
+    <Authorized>
+        <ComboBox @bind-Selection="value" Options="Options" ChildContent="ChildContent!"  />
+    </Authorized>
+    <NotAuthorized>
+        <ReadonlyBox>
+            @if (Value is not null)
+            {
+                @ChildContent?.Invoke(Value)
+            }
+        </ReadonlyBox>
+    </NotAuthorized>
+</AuthorizeView>
