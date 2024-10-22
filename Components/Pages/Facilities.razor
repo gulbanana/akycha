@@ -10,6 +10,10 @@
         .Include(f => f.Processes)
         .ThenInclude(p => p.Recipe)
         .ThenInclude(r => r!.Items)
+        .ThenInclude(i => i.Part)
+        .Include(f => f.Inputs)
+        .ThenInclude(i => i.From)
+        .Include(f => f.Inputs)
         .ThenInclude(i => i.Part);
 }
 

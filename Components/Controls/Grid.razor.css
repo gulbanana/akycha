@@ -21,6 +21,7 @@
 }
 
 .grid-header {
+    height: 24px;
     background: var(--c-header);
     color: var(--c-text-dark);
     user-select: none;

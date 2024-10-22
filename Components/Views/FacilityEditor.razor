@@ -27,6 +27,27 @@
         UOW.GetLoaded<Process>().Remove(item);
         UOW.NotifyChanged();
     }
+
+    private IEnumerable<Input> CalculateOutputs()
+    {
+        foreach (var process in Model.Processes)
+        {
+            foreach (var item in process.Recipe?.Items ?? [])
+            {
+                if (item.Role != ItemRole.Ingredient)
+                {
+                    yield return new Input
+                    {
+                        From = Model,
+                        To = Model,
+                        Part = item.Part,
+                        QuantityPerMinute = item.QuantityPerMinute * process.QuantityMachines
+                    };
+                }
+            }
+        }
+        yield break;
+    }
 }
 
 @if (recipes is not null)
@@ -36,12 +57,20 @@
             <TextField id="@context" @bind-Value="Model.Name" />
         </Block>
 
-        <Grid T="Process" Items="Model.Processes" Labels="@(["Recipe", "Machines"])" OnAdd="AddProcess" OnRemove="RemoveProcess">
+        <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines"])" OnAdd="AddProcess" OnRemove="RemoveProcess">
             <ComboField T="Recipe" @bind-Value="context.Recipe" Context="selection" Options="recipes">
                 <ImageBox Value="selection!.GetIcon()" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <IntField @bind-Value="context.QuantityMachines" />
+        </Grid>
+
+        <Grid T="Input" Items="CalculateOutputs()" Labels="@(["Output", "Available Quantity"])">
+            <ReadonlyBox>
+                <ImageBox Value="context.Part?.Icon" SideLength="32" />
+                <span>@context.Part?.Name</span>
+            </ReadonlyBox>
+            <ReadonlyBox>@context.QuantityPerMinute</ReadonlyBox>
         </Grid>
 
         <CommandButton @onclick="DeleteFacility">Delete</CommandButton>

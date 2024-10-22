@@ -13,14 +13,20 @@
         <div class="grid-header" onclick="document.getElementById()">@label</div>
     }
     <div class="grid-header grid-commands">
-        <CommandButton Small @onclick="OnAdd">+</CommandButton>
+        @if (OnAdd.HasDelegate)
+        {
+            <CommandButton Small @onclick="OnAdd">+</CommandButton>
+        }
     </div>
 
     @foreach (var item in Items)
     {
         @ChildContent?.Invoke(item)
         <div class="grid-commands">
-            <CommandButton Small @onclick="() => OnRemove.InvokeAsync(item)">-</CommandButton>
+            @if (OnRemove.HasDelegate)
+            {
+                <CommandButton Small @onclick="() => OnRemove.InvokeAsync(item)">-</CommandButton>
+            }
         </div>
     }
 </div>
