@@ -1,0 +1,19 @@
+@code {
+    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
+    [Parameter] public required Facility Model { get; set; }
+
+    private IEnumerable<byte[]?> GetProcessIcons()
+    {
+        return Model.Processes.Select(p => p.Recipe?.GetIcon());
+    }
+}
+
+<div class="layout" style="--icons: @(GetProcessIcons().Count())">
+    @foreach (var icon in GetProcessIcons())
+    {
+        <ImageBox Value="icon" />
+    }
+    <div class="data">
+        <span>@Model.Name</span>
+    </div>
+</div>

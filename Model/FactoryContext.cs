@@ -1,16 +1,20 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Akycha.Model;
 
 public class FactoryContext(DbContextOptions<FactoryContext> options) : DbContext(options)
 {
+    public DbSet<Facility> Facilities { get; set; }
+    public DbSet<Input> Inputs { get; set; }
+    public DbSet<Item> Items { get; set; }
+    public DbSet<Machine> Machines { get; set; }
     public DbSet<Part> Parts { get; set; }
+    public DbSet<Process> Processes { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
-    public DbSet<RecipePart> RecipeParts { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
-        modelBuilder.Entity<Recipe>().Navigation(e => e.Parts).AutoInclude();
-        modelBuilder.Entity<RecipePart>().Navigation(e => e.Part).AutoInclude();
+        configurationBuilder.Conventions.Remove(typeof(TableNameFromDbSetConvention));
     }
 }

@@ -41,6 +41,6 @@ app.MapPost("/Account/Logout", (Delegate)AccountEndpoints.LogoutAsync);
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-app.MapGet("/", () => Results.Redirect("/Parts"));
+app.MapGet("/", () => Results.Redirect("/Facilities"));
 
 app.Run();

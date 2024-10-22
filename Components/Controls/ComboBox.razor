@@ -5,6 +5,7 @@
     [Parameter] public T? Selection { get; set; }
     [Parameter] public EventCallback<T?> SelectionChanged { get; set; }
     [Parameter] public IEnumerable<T> Options { get; set; } = [];
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
 
     private IJSObjectReference module = default!;
     private ElementReference? box;
@@ -32,7 +33,7 @@
     }
 }
 
-<div @ref="box" class="@BEM.Class("box", (isOpen, "active"))" @onclick="OpenPopup">
+<div @ref="box" class="@BEM.Class("box", (isOpen, "active"))" @onclick="OpenPopup" @attributes="Splat">
     @if (Selection is not null)
     {
         @ChildContent?.Invoke(Selection)

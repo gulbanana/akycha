@@ -1,12 +1,11 @@
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
-    [Parameter] public required Recipe Model { get; set; }
+    [Parameter] public required Machine Model { get; set; }
 }
 
 <div class="layout">
-    <ImageBox Value="Model.GetIcon()" />
+    <ImageBox Value="Model.Icon" />
     <div class="data">
         <span>@Model.Name</span>
     </div>
-    <ImageBox Value="Model.Machine?.Icon" />
 </div>

@@ -1,0 +1,24 @@
+@code {
+    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
+    [Parameter] public required Machine Model { get; set; }
+
+    private void DeletePart()
+    {
+        UOW.GetLoaded<Machine>().Remove(Model);
+        UOW.NotifyChanged();
+    }
+}
+
+<div class="layout">
+    <ImageField @bind-Value="Model.Icon" />
+    <div class="data-primary">
+        <Block Label="Name">
+            <TextField id="@context" @bind-Value="Model.Name" />
+        </Block>
+
+        <Block Label="Power Usage (MW)">
+            <IntField id="@context" @bind-Value="Model.PowerUsageMegawatts" />
+        </Block>
+    </div>
+    <CommandButton @onclick="DeletePart">Delete</CommandButton>
+</div>

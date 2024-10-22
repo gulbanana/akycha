@@ -1,9 +1,9 @@
 .layout {
     height: 64px;
     display: grid;
-    grid-template-columns: 64px 1fr 64px;
+    grid-template-columns: 64px 1fr;
     grid-template-rows: 1fr 24px;
-    grid-template-areas: '. data .';
+    grid-template-areas: 'icon data';
 }
 
 .data {

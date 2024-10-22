@@ -8,7 +8,7 @@
     [Parameter] public RenderFragment<T>? Master { get; set; }
     [Parameter] public RenderFragment<T>? Detail { get; set; }
     [Parameter, EditorRequired] public required string Prefix { get; set; }
-    [Parameter, EditorRequired] public required Func<FactoryContext, DbSet<T>> Lens { get; set; }
+    [Parameter] public Func<IQueryable<T>, IQueryable<T>> Filter { get; set; } = xs => xs;
     [Parameter] public int? Id { get; set; }
     [Parameter] public EventCallback<int?> IdChanged { get; set; }
 
@@ -23,7 +23,7 @@
     {
         if (!Nullable.Equals(Id, selection?.Id) && Id != 0)
         {
-            selection = await UOW.Load(async db => await Lens(db).FindAsync(Id));
+            selection = await UOW.Load(async db => await db.Set<T>().FindAsync(Id));
         }        
     }
 
@@ -72,7 +72,7 @@
 
     private Task<IReadOnlyList<T>> GetItems() => UOW.Load<IReadOnlyList<T>>(async db =>
     {
-        await db.Set<T>().LoadAsync();
+        await Filter(db.Set<T>()).LoadAsync();
         return db.Set<T>().Local.OrderBy(T.GetKey).ToList();
     });
 

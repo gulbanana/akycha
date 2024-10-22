@@ -2,10 +2,12 @@
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Recipe Model { get; set; }
+    private List<Machine>? machines;
     private List<Part>? parts;
 
     protected override async Task OnParametersSetAsync()
     {
+        machines = await UOW.Load(db => db.Machines.ToListAsync());
         parts = await UOW.Load(db => db.Parts.ToListAsync());
     }
 
@@ -17,47 +19,62 @@
 
     private void AddIngredient()
     {
-        Model.Parts.Add(new() { Role = RecipePartRole.Ingredient, Recipe = Model });
+        Model.Items.Add(new() { Recipe = Model, Role = ItemRole.Ingredient });
         UOW.NotifyChanged();
     }
 
     private void AddProduct()
     {
-        Model.Parts.Add(new() { Role = RecipePartRole.Product, Recipe = Model });
+        var role = Model.Items.Any(rp => rp.Role == ItemRole.Product) 
+            ? ItemRole.Byproduct
+            : ItemRole.Product;
+        Model.Items.Add(new() { Recipe = Model, Role = role });
         UOW.NotifyChanged();
     }
 
-    private void RemovePart(RecipePart part)
+    private void RemoveItem(Item item)
     {
-        Model.Parts.Remove(part);
-        UOW.GetLoaded<RecipePart>().Remove(part);
+        Model.Items.Remove(item);
+        if (item.Role == ItemRole.Product && Model.Items.Where(bp => bp.Role == ItemRole.Byproduct).ToList() is [var first, ..])
+        {
+            first.Role = ItemRole.Product;
+        }
+
+        UOW.GetLoaded<Item>().Remove(item);
         UOW.NotifyChanged();
     }
 }
 
-@if (parts is not null)
+@if (machines is not null && parts is not null)
 {
     <div class="layout">
         <Block Label="Name">
             <TextField id="@context" @bind-Value="Model.Name" />
         </Block>
 
-        <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Ingredient)"
-            Labels="@(["Ingredient", "Quantity"])" OnAdd="AddIngredient" OnRemove="RemovePart">
+        <Block Label="Machine">
+            <ComboField id="@context" T="Machine" @bind-Value="Model.Machine" Context="selection" Options="machines">
+                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <span>@selection.Name</span>
+            </ComboField>
+        </Block>
+
+        <Grid T="Item" Items="Model.Items.Where(i => i.Role == ItemRole.Ingredient)"
+            Labels="@(["Ingredient", "Quantity"])" OnAdd="AddIngredient" OnRemove="RemoveItem">
             <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="parts">
                 <ImageBox Value="selection!.Icon" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
-            <NumberField @bind-Value="context.Quantity" />
+            <FloatField @bind-Value="context.QuantityPerMinute" />
         </Grid>
 
-        <Grid T="RecipePart" Items="Model.Parts.Where(p => p.Role == RecipePartRole.Product)"
-            Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemovePart">
+        <Grid T="Item" Items="Model.Items.Where(i => i.Role == ItemRole.Product)"
+            Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemoveItem">
             <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="parts">
                 <ImageBox Value="selection!.Icon" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
-            <NumberField @bind-Value="context.Quantity" />
+            <FloatField @bind-Value="context.QuantityPerMinute" />
         </Grid>
 
         <CommandButton @onclick="DeleteRecipe">Delete</CommandButton>

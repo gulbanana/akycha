@@ -4,12 +4,17 @@
 @inherits DbPage
 @code {
     [Parameter] public int? Id { get; set; }
+
+    private IQueryable<Recipe> FilterRecipes(IQueryable<Recipe> query) => query
+        .Include(r => r.Items)
+        .ThenInclude(i => i.Part)
+        .Include(r => r.Machine);
 }
 
 <PageTitle>Akycha - Recipes</PageTitle>
 
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
-    <RoutedList @bind-Id="Id" Prefix="Recipes" Lens="db => db.Recipes">
+    <RoutedList T="Recipe" @bind-Id="Id" Prefix="Recipes" Filter="FilterRecipes">
         <Master>
             <RecipeSummary Model="context" />
         </Master>

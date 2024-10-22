@@ -9,7 +9,7 @@
 <PageTitle>Akycha - Parts</PageTitle>
 
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
-    <RoutedList @bind-Id="Id" Prefix="Parts" Lens="db => db.Parts">
+    <RoutedList T="Part" @bind-Id="Id" Prefix="Parts">
         <Master>
             <PartSummary Model="context" />
         </Master>

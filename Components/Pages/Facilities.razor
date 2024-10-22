@@ -1,6 +1,27 @@
-﻿@page "/Facilities"
+﻿@page "/Facilities/{id:int?}"
 @using Microsoft.EntityFrameworkCore
 
 @inherits DbPage
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    private IQueryable<Facility> FilterFacilities(IQueryable<Facility> query) => query
+        .Where(f => !f.SiteId.HasValue)
+        .Include(f => f.Processes)
+        .ThenInclude(p => p.Recipe)
+        .ThenInclude(r => r!.Items)
+        .ThenInclude(i => i.Part);
+}
 
 <PageTitle>Akycha - Facilities</PageTitle>
+
+<CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
+    <RoutedList T="Facility" @bind-Id="Id" Prefix="Facilities" Filter="FilterFacilities">
+        <Master>
+            <FacilitySummary Model="context" />
+        </Master>
+        <Detail>
+            <FacilityEditor Model="context" />
+        </Detail>
+    </RoutedList>
+</CascadingValue>

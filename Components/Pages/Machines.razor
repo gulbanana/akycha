@@ -1,6 +1,20 @@
-﻿@page "/Machines"
+﻿@page "/Machines/{id:int?}"
 @using Microsoft.EntityFrameworkCore
 
 @inherits DbPage
+@code {
+    [Parameter] public int? Id { get; set; }
+}
 
 <PageTitle>Akycha - Machines</PageTitle>
+
+<CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
+    <RoutedList T="Machine" @bind-Id="Id" Prefix="Machines">
+        <Master>
+            <MachineSummary Model="context" />
+        </Master>
+        <Detail>
+            <MachineEditor Model="context" />
+        </Detail>
+    </RoutedList>
+</CascadingValue>

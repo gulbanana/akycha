@@ -7,6 +7,7 @@
     [Parameter] public T? Value { get; set; }
     [Parameter] public EventCallback<T?> ValueChanged { get; set; }
     [Parameter] public IEnumerable<T> Options { get; set; } = [];
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
 
     private T? value
     {
@@ -25,7 +26,7 @@
 
 <AuthorizeView>
     <Authorized>
-        <ComboBox @bind-Selection="value" Options="Options" ChildContent="ChildContent!"  />
+        <ComboBox @bind-Selection="value" Options="Options" ChildContent="ChildContent!" @attributes="Splat"  />
     </Authorized>
     <NotAuthorized>
         <ReadonlyBox>
