@@ -20,12 +20,12 @@ public class Facility : IOrdered<Facility>
     public IEnumerable<byte[]?> GetIcons()
     {
         var any = false;
-        foreach (var p in Processes)
+        foreach (var p in BalanceQuantities())
         {
-            if (p.Recipe?.GetIcon() is byte[] processIcon)
+            if (p.Value > 0)
             {
                 any = true;
-                yield return processIcon;
+                yield return p.Key.Icon;
             }
         }
         
@@ -37,11 +37,13 @@ public class Facility : IOrdered<Facility>
 
     public IEnumerable<Part> CalculateLocalParts()
     {
+        var result = new HashSet<Part>(); 
+
         foreach (var input in Inputs)
         {
             if (input.Part is not null)
             {
-                yield return input.Part;
+                result.Add(input.Part);
             }
         }
 
@@ -53,11 +55,13 @@ public class Facility : IOrdered<Facility>
                 {
                     if (item.Part is not null && item.Role != ItemRole.Ingredient)
                     {
-                        yield return item.Part;
+                        result.Add(item.Part);
                     }
                 }
             }
         }
+
+        return result;
     }
 
     public IEnumerable<Input> CalculateMissingInputs()

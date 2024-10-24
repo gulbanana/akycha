@@ -73,12 +73,14 @@
             <IntField @bind-Value="context.PowerShards" />
         </Grid>
 
-        <Grid T="Input" Items="Model.Inputs" Labels="@(["Input", "Quantity (per minute)", "Source"])" OnAdd="AddInput" OnRemove="RemoveInput">            <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="Model.CalculateLocalParts()">
+        <Grid T="Input" Items="Model.Inputs" Labels="@(["Input", "Quantity (per minute)", "Source"])" OnAdd="AddInput" OnRemove="RemoveInput">            
+            <ComboField T="Part" @bind-Value="context.Part" Context="selection"
+                Options="@(context.From?.CalculateLocalParts() ?? [])">
                 <ImageBox Value="selection!.Icon" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <FloatField @bind-Value="context.QuantityPerMinute" />
-            <ComboField T="Facility" @bind-Value="context.To" Context="selection" Options="facilities">
+            <ComboField T="Facility" @bind-Value="context.From" Context="selection" Options="facilities">
                 @foreach (var icon in selection!.GetIcons())
                 {
                     <ImageBox Value="icon" SideLength="32" />
