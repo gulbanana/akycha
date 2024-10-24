@@ -15,6 +15,11 @@ label {
     &:has(+input:focus-visible) {
         background-color: var(--c-ficsit-secondary);
     }
+
+    .derived > & {
+        background-color: var(--c-content-background);
+        color: var(--c-ficsit-primary);
+    }
 }
 
 .block > ::deep *:nth-child(n + 2) {

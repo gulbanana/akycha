@@ -10,4 +10,9 @@ public class Machine : IOrdered<Machine>
     public int PowerUsageMegawatts { get; set; }
 
     public static string GetKey(Machine t) => t.Name;
+
+    public double CalculateUsage(double clockSpeed)
+    {
+        return PowerUsageMegawatts * Math.Pow(clockSpeed/100.0, 1.321928);
+    }
 }

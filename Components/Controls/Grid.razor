@@ -3,11 +3,12 @@
     [Parameter] public RenderFragment<T>? ChildContent { get; set; }
     [Parameter] public IReadOnlyList<string> Labels { get; set; } = [];
     [Parameter] public IEnumerable<T> Items { get; set; } = [];
+    [Parameter] public bool Derived { get; set; }
     [Parameter] public EventCallback OnAdd { get; set; }
     [Parameter] public EventCallback<T> OnRemove { get; set; }
 }
 
-<div class="grid">
+<div class="@BEM.Class("grid", (Derived, "derived"))" style="--columns: @(Labels.Count)">
     @foreach (var label in Labels)
     {
         <div class="grid-header" onclick="document.getElementById()">@label</div>

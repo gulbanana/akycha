@@ -1,6 +1,7 @@
 @code {
     [Parameter] public RenderFragment<string>? ChildContent { get; set; }
     [Parameter] public string Label { get; set; } = "Field Header";
+    [Parameter] public bool Derived { get; set; }
     private string ident = "field-header";
 
     protected override void OnParametersSet()
@@ -9,7 +10,7 @@
     }
 }
 
-<div class="block">
+<div class="@BEM.Class("block", (Derived, "derived"))">
     <label for="@ident">@Label</label>
     @ChildContent?.Invoke(ident)
 </div>

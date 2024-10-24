@@ -3,10 +3,12 @@
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Facility Model { get; set; }
     private List<Recipe>? recipes;
-
+    private List<Facility>? facilities;
+    
     protected override async Task OnParametersSetAsync()
     {
         recipes = await UOW.Load(db => db.Recipes.ToListAsync());
+        facilities = await UOW.Load(db => db.Facilities.ToListAsync());
     }
 
     private void DeleteFacility()
@@ -28,25 +30,30 @@
         UOW.NotifyChanged();
     }
 
-    private IEnumerable<Input> CalculateOutputs()
+    private void AddInput()
     {
-        foreach (var process in Model.Processes)
-        {
-            foreach (var item in process.Recipe?.Items ?? [])
-            {
-                if (item.Role != ItemRole.Ingredient)
-                {
-                    yield return new Input
-                    {
-                        From = Model,
-                        To = Model,
-                        Part = item.Part,
-                        QuantityPerMinute = item.QuantityPerMinute * process.QuantityMachines
-                    };
-                }
-            }
-        }
-        yield break;
+        Model.Inputs.Add(new() { From = Model, To = null! });
+        UOW.NotifyChanged();
+    }
+
+    private void RemoveInput(Input item)
+    {
+        Model.Inputs.Remove(item);
+        UOW.GetLoaded<Input>().Remove(item);
+        UOW.NotifyChanged();
+    }
+
+    private void AddOutput()
+    {
+        Model.Outputs.Add(new() { From = Model, To = null!  });
+        UOW.NotifyChanged();
+    }
+
+    private void RemoveOutput(Input item)
+    {
+        Model.Outputs.Remove(item);
+        UOW.GetLoaded<Input>().Remove(item);
+        UOW.NotifyChanged();
     }
 }
 
@@ -57,21 +64,77 @@
             <TextField id="@context" @bind-Value="Model.Name" />
         </Block>
 
-        <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines"])" OnAdd="AddProcess" OnRemove="RemoveProcess">
+        <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards"])" OnAdd="AddProcess" OnRemove="RemoveProcess">
             <ComboField T="Recipe" @bind-Value="context.Recipe" Context="selection" Options="recipes">
                 <ImageBox Value="selection!.GetIcon()" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <IntField @bind-Value="context.QuantityMachines" />
+            <IntField @bind-Value="context.PowerShards" />
         </Grid>
 
-        <Grid T="Input" Items="CalculateOutputs()" Labels="@(["Output", "Available Quantity"])">
-            <ReadonlyBox>
-                <ImageBox Value="context.Part?.Icon" SideLength="32" />
-                <span>@context.Part?.Name</span>
-            </ReadonlyBox>
-            <ReadonlyBox>@context.QuantityPerMinute</ReadonlyBox>
+        <Grid T="Input" Items="Model.Inputs" Labels="@(["Input", "Quantity (per minute)", "Source"])" OnAdd="AddInput" OnRemove="RemoveInput">            <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="Model.CalculateLocalParts()">
+                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <span>@selection.Name</span>
+            </ComboField>
+            <FloatField @bind-Value="context.QuantityPerMinute" />
+            <ComboField T="Facility" @bind-Value="context.To" Context="selection" Options="facilities">
+                @foreach (var icon in selection!.GetIcons())
+                {
+                    <ImageBox Value="icon" SideLength="32" />
+                }
+                <span>@selection.Name</span>
+            </ComboField>
         </Grid>
+
+        @{
+            var missingInputs = Model.CalculateMissingInputs().ToList();
+            if (missingInputs.Any())
+            {
+                <Grid T="Input" Items="missingInputs" Labels="@(["Missing", "Required Quantity (per minute)"])" Derived>
+                    <ReadonlyBox>
+                        <ImageBox Value="context.Part?.Icon" SideLength="32" />
+                        <span>@context.Part?.Name</span>
+                    </ReadonlyBox>
+                    <ReadonlyBox>@context.QuantityPerMinute</ReadonlyBox>
+                </Grid>
+            }
+        }
+
+        <Grid T="Input" Items="Model.Outputs" Labels="@(["Output", "Quantity (per minute)", "Destination"])" OnAdd="AddOutput" OnRemove="RemoveOutput">
+            <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="Model.CalculateLocalParts()">
+                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <span>@selection.Name</span>
+            </ComboField>
+            <FloatField @bind-Value="context.QuantityPerMinute" />
+            <ComboField T="Facility" @bind-Value="context.To" Context="selection" Options="facilities">
+                @foreach (var icon in selection!.GetIcons())
+                {
+                    <ImageBox Value="icon" SideLength="32" />
+                }
+                <span>@selection.Name</span>
+            </ComboField>
+        </Grid>
+
+        @{
+            var excessOutputs = Model.CalculateExcessOutputs().ToList();
+            if (excessOutputs.Any())
+            {
+                <Grid T="Input" Items="Model.CalculateExcessOutputs()" Labels="@(["Excess", "Available Quantity (per minute)"])"
+                    Derived>
+                    <ReadonlyBox>
+                        <ImageBox Value="context.Part?.Icon" SideLength="32" />
+                        <span>@context.Part?.Name</span>
+                    </ReadonlyBox>
+                    <ReadonlyBox>@context.QuantityPerMinute</ReadonlyBox>
+                </Grid>
+            }
+        }
+
+        <Block Label="Statistics" />
+        <Block Label="Power Usage" Derived>
+            <ReadonlyBox>@Model.CalculatePowerText()</ReadonlyBox>
+        </Block>
 
         <CommandButton @onclick="DeleteFacility">Delete</CommandButton>
     </div>

@@ -2,7 +2,11 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 4px;
+}
+
+.layout > ::deep *:not(:is(.command, :has(+ .derived))) {
+    margin-bottom: 24px;
 }
 
 .layout > ::deep .command {

@@ -1,6 +1,6 @@
 .grid {
     display: grid;
-    grid-template-columns: minmax(200px, auto) auto 1fr;
+    grid-template-columns: repeat(var(--columns), minmax(200px, auto)) 1fr;
     align-items: stretch;
     row-gap: 4px;
     --c-header: var(--c-ficsit-primary);
@@ -27,6 +27,11 @@
     user-select: none;
     margin: 0;
     padding-left: 13px;
+
+    .derived > & {
+        background: var(--c-content-background);
+        color: var(--c-ficsit-primary);
+    }
 }
 
 .grid-commands {

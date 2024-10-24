@@ -1,15 +1,16 @@
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Facility Model { get; set; }
+    private List<byte[]> icons = [];
 
-    private IEnumerable<byte[]?> GetProcessIcons()
+    protected override void OnParametersSet()
     {
-        return Model.Processes.Select(p => p.Recipe?.GetIcon());
+        icons = Model.GetIcons().ToList();   
     }
 }
 
-<div class="layout" style="--icons: @(GetProcessIcons().Count())">
-    @foreach (var icon in GetProcessIcons())
+<div class="layout" style="--icons: @(icons.Count)">
+    @foreach (var icon in icons)
     {
         <ImageBox Value="icon" />
     }
