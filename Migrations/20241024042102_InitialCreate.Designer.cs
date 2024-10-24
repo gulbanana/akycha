@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Akycha.Migrations
 {
     [DbContext(typeof(FactoryContext))]
-    [Migration("20241022081717_InitialCreate")]
+    [Migration("20241024042102_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -40,12 +40,10 @@ namespace Akycha.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SiteId")
-                        .HasColumnType("int");
+                    b.Property<string>("Site")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SiteId");
 
                     b.ToTable("Facility");
                 });
@@ -69,6 +67,9 @@ namespace Akycha.Migrations
 
                     b.Property<int>("ToId")
                         .HasColumnType("int");
+
+                    b.Property<string>("TransportMethod")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -205,15 +206,6 @@ namespace Akycha.Migrations
                     b.ToTable("Recipe");
                 });
 
-            modelBuilder.Entity("Akycha.Model.Facility", b =>
-                {
-                    b.HasOne("Akycha.Model.Facility", "Site")
-                        .WithMany("Lots")
-                        .HasForeignKey("SiteId");
-
-                    b.Navigation("Site");
-                });
-
             modelBuilder.Entity("Akycha.Model.Input", b =>
                 {
                     b.HasOne("Akycha.Model.Facility", "From")
@@ -283,8 +275,6 @@ namespace Akycha.Migrations
             modelBuilder.Entity("Akycha.Model.Facility", b =>
                 {
                     b.Navigation("Inputs");
-
-                    b.Navigation("Lots");
 
                     b.Navigation("Outputs");
 

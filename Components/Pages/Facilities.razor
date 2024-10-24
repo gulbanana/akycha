@@ -6,7 +6,6 @@
     [Parameter] public int? Id { get; set; }
 
     private IQueryable<Facility> FilterFacilities(IQueryable<Facility> query) => query
-        .Where(f => !f.SiteId.HasValue)
         .Include(f => f.Processes)
         .ThenInclude(p => p.Recipe)
         .ThenInclude(r => r!.Items)

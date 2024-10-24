@@ -10,6 +10,7 @@ public class Input
     public int? PartId { get; set; }
 
     public float QuantityPerMinute { get; set; }
+    public string? TransportMethod { get; set; }
 
     public Facility? From { get; set; }
     public required Facility To { get; set; }

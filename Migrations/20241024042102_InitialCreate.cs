@@ -16,18 +16,13 @@ namespace Akycha.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SiteId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Site = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Icon = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Facility", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Facility_Facility_SiteId",
-                        column: x => x.SiteId,
-                        principalTable: "Facility",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -88,7 +83,8 @@ namespace Akycha.Migrations
                     FromId = table.Column<int>(type: "int", nullable: true),
                     ToId = table.Column<int>(type: "int", nullable: false),
                     PartId = table.Column<int>(type: "int", nullable: true),
-                    QuantityPerMinute = table.Column<float>(type: "real", nullable: false)
+                    QuantityPerMinute = table.Column<float>(type: "real", nullable: false),
+                    TransportMethod = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -163,11 +159,6 @@ namespace Akycha.Migrations
                         principalTable: "Recipe",
                         principalColumn: "Id");
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Facility_SiteId",
-                table: "Facility",
-                column: "SiteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Input_FromId",
