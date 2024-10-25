@@ -36,6 +36,12 @@
     user-select: none;
     background: inherit;
     color: inherit;
+    overflow: hidden;
+}
+
+:is(.box, .option) > ::deep span {
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .popup {

@@ -22,6 +22,10 @@ label {
     }
 }
 
+.block > ::deep * {
+    white-space: nowrap;
+}
+
 .block > ::deep *:nth-child(n + 2) {
     margin-left: 4px;
 }

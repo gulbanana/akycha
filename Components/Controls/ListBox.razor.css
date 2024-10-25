@@ -33,6 +33,7 @@ header > ::deep *:last-child {
     color: inherit;
     border-bottom: 2px solid var(--c-ficsit-primary);
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .item.selected {
