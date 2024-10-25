@@ -46,39 +46,6 @@ form.login {
     min-width: 96px;
 }
 
-button.loginout {
-    margin: 0;
-    padding: 0;
-    height: 32px;
-    min-width: 32px;
-    vertical-align: middle;
-
-    border: none;
-    background: none;
-    outline: none;
-    cursor: pointer;
-
-    &:hover {
-        background: var(--c-content-background);
-    }
-    
-    &:focus-visible {
-        color: var(--c-ficsit-secondary);
-    }
-    
-    &:active {
-        background: var(--c-sidebar-background);
-    }
-
-    display: inline-grid;
-    align-items: center;
-    justify-content: center;
-    &>img {
-        width: 24px;
-        height: 24px;
-    }
-}
-
 main {
     background: var(--c-content-background);
     padding: 16px;

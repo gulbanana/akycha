@@ -21,14 +21,14 @@
             <Authorized>
                 <form method="post" action="/Account/Logout">
                     <AntiforgeryToken />
-                    <button type="submit" class="loginout" tabindex="-1"><img src="/MAM_Research_Lock.png"></button>
+                    <IconButton Src="/MAM_Research_Lock.png" />
                 </form>
             </Authorized>
             <NotAuthorized>
                 <form class="login" method="post" action="/Account/Login">
                     <AntiforgeryToken />
                     <TextBox name="password" type="password" style="min-width: 60px; max-width: 120px" />
-                    <button type="submit" class="loginout" tabindex="-1"><img src="/MAM_Research_Key.png"></button>
+                    <IconButton Src="/MAM_Research_Key.png" />
                 </form>
             </NotAuthorized>
         </AuthorizeView>

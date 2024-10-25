@@ -1,0 +1,8 @@
+@code {
+    [Parameter, EditorRequired] public required string Src { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
+}
+
+<button type="submit" class="icon" tabindex="-1" @attributes="Splat">
+    <img src="@Src">
+</button>
