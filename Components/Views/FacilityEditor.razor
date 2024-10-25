@@ -93,7 +93,7 @@
             var missingInputs = Model.CalculateMissingInputs().ToList();
             if (missingInputs.Any())
             {
-                <Grid T="Input" Items="missingInputs" Labels="@(["Missing", "Required Quantity (per minute)"])" Derived>
+                <Grid T="Input" Items="missingInputs" Labels="@(["Missing", "Required (per minute)"])" Derived>
                     <ReadonlyBox>
                         <ImageBox Value="context.Part?.Icon" SideLength="32" />
                         <span>@context.Part?.Name</span>
@@ -122,7 +122,7 @@
             var excessOutputs = Model.CalculateExcessOutputs().ToList();
             if (excessOutputs.Any())
             {
-                <Grid T="Input" Items="Model.CalculateExcessOutputs()" Labels="@(["Excess", "Available Quantity (per minute)"])"
+                <Grid T="Input" Items="Model.CalculateExcessOutputs()" Labels="@(["Excess", "Available (per minute)"])"
                     Derived>
                     <ReadonlyBox>
                         <ImageBox Value="context.Part?.Icon" SideLength="32" />
@@ -134,9 +134,9 @@
         }
 
         <Block Label="Statistics" />
-        <Block Label="Power Usage" Derived>
+        <Grid Items="@(new object[1])" Labels="@(["Power Usage"])" Derived>
             <ReadonlyBox>@Model.CalculatePowerText()</ReadonlyBox>
-        </Block>
+        </Grid>
 
         <CommandButton @onclick="DeleteFacility">Delete</CommandButton>
     </div>
