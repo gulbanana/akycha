@@ -1,8 +1,8 @@
 @typeparam T where T : class
 @code {
-    [Parameter] public string Header { get; set; } = "";
     [Parameter] public RenderFragment<T>? ChildContent { get; set; }
     [Parameter, EditorRequired] public required Func<Task<IReadOnlyList<T>>> GetModels { get; set; }
+    [Parameter, EditorRequired] public required Func<T, string> GetHeader { get; set; }
     [Parameter] public EventCallback AddCommand { get; set; }
     [Parameter] public T? Selection { get; set; }
     [Parameter] public EventCallback<T> SelectionChanged { get; set; }
@@ -22,21 +22,29 @@
     }
 }
 
-<div class="layout">
-    <header>
-        <span class="title">@Header</span>
-        @if (AddCommand.HasDelegate)
+<div class="list">
+    @{
+        var currentHeader = "";
+        var firstHeader = true;
+        foreach (var model in models)
         {
-            <CommandButton @onclick="AddCommand" disabled="@(!loaded)">Add</CommandButton>
-        }
-    </header>
+            var itemHeader = GetHeader(model);
+            if (currentHeader != itemHeader)
+            {                
+                <header>
+                    <span class="title">@itemHeader</span>
+                    @if (firstHeader && AddCommand.HasDelegate)
+                    {                        
+                        <CommandButton @onclick="AddCommand" disabled="@(!loaded)">Add</CommandButton>
+                        firstHeader = false;
+                    }
+                </header>
+                currentHeader = itemHeader;
+            }
 
-    <div class="list">
-        @foreach (var model in models)
-        {
             <button class="@BEM.Class("item", (model == Selection, "selected"))" @onclick="() => Select(model)">
                 @ChildContent?.Invoke(model)
             </button>
         }
-    </div>
+    }
 </div>

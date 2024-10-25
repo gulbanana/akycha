@@ -1,6 +1,6 @@
 @using Microsoft.EntityFrameworkCore
 
-@typeparam T where T : class, IOrdered<T>, new()
+@typeparam T where T : class, IListable<T>, new()
 @implements IDisposable
 @inject NavigationManager Nav
 @code {
@@ -73,7 +73,7 @@
     private Task<IReadOnlyList<T>> GetItems() => UOW.Load<IReadOnlyList<T>>(async db =>
     {
         await Filter(db.Set<T>()).LoadAsync();
-        return db.Set<T>().Local.OrderBy(T.GetKey).ToList();
+        return T.Sort(db.Set<T>().Local).ToList();
     });
 
     private async Task AddItem()
@@ -87,7 +87,7 @@
 }
 
 <div class="@BEM.Class("master-detail", (Selection is not null, "has-detail"))">
-    <ListBox T=T Header="@($"{Prefix}")" GetModels="GetItems" AddCommand="AddItem" @bind-Selection="Selection">
+    <ListBox T=T GetHeader="item => item.Category" GetModels="GetItems" AddCommand="AddItem" @bind-Selection="Selection">
         @Master?.Invoke(context)
     </ListBox>
     @if (Selection is not null)
