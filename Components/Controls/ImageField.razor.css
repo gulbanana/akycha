@@ -15,6 +15,7 @@
 .overlay {
     border: 1px solid var(--c-ficsit-primary);
     cursor: pointer;
+    background: inherit;
 
     &:hover {
         border-color: var(--c-ficsit-secondary);

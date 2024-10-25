@@ -1,14 +1,13 @@
 .box {
     height: 32px;
-    border: 1px solid var(--c-ficsit-primary);
     padding: 0 8px;
+
+    border: 1px solid var(--c-ficsit-primary);
     
     display: flex;
     align-items: center;
     gap: 8px;
 
-    cursor: pointer;
-    user-select: none;
 
     &:hover, &.active {
         border-color: var(--c-ficsit-secondary);
@@ -17,6 +16,26 @@
     &.active {
         border-bottom-color: transparent;
     }
+}
+
+.option {
+    height: 32px;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px;
+
+    &:hover {
+        background: var(--c-foundation-primary);
+    }
+}
+
+.box, .option {
+    cursor: pointer;
+    user-select: none;
+    background: inherit;
+    color: inherit;
 }
 
 .popup {
@@ -34,17 +53,6 @@
     }
 }
 
-.option {
-    height: 32px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 0 8px;
-
-    &:hover {
-        background: var(--c-foundation-primary);
-    }
-}
 
 .spacer {
     flex: 1;

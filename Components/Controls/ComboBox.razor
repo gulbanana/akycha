@@ -33,7 +33,7 @@
     }
 }
 
-<div @ref="box" class="@BEM.Class("box", (isOpen, "active"))" @onclick="OpenPopup" @attributes="Splat">
+<button @ref="box" class="@BEM.Class("box", (isOpen, "active"))" @onclick="OpenPopup" @attributes="Splat">
     @if (Selection is not null)
     {
         @ChildContent?.Invoke(Selection)
@@ -44,9 +44,9 @@
     <div @ref="popup" class="@BEM.Class("popup", (isOpen, "open"))">
         @foreach (var option in Options)
         {
-            <div class="option" @onclick="() => SelectOption(option)">
+            <button class="option" @onclick="() => SelectOption(option)">
                 @ChildContent?.Invoke(option)
-            </div>
+            </button>
         }
     </div>
-</div>
+</button>
