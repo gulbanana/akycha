@@ -26,6 +26,11 @@
         isOpen = !isOpen;
     }
 
+    private void ClosePopup()
+    {
+        isOpen = false;
+    }
+
     private async Task SelectOption(T option)
     {
         Selection = option;
@@ -33,7 +38,11 @@
     }
 }
 
-<button @ref="box" class="@BEM.Class("box", (isOpen, "active"))" @onclick="OpenPopup" @attributes="Splat">
+<button class="@BEM.Class("box", (isOpen, "active"))" 
+        @ref="box" 
+        @attributes="Splat"
+        @onclick="OpenPopup"
+        @onfocusout="ClosePopup">
     @if (Selection is not null)
     {
         @ChildContent?.Invoke(Selection)
@@ -44,7 +53,7 @@
     <div @ref="popup" class="@BEM.Class("popup", (isOpen, "open"))">
         @foreach (var option in Options)
         {
-            <button class="option" @onclick="() => SelectOption(option)">
+            <button class="option" @onmousedown="() => SelectOption(option)">
                 @ChildContent?.Invoke(option)
             </button>
         }
