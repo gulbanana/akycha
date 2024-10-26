@@ -7,7 +7,11 @@
     
     protected override async Task OnParametersSetAsync()
     {
-        recipes = await UOW.Load(db => db.Recipes.ToListAsync());
+        recipes = await UOW.Load(db => db.Recipes
+            .Include(r => r.Items)
+            .ThenInclude(i => i.Part)
+            .ToListAsync());
+            
         facilities = await UOW.Load(db => db.Facilities.ToListAsync());
     }
 
