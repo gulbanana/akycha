@@ -1,5 +1,7 @@
+let instance;
+
 export function bind(parent, child) {
-    Popper.createPopper(parent, child, {
+    instance = Popper.createPopper(parent, child, {
         placement: "bottom-start",
         modifiers: [{
             name: "copyReferenceWidth",
@@ -11,4 +13,8 @@ export function bind(parent, child) {
             },
         }]
     });
+}
+
+export async function trigger() {
+    await instance.update();
 }

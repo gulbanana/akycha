@@ -32,7 +32,8 @@
 
 <AuthorizeView>
     <Authorized>
-        <ComboBox @bind-Selection="value" Options="sortedOptions" ChildContent="ChildContent!" @attributes="Splat" />
+        @* this @key is a brute-force way to create separate popper instances for each detail in a master-detail view *@
+        <ComboBox @key="value" @bind-Selection="value" @attributes="Splat" Options="sortedOptions" ChildContent="ChildContent!" />
     </Authorized>
     <NotAuthorized>
         <ReadonlyBox>
