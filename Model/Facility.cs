@@ -20,21 +20,34 @@ public class Facility : IListable<Facility>
         return fs.OrderBy(f => f.Category).ThenBy(f => f.Name);
     }
 
+    // registered outputs + random excess
     public IEnumerable<byte[]?> GetIcons()
     {
-        var any = false;
+        var uniqueParts = new HashSet<Part>();
+
+        foreach (var p in Outputs)
+        {
+            if (p.Part is not null)
+            {
+                uniqueParts.Add(p.Part);
+            }
+        }
+
         foreach (var p in BalanceQuantities())
         {
             if (p.Value > 0)
             {
-                any = true;
-                yield return p.Key.Icon;
+                uniqueParts.Add(p.Key);
             }
         }
         
-        if (!any)
+        if (uniqueParts.Any())
         {
-            yield return null;
+            return uniqueParts.Select(p => p.Icon);
+        }
+        else
+        {
+            return [null];
         }
     }
 
