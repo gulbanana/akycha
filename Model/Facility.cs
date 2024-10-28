@@ -10,6 +10,7 @@ public class Facility : IListable<Facility>
     public string Name { get; set; } = "New Facility";
     public string Category { get; set; } = "Facilities";
     public byte[]? Icon { get; set; }
+    public string Notes { get; set; } = "";
 
     [InverseProperty(nameof(Input.To))] public ICollection<Input> Inputs { get; } = [];
     [InverseProperty(nameof(Input.From))] public ICollection<Input> Outputs { get; } = [];

@@ -64,13 +64,11 @@
 @if (recipes is not null)
 {
     <div class="layout">
-        <Block Label="Name">
+        <Grid Items="@(new object[1])" Labels="@(["Name", "Category", "Notes"])">
             <TextField id="@context" @bind-Value="Model.Name" />
-        </Block>
-
-        <Block Label="Category">
             <TextField id="@context" @bind-Value="Model.Category" />
-        </Block>
+            <TextBox />
+        </Grid>
 
         <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards"])" OnAdd="AddProcess" OnRemove="RemoveProcess">
             <ComboField T="Recipe" @bind-Value="context.Recipe" Context="selection" Options="recipes">
