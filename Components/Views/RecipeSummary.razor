@@ -1,12 +1,41 @@
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Recipe Model { get; set; }
+    [Parameter] public int MaxIngredients { get; set; }
+    [Parameter] public int MaxProducts { get; set; }
 }
 
 <div class="layout">
-    <ImageBox Value="Model.GetIcon()" />
-    <div class="data">
-        <span>@Model.Name</span>
+    <div class="title">@Model.Name</div>
+
+    <div class="cost">
+        @if (Model.Machine is not null)
+        {
+            <text>@(Model.Machine.PowerUsageMegawatts)MW</text>
+        }
     </div>
-    <ImageBox Value="Model.Machine?.Icon" />
+
+    <div class="process">
+        <div class="icons">
+            @foreach (var icon in Model.GetIngredientIcons())
+            {
+                <ImageBox Value="icon" />
+            }
+        </div>
+
+        <svg class="glyph arrow" viewBox="0 0 100 100">
+            <path d="M70,45 L20,45 L20,55 L60,55 L60,65 L80,50 L60,35 L60,50"  />
+        </svg>
+
+        <div class="icons">
+            @foreach (var icon in Model.GetProductIcons())
+            {
+                <ImageBox Value="icon" />
+            }
+        </div>
+    </div>    
+
+    <div class="machine">
+        <ImageBox Value="Model.Machine?.Icon" />
+    </div>
 </div>

@@ -35,7 +35,8 @@
     --c-page-background: #101715;
     --c-content-background: #323232;
     --c-sidebar-background: #5D5D5D;
-    --c-text-light: #e6e6e6;
+    --c-text-light: #e6e6e6; /* 90% */
+    --c-text-light-sub: #bfbfbf; /* 75% */
     --c-text-dark: #101715;
     /* #000000 */
 }

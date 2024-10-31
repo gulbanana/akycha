@@ -18,9 +18,37 @@ public class Recipe : IListable<Recipe>
         return rs.OrderBy(r => r.Category).ThenBy(r => r.Name);
     }
 
-    public byte[]? GetIcon()
+    public IEnumerable<byte[]?> GetIngredientIcons()
     {
-        return GetProduct()?.Icon;
+        var products = Items.Where(i => i.Role == ItemRole.Ingredient)
+            .Select(i => i.Part)
+            .Where(p => p != null);
+        
+        if (products.Any())
+        {
+            return Part.Sort(products!).Select(p => p.Icon);
+        }
+        else
+        {
+            return [null];
+        }    
+    }
+
+    public IEnumerable<byte[]?> GetProductIcons()
+    {
+        var products = Items.Where(i => i.Role == ItemRole.Product)
+            .Concat(Items.Where(i => i.Role == ItemRole.Byproduct))
+            .Select(i => i.Part)
+            .Where(p => p != null);
+        
+        if (products.Any())
+        {
+            return Part.Sort(products!).Select(p => p.Icon);
+        }
+        else
+        {
+            return [null];
+        }
     }
 
     private Part? GetProduct()

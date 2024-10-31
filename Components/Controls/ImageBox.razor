@@ -1,6 +1,6 @@
 @code {
     [Parameter] public byte[]? Value { get; set; }
-    [Parameter] public int SideLength { get; set; } = 64;
+    [Parameter] public int? SideLength { get; set; }
     private string src = "";
 
     protected override void OnParametersSet()
@@ -18,5 +18,5 @@
 }    
     
 <figure class="icon">
-    <img src="@src" style="@($"--side-length: {SideLength}px")">
+    <img src="@src" style="@(SideLength.HasValue ? $"--side-length: {SideLength.Value}px" : "")">
 </figure>

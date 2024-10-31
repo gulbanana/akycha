@@ -11,8 +11,8 @@ header {
     align-items: baseline;
 }
 
-header > ::deep *:last-child {
-    margin-right: 1px;
+header > ::deep .command {
+    border-width: 1px 0;
 }
 
 .title {
@@ -36,10 +36,16 @@ header > ::deep *:last-child {
     border-bottom: 2px solid var(--c-ficsit-primary);
     cursor: pointer;
     white-space: nowrap;
+    padding: 0;
 }
 
 .item.selected {
     background: var(--c-sidebar-background);
+}
+
+.item.selected ::deep .glyph {
+    stroke: none;
+    fill: var(--c-ficsit-primary);
 }
 
 .item:focus-visible {
