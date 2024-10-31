@@ -21,15 +21,24 @@ public class Facility : IListable<Facility>
         return fs.OrderBy(f => f.Category).ThenBy(f => f.Name);
     }
 
+    // registered + missing inputs
     public IEnumerable<byte[]?> GetInputIcons()
     {
         var uniqueParts = new HashSet<Part>();
 
         foreach (var p in Inputs)
         {
-            if (p.Part is not null)
+            if (p.From is not null && p.Part is not null)
             {
                 uniqueParts.Add(p.Part);
+            }
+        }
+
+        foreach (var p in BalanceQuantities())
+        {
+            if (p.Value < 0)
+            {
+                uniqueParts.Add(p.Key);
             }
         }
 
@@ -43,28 +52,6 @@ public class Facility : IListable<Facility>
         }
     }
 
-    // public IEnumerable<byte[]?> GetOutputIcons()
-    // {
-    //     var uniqueParts = new HashSet<Part>();
-
-    //     foreach (var p in Outputs)
-    //     {
-    //         if (p.Part is not null)
-    //         {
-    //             uniqueParts.Add(p.Part);
-    //         }
-    //     }
-
-    //     if (uniqueParts.Any())
-    //     {
-    //         return uniqueParts.Select(p => p.Icon);
-    //     }
-    //     else
-    //     {
-    //         return [null];
-    //     }
-    // }
-
     // registered outputs + random excess
     public IEnumerable<byte[]?> GetOutputIcons()
     {
@@ -72,7 +59,7 @@ public class Facility : IListable<Facility>
 
         foreach (var p in Outputs)
         {
-            if (p.Part is not null)
+            if (p.To is not null && p.Part is not null)
             {
                 uniqueParts.Add(p.Part);
             }

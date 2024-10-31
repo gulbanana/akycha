@@ -15,7 +15,7 @@
         .ThenInclude(r => r!.Machine)
         .Include(f => f.Inputs)
         .ThenInclude(i => i.From)
-        .Include(f => f.Inputs)
+        .Include(f => f.Outputs)
         .ThenInclude(i => i.Part);
 }
 
