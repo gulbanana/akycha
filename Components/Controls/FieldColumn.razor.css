@@ -13,7 +13,9 @@
     margin-bottom: -36px;
 }
 
-.col.compact > ::deep .bar {    
+.col.compact > ::deep .bar {        
+    width: 50%;
+    margin-left: 50%;
     margin-top: -36px;
 }
 
