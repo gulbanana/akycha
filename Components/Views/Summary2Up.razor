@@ -1,0 +1,9 @@
+@code {
+    [Parameter] public required string Name { get; set; }
+    [Parameter] public required byte[] Icon { get; set; }
+}
+
+<div class="layout">
+    <ImageBox Value="Icon" />
+    <div class="title">@Name</div>
+</div>

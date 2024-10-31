@@ -4,10 +4,12 @@
     grid-template-columns: 64px 1fr;
     grid-template-rows: 1fr 24px;
     grid-template-areas: 'icon data';
+    align-items: center;
+    justify-items: start;
+    padding: 0 8px;
 }
 
-.data {
-    grid-area: data;
-    padding: 8px;
-    display: flex;
+.title {
+    margin-left: 8px;
+    font-size: 24px;
 }

@@ -87,10 +87,6 @@
             </ComboField>
             <FloatField @bind-Value="context.QuantityPerMinute" />
             <ComboField T="Facility" @bind-Value="context.From" Context="selection" Options="facilities">
-                @foreach (var icon in selection!.GetIcons())
-                {
-                    <ImageBox Value="icon" SideLength="32" />
-                }
                 <span>@selection.Name</span>
             </ComboField>
         </Grid>
@@ -116,10 +112,6 @@
             </ComboField>
             <FloatField @bind-Value="context.QuantityPerMinute" />
             <ComboField T="Facility" @bind-Value="context.To" Context="selection" Options="facilities">
-                @foreach (var icon in selection!.GetIcons())
-                {
-                    <ImageBox Value="icon" SideLength="32" />
-                }
                 <span>@selection.Name</span>
             </ComboField>
         </Grid>

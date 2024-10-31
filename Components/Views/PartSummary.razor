@@ -1,11 +1,5 @@
 @code {
-    [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Part Model { get; set; }
 }
 
-<div class="layout">
-    <ImageBox Value="Model.Icon" />
-    <div class="data">
-        <span>@Model.Name</span>
-    </div>
-</div>
+<Summary2Up Name="@Model.Name" Icon="@Model.Icon" />
