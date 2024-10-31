@@ -16,3 +16,13 @@
 .col.compact > ::deep .bar {    
     margin-top: -36px;
 }
+
+.col ::deep a {
+    color: var(--c-text-light);
+    text-decoration: none;
+    display: block;
+}
+
+.col ::deep a:hover {
+    background: var(--c-foundation-primary);
+}

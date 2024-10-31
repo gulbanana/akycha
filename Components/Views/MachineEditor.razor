@@ -1,3 +1,4 @@
+@using Microsoft.EntityFrameworkCore
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Machine Model { get; set; }
@@ -7,19 +8,47 @@
         UOW.GetLoaded<Machine>().Remove(Model);
         UOW.NotifyChanged();
     }
+
+    private Task<List<Recipe>> GetRecipes()
+    {
+        return UOW.Load(db => db.Recipes
+            .Where(r => r.MachineId == Model.Id)
+            .Include(r => r.Machine)
+            .Include(r => r.Items)
+            .ThenInclude(i => i.Part)
+            .ToListAsync());
+    }
 }
 
-<IconRow>
-    <ImageField @bind-Value="Model.Icon" />
-    <FieldColumn Compact>
-        <Block Label="Name">
-            <TextField id="@context" @bind-Value="Model.Name" />
-        </Block>
+<div class="layout">
+    <IconRow>
+        <ImageField @bind-Value="Model.Icon" />
+        <FieldColumn Compact>
+            <Block Label="Name">
+                <TextField id="@context" @bind-Value="Model.Name" />
+            </Block>
 
-        <Block Label="Power Usage (MW)">
-            <IntField id="@context" @bind-Value="Model.PowerUsageMegawatts" />
-        </Block>
-    
-        <DangerousCommandBar Action="DeleteMachine">Delete</DangerousCommandBar>
+            <Block Label="Power Usage (MW)">
+                <IntField id="@context" @bind-Value="Model.PowerUsageMegawatts" />
+            </Block>
+        
+            <DangerousCommandBar Action="DeleteMachine">Delete</DangerousCommandBar>
+        </FieldColumn>
+    </IconRow>
+
+    <FieldColumn>
+        <Async Binding="GetRecipes" Context="recipes">
+            @if (recipes.Any())
+            {
+                <Block Label="Recipes">
+                    @foreach (var recipe in recipes)
+                    {
+                        <a href="Recipes/@(recipe.Id)">
+                            <RecipeSummary Model="recipe" />
+                        </a>
+                    }
+                </Block>
+            }
+        </Async>
     </FieldColumn>
-</IconRow>
+</div>

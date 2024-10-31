@@ -1,0 +1,16 @@
+@typeparam T where T : class
+@code {
+    [Parameter] public RenderFragment<T>? ChildContent { get; set; }
+    [Parameter, EditorRequired] public required Func<Task<T>> Binding { get; set; }
+    private T? data;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        data = await Binding();
+    }
+}
+
+@if (data is not null)
+{
+    @ChildContent?.Invoke(data)
+}

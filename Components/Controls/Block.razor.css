@@ -17,6 +17,7 @@ label {
     }
 
     .derived > & {
+        padding-left: 0;
         background-color: var(--c-content-background);
         color: var(--c-ficsit-primary);
     }

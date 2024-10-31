@@ -1,3 +1,4 @@
+@using Microsoft.EntityFrameworkCore
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Part Model { get; set; }
@@ -7,19 +8,71 @@
         UOW.GetLoaded<Part>().Remove(Model);
         UOW.NotifyChanged();
     }
+
+    private Task<List<Recipe>> GetRecipes()
+    {
+        return UOW.Load(db => db.Recipes
+            .Where(r => r.Items.Any(i => i.PartId == Model.Id && (i.Role == ItemRole.Product || i.Role == ItemRole.Byproduct)))
+            .Include(r => r.Machine)
+            .Include(r => r.Items)
+            .ThenInclude(i => i.Part)
+            .ToListAsync());
+    }
+
+    private Task<List<Recipe>> GetUsedIn()
+    {
+        return UOW.Load(db => db.Recipes
+            .Where(r => r.Items.Any(i => i.PartId == Model.Id && i.Role == ItemRole.Ingredient))
+            .Include(r => r.Machine)
+            .Include(r => r.Items)
+            .ThenInclude(i => i.Part)
+            .ToListAsync());
+    }
 }
 
-<IconRow>
-    <ImageField @bind-Value="Model.Icon" />
-    <FieldColumn Compact>
-        <Block Label="Name">
-            <TextField id="@context" @bind-Value="Model.Name" />
-        </Block>
+<div class="layout">
+    <IconRow>
+        <ImageField @bind-Value="Model.Icon" />
+        <FieldColumn Compact>
+            <Block Label="Name">
+                <TextField id="@context" @bind-Value="Model.Name" />
+            </Block>
 
-        <Block Label="Category">
-            <TextField id="@context" @bind-Value="Model.Category" />
-        </Block>
-        
-        <DangerousCommandBar Action="DeletePart">Delete</DangerousCommandBar>
+            <Block Label="Category">
+                <TextField id="@context" @bind-Value="Model.Category" />
+            </Block>
+            
+            <DangerousCommandBar Action="DeletePart">Delete</DangerousCommandBar>
+        </FieldColumn>
+    </IconRow>
+
+    <FieldColumn>
+        <Async Binding="GetRecipes" Context="recipes">
+            @if (recipes.Any())
+            {
+                <Block Label="Recipes">
+                    @foreach (var recipe in recipes)
+                    {
+                        <a href="Recipes/@(recipe.Id)">
+                            <RecipeSummary Model="recipe" />
+                        </a>
+                    }
+                </Block>
+            }
+        </Async>
+
+        <Async Binding="GetUsedIn" Context="recipes">
+            @if (recipes.Any())
+            {
+                <Block Label="Used In">
+                    @foreach (var recipe in recipes)
+                    {
+                        <a href="Recipes/@(recipe.Id)">
+                            <RecipeSummary Model="recipe" />
+                        </a>
+                    }
+                </Block>
+            }
+        </Async>
     </FieldColumn>
-</IconRow>
+</div>

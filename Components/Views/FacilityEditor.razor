@@ -131,10 +131,9 @@
             }
         }
 
-        <Block Label="Statistics" />
-        <Grid Items="@(new object[1])" Labels="@(["Power Usage"])" Derived>
+        <Block Label="Power Usage">
             <ReadonlyBox>@Model.CalculatePowerText()</ReadonlyBox>
-        </Grid>
+        </Block>
 
         <DangerousCommandBar Action="DeleteFacility">Delete</DangerousCommandBar>
     </FieldColumn>
