@@ -20,10 +20,12 @@ header > ::deep *:last-child {
 }
 
 .list {
+    align-self: start;
     display: flex;
     flex-direction: column;    
     border-left: 2px solid var(--c-ficsit-primary);
     border-right: 2px solid var(--c-ficsit-primary);
+    overflow: hidden;
 }
 
 .item {

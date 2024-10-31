@@ -1,13 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @code {
     [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback Action { get; set; }
     [Parameter] public bool Small { get; set; }
-    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
+    [Parameter] public bool Disabled { get; set; }
 }
 
 <AuthorizeView>
     <Authorized>
-    <button class="@BEM.Class("command", (Small, "small"))" @attributes="Splat">
+    <button class="@BEM.Class("command", (Small, "small"))" disabled="@Disabled" @onclick="Action">
         @ChildContent
     </button>
     </Authorized>

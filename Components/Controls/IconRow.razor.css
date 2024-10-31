@@ -1,0 +1,13 @@
+.row {
+    min-height: 128px;
+    display: grid;
+    grid-template-columns: 128px 1fr auto;
+    grid-template-rows: 1fr 32px;
+    grid-template-areas:
+        'icon data data'
+        'icon data data';
+}
+
+.row > ::deep *:first-child {
+    grid-area: icon;
+}

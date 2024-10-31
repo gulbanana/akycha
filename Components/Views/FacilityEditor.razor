@@ -63,7 +63,7 @@
 
 @if (recipes is not null)
 {
-    <div class="layout">
+    <FieldColumn>
         <Grid Items="@(new object[1])" Labels="@(["Name", "Category", "Notes"])">
             <TextField id="@context" @bind-Value="Model.Name" />
             <TextField id="@context" @bind-Value="Model.Category" />
@@ -144,6 +144,6 @@
             <ReadonlyBox>@Model.CalculatePowerText()</ReadonlyBox>
         </Grid>
 
-        <CommandButton @onclick="DeleteFacility">Delete</CommandButton>
-    </div>
+        <DangerousCommandBar Action="DeleteFacility">Delete</DangerousCommandBar>
+    </FieldColumn>
 }

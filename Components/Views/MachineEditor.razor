@@ -2,16 +2,16 @@
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Machine Model { get; set; }
 
-    private void DeletePart()
+    private void DeleteMachine()
     {
         UOW.GetLoaded<Machine>().Remove(Model);
         UOW.NotifyChanged();
     }
 }
 
-<div class="layout">
+<IconRow>
     <ImageField @bind-Value="Model.Icon" />
-    <div class="data-primary">
+    <FieldColumn Compact>
         <Block Label="Name">
             <TextField id="@context" @bind-Value="Model.Name" />
         </Block>
@@ -19,6 +19,7 @@
         <Block Label="Power Usage (MW)">
             <IntField id="@context" @bind-Value="Model.PowerUsageMegawatts" />
         </Block>
-    </div>
-    <CommandButton @onclick="DeletePart">Delete</CommandButton>
-</div>
+    
+        <DangerousCommandBar Action="DeleteMachine">Delete</DangerousCommandBar>
+    </FieldColumn>
+</IconRow>

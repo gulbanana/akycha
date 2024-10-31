@@ -16,7 +16,7 @@
     <div class="grid-header grid-commands">
         @if (OnAdd.HasDelegate)
         {
-            <CommandButton Small @onclick="OnAdd">+</CommandButton>
+            <CommandButton Small Action="OnAdd">+</CommandButton>
         }
     </div>
 
@@ -26,7 +26,7 @@
         <div class="grid-commands">
             @if (OnRemove.HasDelegate)
             {
-                <CommandButton Small @onclick="() => OnRemove.InvokeAsync(item)">-</CommandButton>
+                <CommandButton Small Action="() => OnRemove.InvokeAsync(item)">-</CommandButton>
             }
         </div>
     }

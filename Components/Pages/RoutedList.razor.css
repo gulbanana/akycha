@@ -3,10 +3,6 @@
     grid-template-columns: 1fr;
 }
 
-.master-detail > ::deep * {
-    overflow: hidden;
-}
-
 .has-detail {
     grid-template-columns: 1fr 2fr;
     gap: 16px;

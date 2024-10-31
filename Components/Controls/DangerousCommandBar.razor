@@ -1,0 +1,37 @@
+@using Microsoft.AspNetCore.Components.Authorization
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback Action { get; set; }
+    [Parameter] public bool Small { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    private bool confirm;
+
+    private void OnClick() 
+    {
+        confirm = true;
+    }
+
+    private void OnCancel()
+    {
+        confirm = false;
+    }
+}
+
+<div class="bar">
+    @if (confirm)
+    {
+        <span>Really?</span>
+        <CommandButton Action="Action" Small="Small" Disabled="Disabled">
+            @ChildContent
+        </CommandButton>
+        <CommandButton Action="OnCancel" Small="Small" Disabled="Disabled">
+            Cancel
+        </CommandButton>
+    }
+    else
+    {
+        <CommandButton Action="OnClick" Small="Small" Disabled="Disabled">
+            @ChildContent
+        </CommandButton>
+    }
+</div>

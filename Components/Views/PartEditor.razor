@@ -9,9 +9,9 @@
     }
 }
 
-<div class="layout">
+<IconRow>
     <ImageField @bind-Value="Model.Icon" />
-    <div class="data-primary">
+    <FieldColumn Compact>
         <Block Label="Name">
             <TextField id="@context" @bind-Value="Model.Name" />
         </Block>
@@ -19,6 +19,7 @@
         <Block Label="Category">
             <TextField id="@context" @bind-Value="Model.Category" />
         </Block>
-    </div>
-    <CommandButton @onclick="DeletePart">Delete</CommandButton>
-</div>
+        
+        <DangerousCommandBar Action="DeletePart">Delete</DangerousCommandBar>
+    </FieldColumn>
+</IconRow>

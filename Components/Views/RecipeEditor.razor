@@ -47,7 +47,7 @@
 
 @if (machines is not null && parts is not null)
 {
-    <div class="layout">
+    <FieldColumn>
         <Block Label="Name">
             <TextField id="@context" @bind-Value="Model.Name" />
         </Block>
@@ -77,6 +77,6 @@
             <FloatField @bind-Value="context.QuantityPerMinute" />
         </Grid>
 
-        <CommandButton @onclick="DeleteRecipe">Delete</CommandButton>
-    </div>
+        <DangerousCommandBar Action="DeleteRecipe">Delete</DangerousCommandBar>
+    </FieldColumn>
 }

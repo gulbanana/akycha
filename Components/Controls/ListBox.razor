@@ -35,7 +35,7 @@
                     <span class="title">@itemHeader</span>
                     @if (firstHeader && AddCommand.HasDelegate)
                     {                        
-                        <CommandButton @onclick="AddCommand" disabled="@(!loaded)">Add</CommandButton>
+                        <CommandButton Action="AddCommand" Disabled="@(!loaded)">Add</CommandButton>
                         firstHeader = false;
                     }
                 </header>
