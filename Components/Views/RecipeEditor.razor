@@ -68,7 +68,7 @@
             <FloatField @bind-Value="context.QuantityPerMinute" />
         </Grid>
 
-        <Grid T="Item" Items="Model.Items.Where(i => i.Role == ItemRole.Product)"
+        <Grid T="Item" Items="Model.Items.Where(i => i.Role == ItemRole.Product || i.Role == ItemRole.Byproduct)"
             Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemoveItem">
             <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="parts">
                 <ImageBox Value="selection!.Icon" SideLength="32" />
