@@ -39,13 +39,16 @@ public class Recipe : IListable<Recipe>
     public IEnumerable<byte[]?> GetProductIcons()
     {
         var products = Items.Where(i => i.Role == ItemRole.Product)
-            .Concat(Items.Where(i => i.Role == ItemRole.Byproduct))
             .Select(i => i.Part)
             .Where(p => p != null);
-        
+
+        var byproducts = Items.Where(i => i.Role == ItemRole.Byproduct)
+            .Select(i => i.Part)
+            .Where(p => p != null);
+
         if (products.Any())
         {
-            return Part.Sort(products!).Select(p => p.Icon);
+            return Part.Sort(products!).Concat(Part.Sort(byproducts!)).Select(p => p.Icon);
         }
         else
         {

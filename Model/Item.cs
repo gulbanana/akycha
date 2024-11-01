@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Akycha.Model;
 
@@ -13,4 +14,11 @@ public class Item
 
     public required Recipe Recipe { get; set; }
     public Part? Part { get; set; }
+
+    [NotMapped]
+    public bool IsByproduct
+    {
+        get => Role == ItemRole.Byproduct;
+        set => Role = value ? ItemRole.Byproduct : ItemRole.Product;
+    }
 }

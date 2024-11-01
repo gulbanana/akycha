@@ -1,0 +1,31 @@
+label {
+    padding-left: 8px;
+    display: grid !important;
+    grid-template-columns: 24px;
+    grid-template-rows: 24px;
+    align-self: center;
+}
+
+label > * {
+    height: 24px;
+    width: 24px;
+    grid-area: 1/1/2/2;
+}
+
+input {
+    appearance: none;
+    outline: none;
+    background: var(--c-content-background);
+    color: var(--c-text-light);
+    border: 1px solid var(--c-ficsit-primary);    
+}
+
+svg {
+    stroke: white;
+    fill: white;
+}
+
+input:hover,
+input:focus-visible {
+    border-color: var(--c-ficsit-secondary);
+}

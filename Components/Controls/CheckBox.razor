@@ -1,0 +1,25 @@
+@code {
+    [Parameter] public bool Value { get; set; }
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IDictionary<string, object>? Splat { get; set; }
+
+    private bool value
+    {
+        get => Value;
+        set
+        {
+            Value = value;
+            ValueChanged.InvokeAsync(Value);
+        }
+    }
+}
+
+<label>
+    <input type="checkbox" @bind="value" @attributes="Splat">
+    @if (Value)
+    {
+        <svg viewBox="0 0 24 24">
+            <rect x="4" y="4" width="16" height="16"/>
+        </svg>
+    }
+</label>
