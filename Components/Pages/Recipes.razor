@@ -11,8 +11,6 @@
         .Include(r => r.Machine);
 }
 
-<PageTitle>Akycha - Recipes</PageTitle>
-
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
     <RoutedList T="Recipe" @bind-Id="Id" Prefix="Recipes" Filter="FilterRecipes">
         <Master>

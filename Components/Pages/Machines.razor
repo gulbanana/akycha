@@ -6,8 +6,6 @@
     [Parameter] public int? Id { get; set; }
 }
 
-<PageTitle>Akycha - Machines</PageTitle>
-
 <CascadingValue TValue="IUnitOfWork" IsFixed Value="this">
     <RoutedList T="Machine" @bind-Id="Id" Prefix="Machines">
         <Master>

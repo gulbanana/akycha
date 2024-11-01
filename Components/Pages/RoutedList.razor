@@ -58,6 +58,7 @@
             }
         }
     }
+
     private void UOWChanged()
     {
         if (Selection is null)
@@ -67,6 +68,18 @@
         else if (Selection.Id != 0)
         {
             Nav.NavigateTo($"/{Prefix}/{Selection.Id}");
+        }
+    }
+
+    private string GetTitle()
+    {
+        if (Selection is null)
+        {
+            return Prefix;
+        }
+        else
+        {
+            return $"{Prefix} - {Selection.Name}";
         }
     }
 
@@ -85,6 +98,8 @@
         UOW.NotifyChanged();
     }
 }
+
+<PageTitle>Akycha - @GetTitle()</PageTitle>
 
 <div class="@BEM.Class("master-detail", (Selection is not null, "has-detail"))">
     <ListBox T=T GetHeader="item => item.Category" GetModels="GetItems" AddCommand="AddItem" @bind-Selection="Selection">
