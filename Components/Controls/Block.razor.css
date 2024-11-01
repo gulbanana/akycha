@@ -29,4 +29,5 @@ label {
 
 .block > ::deep *:nth-child(n + 2) {
     margin-left: 4px;
+    min-width: 200px;
 }
