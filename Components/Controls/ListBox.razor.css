@@ -2,13 +2,20 @@ header {
     background-color: var(--c-ficsit-primary);
     color: var(--c-text-dark);
 
-    height: 32px;
+    height: 30px;
     font-size: 20px;
     user-select: none;
 
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: stretch;
+}
+
+header:first-of-type {
+    height: 32px;
+    & > .title {
+        padding-top: 2px;
+    }
 }
 
 header > ::deep .command {
