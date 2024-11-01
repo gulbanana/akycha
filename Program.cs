@@ -1,5 +1,6 @@
 using Akycha;
 using Akycha.Components;
+using Akycha.Components.Controls;
 using Akycha.Model;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ builder.Services.AddDbContextFactory<FactoryContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.Configure<AkychaOptions>(builder.Configuration.GetRequiredSection("Akycha"));
+
+builder.Services.AddScoped(typeof(ListConfig<>), typeof(ListConfig<>));
 
 var app = builder.Build();
 

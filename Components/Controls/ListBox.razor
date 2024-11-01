@@ -1,5 +1,6 @@
 @typeparam T where T : class
 @code {
+    [Inject] public required ListConfig<T> Config { get; set; }
     [Parameter] public RenderFragment<T>? ChildContent { get; set; }
     [Parameter, EditorRequired] public required Func<Task<IReadOnlyList<T>>> GetModels { get; set; }
     [Parameter, EditorRequired] public required Func<T, string> GetHeader { get; set; }
@@ -7,7 +8,6 @@
     [Parameter] public T? Selection { get; set; }
     [Parameter] public EventCallback<T> SelectionChanged { get; set; }
 
-    private readonly Dictionary<string, bool> expanded = new();
     private bool loaded;
     private IReadOnlyList<T> models = [];
 
@@ -33,14 +33,14 @@
             var itemHeader = GetHeader(model);
             if (currentHeader != itemHeader)
             {
-                if (!expanded.ContainsKey(itemHeader))
+                if (!Config.Expanded.ContainsKey(itemHeader))
                 {
-                    expanded[itemHeader] = true;
+                    Config.Expanded[itemHeader] = true;
                 }
                 <header>
-                    <button class="title" @onclick="() => expanded[itemHeader] = !expanded[itemHeader]">
+                    <button class="title" @onclick="() => Config.Expanded[itemHeader] = !Config.Expanded[itemHeader]">
                         <svg class="expander" viewBox="0 0 14 14">
-                            @if (expanded[itemHeader])
+                            @if (Config.Expanded[itemHeader])
                             {
                                 <path d="M0,5 L7,12 L14,5" />
                             }
@@ -60,7 +60,7 @@
                 currentHeader = itemHeader;
             }
 
-            @if (expanded[currentHeader])
+            @if (Config.Expanded[currentHeader])
             {
                 <button class="@BEM.Class("item", (model == Selection, "selected"))" @onclick="() => Select(model)">
                     @ChildContent?.Invoke(model)
