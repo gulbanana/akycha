@@ -15,7 +15,9 @@ public class Recipe : IListable<Recipe>
 
     public static IOrderedEnumerable<Recipe> Sort(IEnumerable<Recipe> rs)
     {
-        return rs.OrderBy(r => r.Category).ThenBy(r => r.Name);
+        return rs.OrderBy(r => r.Category)
+            .ThenBy(r => r.Items.Where(i => i.Role == ItemRole.Product).Select(i => i.Part?.Name).FirstOrDefault() ?? "")
+            .ThenBy(r => r.Name);
     }
 
     public IEnumerable<byte[]?> GetIngredientIcons()
