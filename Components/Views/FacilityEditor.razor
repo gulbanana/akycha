@@ -59,6 +59,57 @@
         UOW.GetLoaded<Input>().Remove(item);
         UOW.NotifyChanged();
     }
+
+    private async Task<List<Recipe>> LoadAlternates(Recipe? recipe)
+    {
+        if ((recipe?.Items ?? []).Where(i => i.Role == ItemRole.Product).FirstOrDefault() is { Part: var product and not null })
+        {
+            return await UOW.Load(db => db.Recipes
+                .Where(r => r.Items.Any(i => i.Role == ItemRole.Product && i.Part != null && i.Part.Id == product.Id))
+                .OrderBy(r => r.Id)
+                .ToListAsync());
+        }
+        else
+        {
+            return [];
+        }
+    }
+
+    private void PrevAlternate(Process process, List<Recipe> alternates)
+    {
+        if (process.Recipe is null || alternates.Count < 1)
+        {
+            return;
+        }
+
+        var earlier = alternates.TakeWhile(r => r.Id < process.Recipe.Id);
+        if (earlier.Any())
+        {
+            process.Recipe = earlier.Last();
+        }
+        else
+        {
+            process.Recipe = alternates.Last();
+        }
+    }
+
+    private void NextAlternate(Process process, List<Recipe> alternates)
+    {
+        if (process.Recipe is null || alternates.Count < 1)
+        {
+            return;
+        }
+
+        var later = alternates.SkipWhile(r => r.Id <= process.Recipe.Id);
+        if (later.Any())
+        {
+            process.Recipe = later.First();
+        }
+        else
+        {
+            process.Recipe = alternates.First();
+        }
+    }
 }
 
 @if (recipes is not null)
@@ -70,13 +121,22 @@
             <TextBox />
         </Grid>
 
-        <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards"])" OnAdd="AddProcess" OnRemove="RemoveProcess">
+        <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards", ""])" OnAdd="AddProcess" OnRemove="RemoveProcess">
             <ComboField T="Recipe" @bind-Value="context.Recipe" Context="selection" Options="recipes">
                 <ImageBox Value="selection!.GetProductIcons().First()" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <IntField @bind-Value="context.QuantityMachines" />
             <IntField @bind-Value="context.PowerShards" />
+            <Async Binding="() => LoadAlternates(context.Recipe)" Context="alternates">
+                <div class="shortcuts">
+                    @if (alternates.Count > 1)
+                    {
+                        <CommandButton Small Action="() => PrevAlternate(context, alternates)">&lt;</CommandButton>
+                        <CommandButton Small Action="() => NextAlternate(context, alternates)">&gt;</CommandButton>
+                    }
+                </div>
+            </Async>
         </Grid>
 
         <Grid T="Input" Items="Model.Inputs" Labels="@(["Input", "Quantity (per minute)", "Source"])" OnAdd="AddInput" OnRemove="RemoveInput">
