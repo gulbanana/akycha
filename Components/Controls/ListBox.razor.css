@@ -6,8 +6,8 @@ header {
     font-size: 20px;
     user-select: none;
 
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: stretch;
 }
 
@@ -23,7 +23,18 @@ header > ::deep .command {
 }
 
 .title {
-    padding: 0 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 4px;    
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.expander {
+    width: 14px;
+    height: 14px;
 }
 
 .list {

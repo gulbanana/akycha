@@ -6,6 +6,8 @@
     [Parameter] public EventCallback AddCommand { get; set; }
     [Parameter] public T? Selection { get; set; }
     [Parameter] public EventCallback<T> SelectionChanged { get; set; }
+
+    private readonly Dictionary<string, bool> expanded = new();
     private bool loaded;
     private IReadOnlyList<T> models = [];
 
@@ -30,9 +32,25 @@
         {
             var itemHeader = GetHeader(model);
             if (currentHeader != itemHeader)
-            {                
+            {
+                if (!expanded.ContainsKey(itemHeader))
+                {
+                    expanded[itemHeader] = true;
+                }
                 <header>
-                    <span class="title">@itemHeader</span>
+                    <button class="title" @onclick="() => expanded[itemHeader] = !expanded[itemHeader]">
+                        <svg class="expander" viewBox="0 0 14 14">
+                            @if (expanded[itemHeader])
+                            {
+                                <path d="M0,5 L7,12 L14,5" />
+                            }
+                            else
+                            {
+                                <path d="M5,0 L12,7 L5,14" />
+                            }
+                        </svg>
+                        <span>@itemHeader</span>
+                    </button>
                     @if (firstHeader && AddCommand.HasDelegate)
                     {                        
                         <CommandButton Action="AddCommand" Disabled="@(!loaded)">Add</CommandButton>
@@ -42,9 +60,12 @@
                 currentHeader = itemHeader;
             }
 
-            <button class="@BEM.Class("item", (model == Selection, "selected"))" @onclick="() => Select(model)">
-                @ChildContent?.Invoke(model)
-            </button>
+            @if (expanded[currentHeader])
+            {
+                <button class="@BEM.Class("item", (model == Selection, "selected"))" @onclick="() => Select(model)">
+                    @ChildContent?.Invoke(model)
+                </button>
+            }
         }
     }
 </div>
