@@ -48,7 +48,7 @@ public class Facility : IListable<Facility>
         }
         else
         {
-            return [null];
+            return [];
         }
     }
 
