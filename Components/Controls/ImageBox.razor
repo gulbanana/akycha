@@ -1,6 +1,7 @@
 @code {
     [Parameter] public byte[]? Value { get; set; }
     [Parameter] public int? SideLength { get; set; }
+    [Parameter] public string? Tooltip { get; set; }
     private string src = "";
 
     protected override void OnParametersSet()
@@ -18,5 +19,5 @@
 }    
     
 <figure class="icon">
-    <img src="@src" style="@(SideLength.HasValue ? $"--side-length: {SideLength.Value}px" : "")">
+    <img src="@src" title="@Tooltip" style="@(SideLength.HasValue ? $"--side-length: {SideLength.Value}px" : "")">
 </figure>

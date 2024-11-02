@@ -22,15 +22,15 @@ public class Facility : IListable<Facility>
     }
 
     // registered + missing inputs
-    public IEnumerable<byte[]?> GetInputIcons()
+    public IEnumerable<Quantity> GetInputQuantities()
     {
-        var uniqueParts = new HashSet<Part>();
+        var uniqueParts = new HashSet<Quantity>();
 
         foreach (var p in Inputs)
         {
             if (p.From is not null && p.Part is not null)
             {
-                uniqueParts.Add(p.Part);
+                uniqueParts.Add(new(p.Part.Icon, p.QuantityPerMinute));
             }
         }
 
@@ -38,13 +38,13 @@ public class Facility : IListable<Facility>
         {
             if (p.Value < 0)
             {
-                uniqueParts.Add(p.Key);
+                uniqueParts.Add(new(p.Key.Icon, 0f - p.Value));
             }
         }
 
         if (uniqueParts.Any())
         {
-            return uniqueParts.Select(p => p.Icon);
+            return uniqueParts;
         }
         else
         {
@@ -53,15 +53,15 @@ public class Facility : IListable<Facility>
     }
 
     // registered outputs + random excess
-    public IEnumerable<byte[]?> GetOutputIcons()
+    public IEnumerable<Quantity> GetOutputQuantities()
     {
-        var uniqueParts = new HashSet<Part>();
+        var uniqueParts = new HashSet<Quantity>();
 
         foreach (var p in Outputs)
         {
             if (p.To is not null && p.Part is not null)
             {
-                uniqueParts.Add(p.Part);
+                uniqueParts.Add(new(p.Part.Icon, p.QuantityPerMinute));
             }
         }
 
@@ -69,13 +69,13 @@ public class Facility : IListable<Facility>
         {
             if (p.Value > 0)
             {
-                uniqueParts.Add(p.Key);
+                uniqueParts.Add(new(p.Key.Icon, p.Value));
             }
         }
         
         if (uniqueParts.Any())
         {
-            return uniqueParts.Select(p => p.Icon);
+            return uniqueParts;
         }
         else
         {

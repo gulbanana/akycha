@@ -20,39 +20,39 @@ public class Recipe : IListable<Recipe>
             .ThenBy(r => r.Name);
     }
 
-    public IEnumerable<byte[]?> GetIngredientIcons()
+    public IEnumerable<Quantity> GetIngredientQuantities()
     {
         var products = Items.Where(i => i.Role == ItemRole.Ingredient)
-            .Select(i => i.Part)
-            .Where(p => p != null);
-        
+            .Where(i => i.Part != null);
+
         if (products.Any())
         {
-            return Part.Sort(products!).Select(p => p.Icon);
+            return Item.Sort(products!)
+                .Select(i => new Quantity(i.Part!.Icon, i.QuantityPerMinute));
         }
         else
         {
-            return [null];
+            return [new(null, null)];
         }    
     }
 
-    public IEnumerable<byte[]?> GetProductIcons()
+    public IEnumerable<Quantity> GetProductQuantities()
     {
         var products = Items.Where(i => i.Role == ItemRole.Product)
-            .Select(i => i.Part)
-            .Where(p => p != null);
+            .Where(i => i.Part != null);
 
         var byproducts = Items.Where(i => i.Role == ItemRole.Byproduct)
-            .Select(i => i.Part)
-            .Where(p => p != null);
+            .Where(i => i.Part != null);
 
         if (products.Any())
         {
-            return Part.Sort(products!).Concat(Part.Sort(byproducts!)).Select(p => p.Icon);
+            return Item.Sort(products!)
+                .Concat(Item.Sort(byproducts!))
+                .Select(i => new Quantity(i.Part!.Icon, i.QuantityPerMinute));
         }
         else
         {
-            return [null];
+            return [new(null, null)];
         }
     }
 

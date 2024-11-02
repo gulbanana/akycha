@@ -1,8 +1,8 @@
 @code {
-    [Parameter, EditorRequired] public required IEnumerable<byte[]> Inputs { get; set; }
-    [Parameter, EditorRequired] public required IEnumerable<byte[]> Outputs { get; set; }
-    private List<byte[]> inputs = [];
-    private List<byte[]> outputs = [];
+    [Parameter, EditorRequired] public required IEnumerable<Quantity> Inputs { get; set; }
+    [Parameter, EditorRequired] public required IEnumerable<Quantity> Outputs { get; set; }
+    private List<Quantity> inputs = [];
+    private List<Quantity> outputs = [];
 
     protected override void OnParametersSet()
     {
@@ -14,9 +14,9 @@
 @if (inputs.Any())
 {
     <div class="icons">
-        @foreach (var icon in inputs)
+        @foreach (var q in inputs)
         {
-            <ImageBox Value="icon" />
+            <ImageBox Value="q.Icon" Tooltip="@q.Amount?.ToString()" />
         }
     </div>
 
@@ -26,8 +26,8 @@
 }
 
 <div class="icons">
-    @foreach (var icon in outputs)
+    @foreach (var q in outputs)
     {
-        <ImageBox Value="icon" />
+        <ImageBox Value="q.Icon" Tooltip="@q.Amount?.ToString()" />
     }
 </div>

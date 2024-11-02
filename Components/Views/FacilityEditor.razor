@@ -123,7 +123,7 @@
 
         <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards", ""])" OnAdd="AddProcess" OnRemove="RemoveProcess">
             <ComboField T="Recipe" @bind-Value="context.Recipe" Context="selection" Options="recipes">
-                <ImageBox Value="selection!.GetProductIcons().First()" SideLength="32" />
+                <ImageBox Value="selection!.GetProductQuantities().First().Icon" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <IntField @bind-Value="context.QuantityMachines" />
