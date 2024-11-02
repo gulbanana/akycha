@@ -1,5 +1,6 @@
 .box {
     height: 32px;
+    min-width: 200px;
     padding: 0 8px;
 
     border: 1px solid var(--c-ficsit-primary);
