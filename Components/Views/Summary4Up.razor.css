@@ -1,0 +1,39 @@
+.layout {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: 24px 32px;
+    grid-template-areas: 'title . cost' 'process . extra';
+    justify-items: start;
+    padding: 4px 8px 4px 8px;
+
+    font-size: 16px;
+    --side-length: 32px;
+}
+
+.title {
+    grid-area: title;
+    justify-self: start;
+}
+
+.process {
+    grid-area: process;
+    justify-self: start;
+
+    display: grid;
+    grid-template-columns: auto 32px auto;
+    align-items: center;
+}
+
+.cost {
+    grid-area: cost;
+    justify-self: end;
+    color: var(--c-text-light-sub);
+}
+
+.extra {
+    grid-area: extra;    
+    justify-self: end;
+    color: var(--c-text-light-sub);
+    display: flex;
+    align-items: center;
+}

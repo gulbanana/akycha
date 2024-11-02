@@ -1,0 +1,33 @@
+@code {
+    [Parameter, EditorRequired] public required IEnumerable<byte[]> Inputs { get; set; }
+    [Parameter, EditorRequired] public required IEnumerable<byte[]> Outputs { get; set; }
+    private List<byte[]> inputs = [];
+    private List<byte[]> outputs = [];
+
+    protected override void OnParametersSet()
+    {
+        inputs = Inputs.ToList();
+        outputs = Outputs.ToList();
+    }
+}
+
+@if (inputs.Any())
+{
+    <div class="icons">
+        @foreach (var icon in inputs)
+        {
+            <ImageBox Value="icon" />
+        }
+    </div>
+
+    <svg class="glyph arrow" viewBox="0 0 100 100">
+        <path d="M70,45 L20,45 L20,55 L60,55 L60,65 L80,50 L60,35 L60,50" />
+    </svg>
+}
+
+<div class="icons">
+    @foreach (var icon in outputs)
+    {
+        <ImageBox Value="icon" />
+    }
+</div>

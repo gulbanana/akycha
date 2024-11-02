@@ -1,6 +1,6 @@
 .grid {
     display: grid;
-    grid-template-columns: repeat(var(--columns), minmax(200px, auto)) 1fr;
+    grid-template-columns: repeat(var(--columns), auto) 1fr;
     align-items: stretch;
     row-gap: 4px;
     --c-header: var(--c-ficsit-primary);

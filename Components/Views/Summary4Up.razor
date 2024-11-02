@@ -1,0 +1,22 @@
+@code {
+    [Parameter] public required string Name { get; set; }
+    [Parameter] public required string Cost { get; set; }
+    [Parameter] public RenderFragment? Process { get; set; }
+    [Parameter] public RenderFragment? Extra { get; set; }
+}
+
+<div class="layout">
+    <div class="title">@Name</div>
+
+    <div class="cost">
+        @Cost
+    </div>
+
+    <div class="process">
+        @Process
+    </div>
+
+    <div class="extra">
+        @Extra
+    </div>
+</div>

@@ -1,0 +1,13 @@
+.icons {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 32px;
+    --side-length: 32px;
+}
+
+.arrow {
+    width: 32px;
+    height: 32px;
+    stroke: none;
+    fill: var(--c-ficsit-secondary);
+}

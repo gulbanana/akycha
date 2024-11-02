@@ -118,7 +118,7 @@
         <Grid Items="@(new object[1])" Labels="@(["Name", "Category", "Notes"])">
             <TextField id="@context" @bind-Value="Model.Name" />
             <TextField id="@context" @bind-Value="Model.Category" />
-            <TextBox />
+            <TextField id="@context" @bind-Value="Model.Notes" />
         </Grid>
 
         <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards", ""])" OnAdd="AddProcess" OnRemove="RemoveProcess">
@@ -129,7 +129,7 @@
             <IntField @bind-Value="context.QuantityMachines" />
             <IntField @bind-Value="context.PowerShards" />
             <Async Binding="() => LoadAlternates(context.Recipe)" Context="alternates">
-                <div class="shortcuts">
+                <div class="auto shortcuts">
                     @if (alternates.Count > 1)
                     {
                         <CommandButton Small Action="() => PrevAlternate(context, alternates)">&lt;</CommandButton>

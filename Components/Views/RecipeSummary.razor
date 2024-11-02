@@ -3,37 +3,12 @@
     [Parameter] public required Recipe Model { get; set; }
 }
 
-<div class="layout">
-    <div class="title">@Model.Name</div>
-
-    <div class="cost">
-        @if (Model.Machine is not null)
-        {
-            <text>@(Model.Machine.PowerUsageMegawatts)MW</text>
-        }
-    </div>
-
-    <div class="process">
-        <div class="icons">
-            @foreach (var icon in Model.GetIngredientIcons())
-            {
-                <ImageBox Value="icon" />
-            }
-        </div>
-
-        <svg class="glyph arrow" viewBox="0 0 100 100">
-            <path d="M70,45 L20,45 L20,55 L60,55 L60,65 L80,50 L60,35 L60,50"  />
-        </svg>
-
-        <div class="icons">
-            @foreach (var icon in Model.GetProductIcons())
-            {
-                <ImageBox Value="icon" />
-            }
-        </div>
-    </div>    
-
-    <div class="machine">
+<Summary4Up Name="@Model.Name" Cost="@Model.CalculatePowerText()">
+    <Process>
+        <ProcessIcons Inputs="Model.GetIngredientIcons()" Outputs="Model.GetProductIcons()" />        
+    </Process>
+    
+    <Extra>
         <ImageBox Value="Model.Machine?.Icon" />
-    </div>
-</div>
+    </Extra>
+</Summary4Up>

@@ -148,7 +148,11 @@ public class Facility : IListable<Facility>
     {
         var mw = Processes.Select(p => p.CalculatePowerUsage()).Sum();
 
-        if (mw < 1000)
+        if (mw == 0)
+        {
+            return "";
+        }
+        else if (mw < 1000)
         {
             return $"{mw}MW";
         }

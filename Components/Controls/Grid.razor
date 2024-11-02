@@ -23,7 +23,7 @@
     @foreach (var item in Items)
     {
         @ChildContent?.Invoke(item)
-        <div class="grid-commands">
+        <div class="auto grid-commands">
             @if (OnRemove.HasDelegate)
             {
                 <CommandButton Small Action="() => OnRemove.InvokeAsync(item)">-</CommandButton>

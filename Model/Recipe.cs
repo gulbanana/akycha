@@ -60,4 +60,16 @@ public class Recipe : IListable<Recipe>
     {
         return Items.Where(i => i.Role == ItemRole.Product).FirstOrDefault()?.Part;
     }
+
+    public string CalculatePowerText()
+    {
+        if (Machine is null)
+        {
+            return "";
+        }
+        else
+        {
+            return $"{Machine.PowerUsageMegawatts}MW";
+        }
+    }
 }
