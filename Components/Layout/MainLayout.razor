@@ -36,7 +36,12 @@
 
     <main>
         <ErrorBoundary @ref="errorBoundary">
-            @Body
+            <ChildContent>@Body</ChildContent>
+            <ErrorContent>
+                <div class="blazor-error-boundary">
+                    <pre>@context.ToString()</pre>
+                </div>
+            </ErrorContent>
         </ErrorBoundary>
     </main>
 </div>
