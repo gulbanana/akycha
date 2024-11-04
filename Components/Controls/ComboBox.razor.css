@@ -4,13 +4,13 @@
     padding: 0 8px;
 
     border: 1px solid var(--c-ficsit-primary);
-    
+    outline: none; 
+
     display: flex;
     align-items: center;
     gap: 8px;
 
-
-    &:hover, &.active {
+    &:hover, &.active, &:focus-visible {
         border-color: var(--c-ficsit-secondary);
     }
 
