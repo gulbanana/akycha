@@ -23,6 +23,7 @@ header > ::deep .command {
 }
 
 .title {
+    color: inherit;
     background: none;
     border: none;
     cursor: pointer;
