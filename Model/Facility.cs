@@ -24,13 +24,17 @@ public class Facility : IListable<Facility>
     // registered + missing inputs
     public IEnumerable<Quantity> GetInputQuantities()
     {
-        var uniqueParts = new HashSet<Quantity>();
+        var amountsByPart = new Dictionary<Part, float>();
 
         foreach (var p in Inputs)
         {
             if (p.From is not null && p.Part is not null)
             {
-                uniqueParts.Add(new(p.Part.Icon, p.QuantityPerMinute));
+                if (!amountsByPart.ContainsKey(p.Part))
+                {
+                    amountsByPart[p.Part] = 0f;
+                }
+                amountsByPart[p.Part] += p.QuantityPerMinute;
             }
         }
 
@@ -38,13 +42,17 @@ public class Facility : IListable<Facility>
         {
             if (p.Value < 0)
             {
-                uniqueParts.Add(new(p.Key.Icon, 0f - p.Value));
+                if (!amountsByPart.ContainsKey(p.Key))
+                {
+                    amountsByPart[p.Key] = 0f;
+                }
+                amountsByPart[p.Key] -= p.Value;
             }
         }
 
-        if (uniqueParts.Any())
+        if (amountsByPart.Any())
         {
-            return uniqueParts;
+            return amountsByPart.Select(kvp => new Quantity(kvp.Key.Icon, kvp.Value));
         }
         else
         {
@@ -55,13 +63,17 @@ public class Facility : IListable<Facility>
     // registered outputs + random excess
     public IEnumerable<Quantity> GetOutputQuantities()
     {
-        var uniqueParts = new HashSet<Quantity>();
+        var amountsByPart = new Dictionary<Part, float>();
 
         foreach (var p in Outputs)
         {
             if (p.To is not null && p.Part is not null)
             {
-                uniqueParts.Add(new(p.Part.Icon, p.QuantityPerMinute));
+                if (!amountsByPart.ContainsKey(p.Part))
+                {
+                    amountsByPart[p.Part] = 0f;
+                }
+                amountsByPart[p.Part] += p.QuantityPerMinute;
             }
         }
 
@@ -69,13 +81,17 @@ public class Facility : IListable<Facility>
         {
             if (p.Value > 0)
             {
-                uniqueParts.Add(new(p.Key.Icon, p.Value));
+                if (!amountsByPart.ContainsKey(p.Key))
+                {
+                    amountsByPart[p.Key] = 0f;
+                }
+                amountsByPart[p.Key] += p.Value;
             }
         }
         
-        if (uniqueParts.Any())
+        if (amountsByPart.Any())
         {
-            return uniqueParts;
+            return amountsByPart.Select(kvp => new Quantity(kvp.Key.Icon, kvp.Value));
         }
         else
         {
