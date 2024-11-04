@@ -35,7 +35,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
         {
             HasChanges = true;
             StateHasChanged();
-            timer.Change(TimeSpan.FromMilliseconds(400), Timeout.InfiniteTimeSpan);
+            timer.Change(TimeSpan.FromMilliseconds(500), Timeout.InfiniteTimeSpan);
         });
     }
 
@@ -55,7 +55,7 @@ public class DbPage : ComponentBase, IDisposable, IUnitOfWork
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(ex, "Save failed.");
+                    Logger.LogError(ex, "Page save failed.");
                 }
                 finally
                 {

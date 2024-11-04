@@ -12,6 +12,7 @@ public class FactoryContext(DbContextOptions<FactoryContext> options) : DbContex
     public DbSet<Part> Parts { get; set; }
     public DbSet<Process> Processes { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<Setting> Settings { get; set; }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {

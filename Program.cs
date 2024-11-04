@@ -21,7 +21,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.Configure<AkychaOptions>(builder.Configuration.GetRequiredSection("Akycha"));
 
-builder.Services.AddScoped(typeof(ListConfig<>), typeof(ListConfig<>));
+builder.Services.AddScoped<SettingsService>();
 
 var app = builder.Build();
 

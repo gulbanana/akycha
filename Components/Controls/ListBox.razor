@@ -1,6 +1,6 @@
 @typeparam T where T : class
 @code {
-    [Inject] public required ListConfig<T> Config { get; set; }
+    [Inject] public required SettingsService Settings { get; set; }
     [Parameter] public RenderFragment<T>? ChildContent { get; set; }
     [Parameter, EditorRequired] public required Func<Task<IReadOnlyList<T>>> GetModels { get; set; }
     [Parameter, EditorRequired] public required Func<T, string> GetHeader { get; set; }
@@ -22,6 +22,19 @@
         Selection = model;
         SelectionChanged.InvokeAsync(model);
     }
+
+    private bool GetExpanded(string group)
+    {
+        var key = $"ListBox:{typeof(T).Name}:{group}";
+        return Settings.Get(key, true);
+    }
+
+    private void ToggleExpanded(string group)
+    {
+        var key = $"ListBox:{typeof(T).Name}:{group}";
+        var expanded = Settings.Get(key, true);
+        Settings.Put(key, !expanded);
+    }
 }
 
 <div class="list">
@@ -33,14 +46,10 @@
             var itemHeader = GetHeader(model);
             if (currentHeader != itemHeader)
             {
-                if (!Config.Expanded.ContainsKey(itemHeader))
-                {
-                    Config.Expanded[itemHeader] = true;
-                }
                 <header>
-                    <button class="title" @onclick="() => Config.Expanded[itemHeader] = !Config.Expanded[itemHeader]">
+                    <button class="title" @onclick="() => ToggleExpanded(itemHeader)">
                         <svg class="expander" viewBox="0 0 14 14">
-                            @if (Config.Expanded[itemHeader])
+                            @if (GetExpanded(itemHeader))
                             {
                                 <path d="M0,5 L7,12 L14,5" />
                             }
@@ -60,7 +69,7 @@
                 currentHeader = itemHeader;
             }
 
-            @if (Config.Expanded[currentHeader])
+            @if (GetExpanded(itemHeader))
             {
                 <button class="@BEM.Class("item", (model == Selection, "selected"))" @onclick="() => Select(model)">
                     @ChildContent?.Invoke(model)
