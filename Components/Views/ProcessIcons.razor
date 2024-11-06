@@ -13,7 +13,7 @@
 
 @if (inputs.Any())
 {
-    <div class="icons">
+    <div class="icons max4">
         @foreach (var q in inputs)
         {
             <ImageBox Value="q.Icon" Tooltip="@q.Amount?.ToString()" />

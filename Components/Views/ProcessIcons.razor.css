@@ -5,6 +5,14 @@
     --side-length: 32px;
 }
 
+.max4 {
+    max-height: 32px;
+    max-width: 128px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+}
+
 .arrow {
     width: 32px;
     height: 32px;
