@@ -7,6 +7,7 @@ public class Machine : IListable<Machine>
 {
     [Key] public int Id { get; set; }
     public string Name { get; set; } = "New Machine";
+    public string? Plural { get; set; }
     public string Category => "Machines";
     public byte[]? Icon { get; set; }
     public int PowerUsageMegawatts { get; set; }

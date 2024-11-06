@@ -24,9 +24,10 @@
     <IconRow>
         <ImageField @bind-Value="Model.Icon" />
         <FieldColumn Compact>
-            <Block Label="Name">
+            <Grid Labels="@(["Name", "Plural"])" Items="[default(object)]">
                 <TextField id="@context" @bind-Value="Model.Name" />
-            </Block>
+                <TextField id="@context" @bind-Value="Model.Plural" />
+            </Grid>
 
             <Block Label="Power Usage (MW)">
                 <IntField id="@context" @bind-Value="Model.PowerUsageMegawatts" />

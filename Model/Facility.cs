@@ -171,12 +171,16 @@ public class Facility : IListable<Facility>
                 continue;
             }
 
-            if (!result.ContainsKey(process.Recipe.Machine.Name))
+            var key = string.IsNullOrEmpty(process.Recipe.Machine.Plural) 
+                ? process.Recipe.Machine.Name
+                : process.Recipe.Machine.Plural;
+
+            if (!result.ContainsKey(key))
             {
-                result[process.Recipe.Machine.Name] = 0;
+                result[key] = 0;
             }
 
-            result[process.Recipe.Machine.Name] += process.QuantityMachines;
+            result[key] += process.QuantityMachines;
         }
 
         return result;
