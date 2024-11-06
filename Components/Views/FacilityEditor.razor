@@ -191,9 +191,16 @@
             }
         }
 
-        <Block Label="Power Usage">
-            <ReadonlyBox>@Model.CalculatePowerText()</ReadonlyBox>
-        </Block>
+        @{
+            var machines = Model.CalculateMachines();
+            <Grid T="object" Items="[null]" Labels="@([..machines.Keys, "Power Usage"])">
+                @foreach (var v in machines.Values)
+                {                    
+                    <ReadonlyBox>@v</ReadonlyBox>
+                }
+                <ReadonlyBox>@Model.CalculatePowerText()</ReadonlyBox>
+            </Grid>
+        }
 
         <DangerousCommandBar Action="DeleteFacility">Delete</DangerousCommandBar>
     </FieldColumn>

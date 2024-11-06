@@ -160,6 +160,28 @@ public class Facility : IListable<Facility>
         }
     }
 
+    public Dictionary<string, int> CalculateMachines()
+    {
+        var result = new Dictionary<string, int>();
+
+        foreach (var process in Processes)
+        {
+            if (process.Recipe?.Machine is null)
+            {
+                continue;
+            }
+
+            if (!result.ContainsKey(process.Recipe.Machine.Name))
+            {
+                result[process.Recipe.Machine.Name] = 0;
+            }
+
+            result[process.Recipe.Machine.Name] += process.QuantityMachines;
+        }
+
+        return result;
+    }
+
     public string CalculatePowerText()
     {
         var mw = Processes.Select(p => p.CalculatePowerUsage()).Sum();
