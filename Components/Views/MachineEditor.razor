@@ -18,11 +18,16 @@
             .ThenInclude(i => i.Part)
             .ToListAsync());
     }
+
+    private void IconChanged(byte[] data)
+    {
+        Model.Icon = data;
+    }
 }
 
 <div class="layout">
     <IconRow>
-        <ImageField @bind-Value="Model.Icon" />
+        <ImageField Type="Machine" Id="Model.Id" ValueChanged="IconChanged" />
         <FieldColumn Compact>
             <Grid Labels="@(["Name", "Plural"])" Items="[default(object)]">
                 <TextField id="@context" @bind-Value="Model.Name" />

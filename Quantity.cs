@@ -1,3 +1,3 @@
 namespace Akycha;
 
-public record Quantity(byte[]? Icon, float? Amount);
+public record Quantity(int? PartId, float? Amount);

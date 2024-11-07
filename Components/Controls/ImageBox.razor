@@ -1,19 +1,20 @@
 @code {
-    [Parameter] public byte[]? Value { get; set; }
+    [EditorRequired, Parameter] public required string Type { get; set; }
+    [EditorRequired, Parameter] public int? Id { get; set; }
     [Parameter] public int? SideLength { get; set; }
     [Parameter] public string? Tooltip { get; set; }
+
     private string src = "";
 
     protected override void OnParametersSet()
     {
-        if (Value is null)
+        if (!Id.HasValue)
         {
             src = "Icon_Cross.png";
         }
         else
         {
-            var data = Convert.ToBase64String(Value);
-            src = $"data:image/png;base64,{data}";
+            src = $"Icon/{Type}/{Id.Value}";
         }
     }
 }    

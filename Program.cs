@@ -39,8 +39,8 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAntiforgery();
 
-app.MapPost("/Account/Login", AccountEndpoints.LoginAsync);
-app.MapPost("/Account/Logout", (Delegate)AccountEndpoints.LogoutAsync);
+AccountEndpoints.Map(app);
+IconEndpoints.Map(app);
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

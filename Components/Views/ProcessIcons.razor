@@ -16,7 +16,7 @@
     <div class="icons max4">
         @foreach (var q in inputs)
         {
-            <ImageBox Value="q.Icon" Tooltip="@q.Amount?.ToString()" />
+            <ImageBox Type="Part" Id="q.PartId" Tooltip="@q.Amount?.ToString()" />
         }
     </div>
 
@@ -28,6 +28,6 @@
 <div class="icons">
     @foreach (var q in outputs)
     {
-        <ImageBox Value="q.Icon" Tooltip="@q.Amount?.ToString()" />
+        <ImageBox Type="Part" Id="q.PartId" Tooltip="@q.Amount?.ToString()" />
     }
 </div>

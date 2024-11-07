@@ -123,7 +123,7 @@
 
         <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards", ""])" OnAdd="AddProcess" OnRemove="RemoveProcess">
             <ComboField T="Recipe" @bind-Value="context.Recipe" Context="selection" Options="recipes">
-                <ImageBox Value="selection!.GetProductQuantities().First().Icon" SideLength="32" />
+                <ImageBox Type="Part" Id="selection!.GetProductQuantities().First().PartId" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <IntField @bind-Value="context.QuantityMachines" />
@@ -142,7 +142,7 @@
         <Grid T="Input" Items="Model.Inputs" Labels="@(["Input", "Quantity (per minute)", "Source"])" OnAdd="AddInput" OnRemove="RemoveInput">
             <ComboField T="Part" @bind-Value="context.Part" Context="selection"
                 Options="@(context.From?.CalculateLocalParts() ?? [])">
-                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <ImageBox Type="Part" Id="selection!.Id" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <FloatField @bind-Value="context.QuantityPerMinute" />
@@ -157,7 +157,7 @@
             {
                 <Grid T="Input" Items="missingInputs" Labels="@(["Missing", "Required (per minute)"])" Derived>
                     <ReadonlyBox>
-                        <ImageBox Value="context.Part?.Icon" SideLength="32" />
+                        <ImageBox Type="Part" Id="context.Part?.Id" SideLength="32" />
                         <span>@context.Part?.Name</span>
                     </ReadonlyBox>
                     <ReadonlyBox>@context.QuantityPerMinute</ReadonlyBox>
@@ -167,7 +167,7 @@
 
         <Grid T="Input" Items="Model.Outputs" Labels="@(["Output", "Quantity (per minute)", "Destination"])" OnAdd="AddOutput" OnRemove="RemoveOutput">
             <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="Model.CalculateLocalParts()">
-                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <ImageBox Type="Part" Id="selection!.Id" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <FloatField @bind-Value="context.QuantityPerMinute" />
@@ -183,7 +183,7 @@
                 <Grid T="Input" Items="Model.CalculateExcessOutputs()" Labels="@(["Excess", "Available (per minute)"])"
                     Derived>
                     <ReadonlyBox>
-                        <ImageBox Value="context.Part?.Icon" SideLength="32" />
+                        <ImageBox Type="Part" Id="context.Part?.Id" SideLength="32" />
                         <span>@context.Part?.Name</span>
                     </ReadonlyBox>
                     <ReadonlyBox>@context.QuantityPerMinute</ReadonlyBox>

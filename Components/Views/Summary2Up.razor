@@ -1,9 +1,10 @@
 @code {
     [Parameter] public required string Name { get; set; }
-    [Parameter] public required byte[] Icon { get; set; }
+    [Parameter] public required string IconType { get; set; }
+    [Parameter] public int IconId { get; set; }
 }
 
 <div class="layout">
-    <ImageBox Value="Icon" />
+    <ImageBox Type="@IconType" Id="IconId" />
     <div class="title">@Name</div>
 </div>

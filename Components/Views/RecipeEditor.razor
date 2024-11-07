@@ -86,7 +86,7 @@
 
         <Block Label="Machine">
             <ComboField id="@context" T="Machine" @bind-Value="Model.Machine" Context="selection" Options="machines">
-                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <ImageBox Type="Machine" Id="selection.Id" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
         </Block>
@@ -94,7 +94,7 @@
         <Grid T="Item" Items="Model.Items.Where(i => i.Role == ItemRole.Ingredient)"
             Labels="@(["Ingredient", "Quantity"])" OnAdd="AddIngredient" OnRemove="RemoveItem">
             <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="parts">
-                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <ImageBox Type="Part" Id="selection.Id" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <FloatField @bind-Value="context.QuantityPerMinute" />
@@ -103,7 +103,7 @@
         <Grid T="Item" Items="Model.Items.Where(i => i.Role == ItemRole.Product || i.Role == ItemRole.Byproduct)"
             Labels="@(["Product", "Quantity"])" OnAdd="AddProduct" OnRemove="RemoveItem">
             <ComboField T="Part" @bind-Value="context.Part" Context="selection" Options="parts">
-                <ImageBox Value="selection!.Icon" SideLength="32" />
+                <ImageBox Type="Part" Id="selection.Id" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <FloatField @bind-Value="context.QuantityPerMinute" />

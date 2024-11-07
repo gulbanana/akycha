@@ -28,11 +28,16 @@
             .ThenInclude(i => i.Part)
             .ToListAsync());
     }
+
+    private void IconChanged(byte[] data)
+    {
+        Model.Icon = data;
+    }
 }
 
 <div class="layout">
     <IconRow>
-        <ImageField @bind-Value="Model.Icon" />
+        <ImageField Type="Part" Id="Model.Id" ValueChanged="IconChanged" />
         <FieldColumn Compact>
             <Block Label="Name">
                 <TextField id="@context" @bind-Value="Model.Name" />

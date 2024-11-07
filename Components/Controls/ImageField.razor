@@ -1,7 +1,8 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @code {
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
-    [Parameter] public byte[]? Value { get; set; }
+    [EditorRequired, Parameter] public required string Type { get; set; }
+    [EditorRequired, Parameter] public int Id { get; set; }
     [Parameter] public EventCallback<byte[]?> ValueChanged { get; set; }
 
     private async Task OnImageUpload(InputFileChangeEventArgs e)
@@ -9,15 +10,13 @@
         var image = await e.File.RequestImageFileAsync("png", 128, 128);
         using var buffer = new MemoryStream();
         await image.OpenReadStream().CopyToAsync(buffer);
-
-        Value = buffer.ToArray();
-        await ValueChanged.InvokeAsync(Value);
+        await ValueChanged.InvokeAsync(buffer.ToArray());
         UOW.NotifyChanged();
     }
 }
 
 <div class="layout">
-    <ImageBox SideLength="126" Value="Value" />    
+    <ImageBox SideLength="126" Type="@Type" Id="@Id" />    
     <AuthorizeView>
         <button class="overlay" onclick="document.getElementById('image-upload').click()">
             <InputFile id="image-upload" OnChange="OnImageUpload" />

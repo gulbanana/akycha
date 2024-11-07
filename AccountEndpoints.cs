@@ -7,6 +7,12 @@ namespace Akycha;
 
 static class AccountEndpoints
 {
+    public static void Map(IEndpointRouteBuilder routes)
+    {
+        routes.MapPost("/Account/Login", LoginAsync);
+        routes.MapPost("/Account/Logout", (Delegate)LogoutAsync);
+    }
+
     public record LoginModel(string Password);
 
     public static async Task<IResult> LoginAsync(HttpContext context, IOptions<AkychaOptions> options, [FromForm] LoginModel model)

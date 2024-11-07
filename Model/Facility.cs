@@ -52,7 +52,7 @@ public class Facility : IListable<Facility>
 
         if (amountsByPart.Any())
         {
-            return amountsByPart.Select(kvp => new Quantity(kvp.Key.Icon, kvp.Value));
+            return amountsByPart.Select(kvp => new Quantity(kvp.Key.Id, kvp.Value));
         }
         else
         {
@@ -91,7 +91,7 @@ public class Facility : IListable<Facility>
         
         if (amountsByPart.Any())
         {
-            return amountsByPart.Select(kvp => new Quantity(kvp.Key.Icon, kvp.Value));
+            return amountsByPart.Select(kvp => new Quantity(kvp.Key.Id, kvp.Value));
         }
         else
         {

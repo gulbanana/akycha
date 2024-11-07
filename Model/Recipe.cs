@@ -28,7 +28,7 @@ public class Recipe : IListable<Recipe>
         if (products.Any())
         {
             return Item.Sort(products!)
-                .Select(i => new Quantity(i.Part!.Icon, i.QuantityPerMinute));
+                .Select(i => new Quantity(i.Part?.Id, i.QuantityPerMinute));
         }
         else
         {
@@ -48,7 +48,7 @@ public class Recipe : IListable<Recipe>
         {
             return Item.Sort(products!)
                 .Concat(Item.Sort(byproducts!))
-                .Select(i => new Quantity(i.Part!.Icon, i.QuantityPerMinute));
+                .Select(i => new Quantity(i.Part?.Id, i.QuantityPerMinute));
         }
         else
         {
