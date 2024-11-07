@@ -22,7 +22,7 @@
     {
         <span>Really?</span>
         <CommandButton Action="Action" Small="Small" Disabled="Disabled">
-            @ChildContent
+            Delete
         </CommandButton>
         <CommandButton Action="OnCancel" Small="Small" Disabled="Disabled">
             Cancel
@@ -30,8 +30,9 @@
     }
     else
     {
+        @ChildContent
         <CommandButton Action="OnClick" Small="Small" Disabled="Disabled">
-            @ChildContent
+            Delete
         </CommandButton>
     }
 </div>

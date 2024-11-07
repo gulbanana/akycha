@@ -1,5 +1,6 @@
 @using Microsoft.EntityFrameworkCore
 @code {
+    [Inject] public required NavigationManager Nav { get; set; }
     [CascadingParameter] public required IUnitOfWork UOW { get; set; }
     [Parameter] public required Recipe Model { get; set; }
     private List<Machine>? machines;
@@ -43,6 +44,37 @@
         UOW.GetLoaded<Item>().Remove(item);
         UOW.NotifyChanged();
     }
+
+    private void CreateAlternate()
+    {
+        var product = Model.Items.Where(i => i.Role == ItemRole.Product).First();
+        if (product is null)
+        {
+            return;
+        }
+
+        var clone = new Recipe
+        {
+            Name = Model.Name + " (copy)",
+            Machine = Model.Machine
+        };
+        clone.Items.Add(new Item
+        {
+            Recipe = clone,
+            Role = product.Role,
+            Part = product.Part
+        });
+
+        void go()
+        {
+            Nav.NavigateTo("Recipes/" + clone.Id);
+            UOW.OnChanged -= go;
+        }
+
+        UOW.GetLoaded<Recipe>().Add(clone);
+        UOW.OnChanged += go;
+        UOW.NotifyChanged();        
+    }
 }
 
 @if (machines is not null && parts is not null)
@@ -78,6 +110,8 @@
             @* <CheckField @bind-Value="context.IsByproduct" /> *@
         </Grid>
 
-        <DangerousCommandBar Action="DeleteRecipe">Delete</DangerousCommandBar>
+        <DeleteCommandBar Action="DeleteRecipe">
+            <CommandButton Action="CreateAlternate">Create Alternate</CommandButton>
+        </DeleteCommandBar>
     </FieldColumn>
 }
