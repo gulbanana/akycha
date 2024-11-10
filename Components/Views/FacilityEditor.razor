@@ -128,15 +128,15 @@
             </ComboField>
             <IntField @bind-Value="context.QuantityMachines" />
             <IntField @bind-Value="context.PowerShards" />
-            <Async Binding="() => LoadAlternates(context.Recipe)" Context="alternates">
-                <div class="auto shortcuts">
+            <div class="auto shortcuts">
+                <Async Binding="() => LoadAlternates(context.Recipe)" Context="alternates">
                     @if (alternates.Count > 1)
                     {
                         <CommandButton Small Action="() => PrevAlternate(context, alternates)">&lt;</CommandButton>
                         <CommandButton Small Action="() => NextAlternate(context, alternates)">&gt;</CommandButton>
                     }
-                </div>
-            </Async>
+                </Async>
+            </div>
         </Grid>
 
         <Grid T="Input" Items="Model.Inputs" Labels="@(["Input", "Quantity (per minute)", "Source"])" OnAdd="AddInput" OnRemove="RemoveInput">
