@@ -180,7 +180,7 @@ public class Facility : IListable<Facility>
                 result[key] = 0;
             }
 
-            result[key] += process.QuantityMachines;
+            result[key] += (int)Math.Ceiling(process.QuantityMachines);
         }
 
         return result;

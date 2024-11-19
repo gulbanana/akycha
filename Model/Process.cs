@@ -8,7 +8,7 @@ public class Process
     public int FacilityId { get; set; }
     public int? RecipeId { get; set; }
 
-    public int QuantityMachines { get; set; }
+    public float QuantityMachines { get; set; }
     public int PowerShards { get; set; }
 
     public required Facility Facility { get; set; }
@@ -21,15 +21,16 @@ public class Process
             return 0.0;
         }
              
-        var machineShards = new int[QuantityMachines];
-        var machinePower = new double[QuantityMachines];
+        var nonUnderclockedMachines = (int)Math.Floor(QuantityMachines);
+        var machineShards = new int[nonUnderclockedMachines];
+        var machinePower = new double[nonUnderclockedMachines];
 
         var totalShards = PowerShards;
         var currentMachine = 0;        
         while (totalShards > 0)
         {
             machineShards[currentMachine]++;
-            currentMachine %= QuantityMachines;
+            currentMachine %= nonUnderclockedMachines;
             totalShards--;
         }
 

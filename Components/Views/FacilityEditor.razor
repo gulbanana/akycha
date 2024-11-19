@@ -126,7 +126,7 @@
                 <ImageBox Type="Part" Id="selection!.GetProductQuantities().First().PartId" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
-            <IntField @bind-Value="context.QuantityMachines" />
+            <FloatField @bind-Value="context.QuantityMachines" />
             <IntField @bind-Value="context.PowerShards" />
             <div class="auto shortcuts">
                 <Async Binding="() => LoadAlternates(context.Recipe)" Context="alternates">
