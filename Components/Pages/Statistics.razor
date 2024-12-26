@@ -3,15 +3,17 @@
 
 @code {
     [Inject] public required IDbContextFactory<FactoryContext> Factory { get; set; }
+    [Inject] public required SettingsService Settings { get; set; }
     private readonly List<(string name, double total)> gains = [];
     private readonly List<(string name, double total)> costs = [];
+    private List<Facility> facilities = [];
     private double net;
 
     protected override void OnInitialized()
     {
         using var context = Factory.CreateDbContext();
 
-        var facilities = context.Facilities
+        facilities = context.Facilities
         .Include(f => f.Processes)
         .ThenInclude(p => p.Recipe)
         .ThenInclude(r => r!.Machine)
@@ -29,6 +31,36 @@
 
         net = facilities.Sum(f => f.CalculatePowerUsage());
     }
+
+    private string augmenters
+    {
+        get => Settings.Get("Augmenters", 0).ToString();
+        set
+        {
+            if (int.TryParse(value, out var parsed))
+            {
+                Settings.Put("Augmenters", parsed);
+            }
+        }
+    }
+
+    private double? GetBoost()
+    {
+        if (int.TryParse(augmenters, out var x) && x > 0)
+        {
+            var totalGains = facilities
+            .SelectMany(f => f.Processes)
+            .Select(p => p.CalculatePowerUsage())
+            .Where(u => u < 0)
+            .Sum();
+
+            return totalGains * x * -0.1;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
 
 <p>
@@ -38,6 +70,7 @@
         <span class="filler"></span>
         <span class="good usage">@Format.Power(gain.total * -1)</span>
     }
+
     @if (gains.Count > 0)
     {
         <span></span>
@@ -56,6 +89,7 @@
         <span class="filler"></span>
         <span class="bad usage">@Format.Power(cost.total)</span>
     }
+
     @if (costs.Count > 1)
     {
         <span></span>
@@ -67,7 +101,21 @@
     }
 </p>
 
-@* <hr> *@
+<p class="augmenters">
+    <span>Alien Power Augmenters</span>
+    <span class="filler"></span>
+    <TextBox @bind-Value="augmenters" />
+
+    @if (GetBoost() is double augmented)
+    {
+        <span></span>
+        <span class="filler"></span>
+        <hr>
+        <span></span>
+        <span class="filler"></span>
+        <span class="total usage">+@Format.Power(augmented)</span>
+    }
+</p>
 
 <p class="total">
     <span>Net</span>

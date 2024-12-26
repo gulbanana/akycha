@@ -28,3 +28,9 @@ hr {
 .total {
     font-style: italic;
 }
+
+.augmenters ::deep input {
+    width: 100px;
+    font-size: 24px;
+    text-align: right;
+}
