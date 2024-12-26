@@ -7,17 +7,18 @@
     private readonly List<(string name, double total)> gains = [];
     private readonly List<(string name, double total)> costs = [];
     private List<Facility> facilities = [];
-    private double net;
+    private double gross;
+    private double net => gross - (GetBoost() ?? 0);
 
     protected override void OnInitialized()
     {
         using var context = Factory.CreateDbContext();
 
         facilities = context.Facilities
-        .Include(f => f.Processes)
-        .ThenInclude(p => p.Recipe)
-        .ThenInclude(r => r!.Machine)
-        .ToList();
+            .Include(f => f.Processes)
+            .ThenInclude(p => p.Recipe)
+            .ThenInclude(r => r!.Machine)
+            .ToList();
 
         foreach (var group in facilities.Where(f => f.CalculatePowerUsage() < 0).GroupBy(f => f.Category))
         {
@@ -29,7 +30,7 @@
             costs.Add((group.Key, group.Sum(f => f.CalculatePowerUsage())));
         }
 
-        net = facilities.Sum(f => f.CalculatePowerUsage());
+        gross = facilities.Sum(f => f.CalculatePowerUsage());
     }
 
     private string augmenters
