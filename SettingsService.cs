@@ -34,7 +34,7 @@ public class SettingsService : IDisposable
         }
     }
 
-    public bool Get(string key, bool fallback)
+    public string Get(string key, string fallback)
     {
         if (db.Settings.Local.FindEntry(key)?.Entity is Setting { Value: var result })
         {
@@ -46,11 +46,45 @@ public class SettingsService : IDisposable
         }
     }
 
-    public void Put(string key, bool value)
+    public bool Get(string key, bool fallback)
     {
-        var setting = db.Settings.Local.FindEntry(key) ?? db.Add(new Setting { Key = key } );
+        if (db.Settings.Local.FindEntry(key)?.Entity is Setting { Value: var result })
+        {
+            return bool.TryParse(result, out var parsed) ? parsed : fallback;
+        }
+        else
+        {
+            return fallback;
+        }
+    }
+
+    public int Get(string key, int fallback)
+    {
+        if (db.Settings.Local.FindEntry(key)?.Entity is Setting { Value: var result })
+        {
+            return int.TryParse(result, out var parsed) ? parsed : fallback;
+        }
+        else
+        {
+            return fallback;
+        }
+    }
+
+    public void Put(string key, string value)
+    {
+        var setting = db.Settings.Local.FindEntry(key) ?? db.Add(new Setting { Key = key, Value = value });
         setting.Entity.Value = value;
         timer.Change(TimeSpan.FromMilliseconds(500), Timeout.InfiniteTimeSpan);
+    }
+
+    public void Put(string key, bool value)
+    {
+        Put(key, value.ToString());
+    }
+
+    public void Put(string key, int value)
+    {
+        Put(key, value.ToString());
     }
 
     private async void OnTimeout(object? _)
