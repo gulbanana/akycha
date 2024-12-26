@@ -88,7 +88,7 @@ public class Facility : IListable<Facility>
                 amountsByPart[p.Key] += p.Value;
             }
         }
-        
+
         if (amountsByPart.Any())
         {
             return amountsByPart.Select(kvp => new Quantity(kvp.Key.Id, kvp.Value));
@@ -101,7 +101,7 @@ public class Facility : IListable<Facility>
 
     public IEnumerable<Part> CalculateLocalParts()
     {
-        var result = new HashSet<Part>(); 
+        var result = new HashSet<Part>();
 
         foreach (var input in Inputs)
         {
@@ -171,7 +171,7 @@ public class Facility : IListable<Facility>
                 continue;
             }
 
-            var key = string.IsNullOrEmpty(process.Recipe.Machine.Plural) 
+            var key = string.IsNullOrEmpty(process.Recipe.Machine.Plural)
                 ? process.Recipe.Machine.Name
                 : process.Recipe.Machine.Plural;
 
@@ -186,21 +186,21 @@ public class Facility : IListable<Facility>
         return result;
     }
 
+    public double CalculatePowerUsage()
+    {
+        return Processes.Select(p => p.CalculatePowerUsage()).Sum();
+    }
+
     public string CalculatePowerText()
     {
-        var mw = Processes.Select(p => p.CalculatePowerUsage()).Sum();
-
-        if (mw == 0)
+        var usage = CalculatePowerUsage();
+        if (usage >= 0)
         {
-            return "";
-        }
-        else if (mw < 1000)
-        {
-            return $"{mw}MW";
+            return Format.Power(usage);
         }
         else
         {
-            return $"{Math.Round((float)mw / 1000.0, 1)}GW";
+            return "+" + Format.Power(usage * -1);
         }
     }
 
@@ -216,7 +216,7 @@ public class Facility : IListable<Facility>
                 {
                     result[input.Part] = 0;
                 }
-                
+
                 result[input.Part] += input.QuantityPerMinute;
             }
         }
@@ -260,7 +260,7 @@ public class Facility : IListable<Facility>
                 }
             }
         }
-        
+
         return result;
     }
 }

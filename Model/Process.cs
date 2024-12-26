@@ -20,13 +20,13 @@ public class Process
         {
             return 0.0;
         }
-             
+
         var nonUnderclockedMachines = (int)Math.Floor(QuantityMachines);
         var machineShards = new int[nonUnderclockedMachines];
         var machinePower = new double[nonUnderclockedMachines];
 
         var totalShards = PowerShards;
-        var currentMachine = 0;        
+        var currentMachine = 0;
         while (totalShards > 0)
         {
             machineShards[currentMachine]++;

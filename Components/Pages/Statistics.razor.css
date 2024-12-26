@@ -1,0 +1,30 @@
+p {
+    font-size: 24px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+}
+
+.filler {
+    /* border-bottom: dotted 1px currentColor; */
+}
+
+hr {
+    width: 100%;
+    color: var(--c-ficsit-primary);
+}
+
+.usage {
+    text-align: right;
+}
+
+.good {
+    color: green;
+}
+
+.bad {
+    color: red;
+}
+
+.total {
+    font-style: italic;
+}

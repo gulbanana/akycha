@@ -19,6 +19,13 @@ public class Machine : IListable<Machine>
 
     public double CalculateUsage(double clockSpeed)
     {
-        return PowerUsageMegawatts * Math.Pow(clockSpeed/100.0, 1.321928);
+        if (PowerUsageMegawatts >= 0)
+        {
+            return PowerUsageMegawatts * Math.Pow(clockSpeed / 100.0, 1.321928);
+        }
+        else
+        {
+            return PowerUsageMegawatts * (clockSpeed / 100.0);
+        }
     }
 }

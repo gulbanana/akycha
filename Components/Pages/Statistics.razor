@@ -1,0 +1,83 @@
+﻿@page "/Statistics"
+@using Microsoft.EntityFrameworkCore
+
+@code {
+    [Inject] public required IDbContextFactory<FactoryContext> Factory { get; set; }
+    private readonly List<(string name, double total)> gains = [];
+    private readonly List<(string name, double total)> costs = [];
+    private double net;
+
+    protected override void OnInitialized()
+    {
+        using var context = Factory.CreateDbContext();
+
+        var facilities = context.Facilities
+        .Include(f => f.Processes)
+        .ThenInclude(p => p.Recipe)
+        .ThenInclude(r => r!.Machine)
+        .ToList();
+
+        foreach (var group in facilities.Where(f => f.CalculatePowerUsage() < 0).GroupBy(f => f.Category))
+        {
+            gains.Add((group.Key, group.Sum(f => f.CalculatePowerUsage())));
+        }
+
+        foreach (var group in facilities.Where(f => f.CalculatePowerUsage() >= 0).GroupBy(f => f.Category))
+        {
+            costs.Add((group.Key, group.Sum(f => f.CalculatePowerUsage())));
+        }
+
+        net = facilities.Sum(f => f.CalculatePowerUsage());
+    }
+}
+
+<p>
+    @foreach (var gain in gains.OrderBy(c => c.name))
+    {
+        <span>@gain.name</span>
+        <span class="filler"></span>
+        <span class="good usage">@Format.Power(gain.total * -1)</span>
+    }
+    @if (gains.Count > 0)
+    {
+        <span></span>
+        <span class="filler"></span>
+        <hr>
+        <span></span>
+        <span class="filler"></span>
+        <span class="total usage">+@Format.Power(gains.Sum(c => c.total) * -1)</span>
+    }
+</p>
+
+<p>
+    @foreach (var cost in costs.OrderBy(c => c.name))
+    {
+        <span>@cost.name</span>
+        <span class="filler"></span>
+        <span class="bad usage">@Format.Power(cost.total)</span>
+    }
+    @if (costs.Count > 1)
+    {
+        <span></span>
+        <span class="filler"></span>
+        <hr>
+        <span></span>
+        <span class="filler"></span>
+        <span class="total usage">-@Format.Power(costs.Sum(c => c.total))</span>
+    }
+</p>
+
+@* <hr> *@
+
+<p class="total">
+    <span>Net</span>
+    <span class="filler"></span>
+    @if (net < 0)
+    {
+        <span class="usage">+@Format.Power(net * -1)</span>
+    }
+    else
+    {
+        <span class="usage">-@Format.Power(net)</span>
+    }
+</p>
