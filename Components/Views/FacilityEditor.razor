@@ -121,13 +121,14 @@
             <TextField id="@context" @bind-Value="Model.Notes" />
         </Grid>
 
-        <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards", ""])" OnAdd="AddProcess" OnRemove="RemoveProcess">
+        <Grid T="Process" Items="Model.Processes" Labels="@(["Process", "Machines", "Shards", "𝕊", ""])" OnAdd="AddProcess" OnRemove="RemoveProcess">
             <ComboField T="Recipe" @bind-Value="context.Recipe" Context="selection" Options="recipes">
                 <ImageBox Type="Part" Id="selection!.GetProductQuantities().First().PartId" SideLength="32" />
                 <span>@selection.Name</span>
             </ComboField>
             <FloatField @bind-Value="context.QuantityMachines" />
             <IntField @bind-Value="context.PowerShards" />
+            <CheckField @bind-Value="context.IsAmplified" />
             <div class="auto shortcuts">
                 <Async Binding="() => LoadAlternates(context.Recipe)" Context="alternates">
                     @if (alternates.Count > 1)

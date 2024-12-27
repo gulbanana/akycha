@@ -10,6 +10,7 @@ public class Process
 
     public float QuantityMachines { get; set; }
     public int PowerShards { get; set; }
+    public bool IsAmplified { get; set; }
 
     public required Facility Facility { get; set; }
     public Recipe? Recipe { get; set; }
@@ -36,6 +37,12 @@ public class Process
 
         machinePower = machineShards.Select(s => Recipe.Machine.CalculateUsage(100 + s * 50)).ToArray();
 
-        return Math.Round(machinePower.Sum(), 1);
+        var totalPower = machinePower.Sum();
+        if (IsAmplified)
+        {
+            totalPower *= 4.0;
+        }
+
+        return Math.Round(totalPower, 1);
     }
 }

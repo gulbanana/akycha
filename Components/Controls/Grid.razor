@@ -11,7 +11,16 @@
 <div class="@BEM.Class("grid", (Derived, "derived"))" style="--columns: @(Labels.Count)">
     @foreach (var label in Labels)
     {
-        <div class="grid-header" onclick="document.getElementById()">@label</div>
+        <div class="grid-header" onclick="document.getElementById()">
+            @if (label == "𝕊")
+            {
+                <img src="Production_amplifier.png" width="24" height="24">
+            }
+            else
+            {
+                @label
+            }
+        </div>
     }
     <div class="grid-header grid-commands">
         @if (OnAdd.HasDelegate)
