@@ -8,7 +8,7 @@ static class Format
         }
         else if (usage < 1000)
         {
-            return $"{usage} MW";
+            return $"{Math.Round(usage, 1):0.0} MW";
         }
         else
         {
