@@ -8,14 +8,14 @@
 
     protected override void OnParametersSet()
     {
-        if (!Id.HasValue)
+        src = Id switch
         {
-            src = "Icon_Cross.png";
-        }
-        else
-        {
-            src = $"Icon/{Type}/{Id.Value}";
-        }
+            null => "Icon_Cross.png",
+            Quantity.PowerIcon => "ResIcon_Power.png",
+            Quantity.TransportIcon => "ResIcon_Transport.png",
+            Quantity.CouponIcon => "FICSIT_Coupon.png",
+            int id => $"Icon/{Type}/{id}"
+        };
     }
 }    
     

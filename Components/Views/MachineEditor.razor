@@ -37,6 +37,10 @@
             <Block Label="Power Usage (MW)">
                 <IntField id="@context" @bind-Value="Model.PowerUsageMegawatts" />
             </Block>
+
+            <Block Label="Special Output (-1/2/3)">
+                <NullableIdField id="@context" @bind-Value="Model.SpecialOutput" />
+            </Block>
         
             <DeleteCommandBar Action="DeleteMachine" />
         </FieldColumn>

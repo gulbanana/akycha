@@ -89,9 +89,22 @@ public class Facility : IListable<Facility>
             }
         }
 
+        var specialOutputs = Processes
+            .Select(p => p.Recipe?.Machine)
+            .Where(m => m?.SpecialOutput is not null)
+            .Select(m => m!.SpecialOutput)
+            .Distinct()
+            .Select(id => new Quantity(id, null));
+
         if (amountsByPart.Any())
         {
-            return amountsByPart.Select(kvp => new Quantity(kvp.Key.Id, kvp.Value));
+            return amountsByPart
+                .Select(kvp => new Quantity(kvp.Key.Id, kvp.Value))
+                .Concat(specialOutputs.Where(q => q.PartId >= Quantity.VisibleIcons));
+        }
+        else if (specialOutputs.Any())
+        {
+            return specialOutputs;
         }
         else
         {

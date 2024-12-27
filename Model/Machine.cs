@@ -11,6 +11,7 @@ public class Machine : IListable<Machine>
     public string Category => "Machines";
     public byte[]? Icon { get; set; }
     public int PowerUsageMegawatts { get; set; }
+    public int? SpecialOutput { get; set; }
 
     public static IOrderedEnumerable<Machine> Sort(IEnumerable<Machine> ms)
     {

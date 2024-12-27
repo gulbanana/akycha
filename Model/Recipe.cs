@@ -33,7 +33,7 @@ public class Recipe : IListable<Recipe>
         else
         {
             return [new(null, null)];
-        }    
+        }
     }
 
     public IEnumerable<Quantity> GetProductQuantities()
@@ -49,6 +49,10 @@ public class Recipe : IListable<Recipe>
             return Item.Sort(products!)
                 .Concat(Item.Sort(byproducts!))
                 .Select(i => new Quantity(i.Part?.Id, i.QuantityPerMinute));
+        }
+        else if (Machine?.SpecialOutput is not null)
+        {
+            return [new(Machine.SpecialOutput, null)];
         }
         else
         {
