@@ -3,7 +3,7 @@
     [Parameter] public required Facility Model { get; set; }
 }
 
-<Summary4Up Name="@Model.Name" Cost="@Model.CalculatePowerText()">
+<Summary4Up Name="@Model.Name" Cost="@Model.CalculatePowerText()" Incomplete="@Model.CalculateMissingInputs().Any()">
     <Process>
         <ProcessIcons Inputs="Model.GetInputQuantities()" Outputs="Model.GetOutputQuantities()" />
     </Process>

@@ -10,6 +10,10 @@
     --side-length: 32px;
 }
 
+.layout.incomplete {
+    background-color: var(--c-ficsit-secondary);
+}
+
 .title {
     grid-area: title;
     justify-self: start;
@@ -31,7 +35,7 @@
 }
 
 .extra {
-    grid-area: extra;    
+    grid-area: extra;
     justify-self: end;
     color: var(--c-text-light-sub);
     display: flex;

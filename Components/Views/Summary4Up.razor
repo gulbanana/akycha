@@ -3,9 +3,10 @@
     [Parameter] public required string Cost { get; set; }
     [Parameter] public RenderFragment? Process { get; set; }
     [Parameter] public RenderFragment? Extra { get; set; }
+    [Parameter] public bool Incomplete { get; set; }
 }
 
-<div class="layout">
+<div class="@(Incomplete ? "layout incomplete" : "layout")">
     <div class="title">@Name</div>
 
     <div class="cost">
