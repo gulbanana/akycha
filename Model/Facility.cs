@@ -252,10 +252,6 @@ public class Facility : IListable<Facility>
             if (process.Recipe is not null)
             {
                 var quantity = 1.0f * process.QuantityMachines + 0.5f * process.PowerShards;
-                if (process.IsAmplified)
-                {
-                    quantity *= 2.0f;
-                }
 
                 foreach (var item in process.Recipe.Items)
                 {
@@ -272,7 +268,8 @@ public class Facility : IListable<Facility>
                         }
                         else
                         {
-                            result[item.Part] += quantity * item.QuantityPerMinute;
+                            var amplifiedQuantity = process.IsAmplified ? quantity * 2.0f : quantity;
+                            result[item.Part] += amplifiedQuantity * item.QuantityPerMinute;
                         }
                     }
                 }
